@@ -1,0 +1,63 @@
+{
+    "name": "different/dwfw",
+    "description": "Different Development Web FrameWork",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kukel Attila",
+            "email": "kukel.attila@different.hu"
+        }
+    ],
+    "keywords": [
+        "framework",
+        "laravel",
+        "backpack",
+        "different"
+    ],
+    "minimum-stability": "stable",
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "require": {
+        "php": "7.4.*",
+        "backpack/crud": "4.1.*",
+        "backpack/filemanager": "1.0.*",
+        "backpack/logmanager": "4.0.*",
+        "backpack/permissionmanager": "6.0.*",
+        "backpack/settings": "3.0.*",
+        "barryvdh/laravel-elfinder": "0.4.*",
+        "fideloper/proxy": "^4.2",
+        "fruitcake/laravel-cors": "^1.0",
+        "guzzlehttp/guzzle": "^6.3",
+        "illuminate/support": "^7.12",
+        "intervention/image": "^2.5",
+        "jenssegers/agent": "^2.6",
+        "laravel/framework": "^7.0",
+        "laravel/tinker": "^2.0",
+        "laravel/ui": "^2.0"
+    },
+    "require-dev": {
+        "backpack/generators": "^3.0",
+        "laracasts/generators": "^1.0",
+        "facade/ignition": "^2.0",
+        "fzaninotto/faker": "^1.9.1",
+        "mockery/mockery": "^1.3.1",
+        "nunomaduro/collision": "^4.1",
+        "phpunit/phpunit": "^8.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "different\\dwfw\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Different\\Dwfw\\DwfwServiceProvider"
+            ]
+        }
+    }
+}

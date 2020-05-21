@@ -1,6 +1,6 @@
 <?php
 
-namespace Different\Dwfw\App\Models;
+namespace Different\Dwfw\app\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Exception;

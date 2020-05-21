@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Creativeorange\Gravatar\Facades\Gravatar;
-use Different\Dwfw\App\Models\Partner;
+use Different\Dwfw\app\Models\Partner;
 use Spatie\Permission\Traits\HasRoles;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;

@@ -5,6 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Different\Dwfw\app\Models\Traits\DwfwPartner;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Partner
@@ -17,7 +18,7 @@ use Different\Dwfw\app\Models\Traits\DwfwPartner;
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
  */
-class Partner extends BaseModel
+class Partner extends Model
 {
     use CrudTrait;
     use DwfwPartner;

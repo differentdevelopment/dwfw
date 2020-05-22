@@ -2,13 +2,15 @@
 
 namespace Different\Dwfw\app\Models;
 
+use App\Models\Partner;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Intervention\Image\Facades\Image;
 
 /**
  * Class File
- * @package App\Models
+ * @package Different\Dwfw\app\Models
  * @property int $id
  * @property int $partner_id
  * @property Partner $partner
@@ -18,7 +20,7 @@ use Intervention\Image\Facades\Image;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
-class File extends BaseModel
+class File extends Model
 {
 
     /*
@@ -66,13 +68,16 @@ class File extends BaseModel
         ]);
     }
 
-    public function resizeImage()
+    /**
+     * @param string|null $storage_path
+     */
+    public function resizeImage(?string $storage_path = '/app/public/uploads/'): void
     {
-        $img = Image::make(storage_path() . '/app/public/uploads/' . $this->file_path)->resize(1500, 1500, function ($constraint) {
+        $img = Image::make(storage_path($storage_path) . $this->file_path)->resize(1500, 1500, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
         });
-        $img->save(storage_path() . '/app/public/uploads/' . $this->file_path);
+        $img->save(storage_path($storage_path) . $this->file_path);
     }
 
     /*

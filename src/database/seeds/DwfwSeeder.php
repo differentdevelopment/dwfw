@@ -12,29 +12,26 @@ class DwfwSeeder extends Seeder
     public function run()
     {
         // USERS
-        $user = User::query()->create([
-            'name' => 'Fejlesztés',
+        $user = User::query()->firstOrCreate([
             'email' => 'fejlesztes@different.hu',
+        ], [
+            'name' => 'Fejlesztés',
             'email_verified_at' => '2020-03-25 08:40:07',
-            'password' => '$2y$10$YoqGMgPRGEOUPg4iFRRPqeyqYX3lsNYeZ4fZPqi/jrPaSEBsTVXUK', // szokásos
+            'password' => '$2y$10$YoqGMgPRGEOUPg4iFRRPqeyqYX3lsNYeZ4fZPqi/jrPaSEBsTVXUK',
             'remember_token' => null,
             'created_at' => '2020-03-25 08:40:07',
             'updated_at' => '2020-03-25 08:40:07',
         ]);
 
         // BASE ROLES
-        $role_admin = Role::query()->create([
+        $role_admin = Role::query()->firstOrCreate([
             'name' => 'admin',
             'guard_name' => 'web',
-            'created_at' => '2020-03-25 08:40:07',
-            'updated_at' => '2020-03-25 08:40:07',
-        ]);
-        $role_partner = Role::query()->create([
+        ], []);
+        $role_partner = Role::query()->firstOrCreate([
             'name' => 'partner',
             'guard_name' => 'web',
-            'created_at' => '2020-03-25 08:40:07',
-            'updated_at' => '2020-03-25 08:40:07',
-        ]);
+        ], []);
 
         // add admin role to base user
         $user->assignRole($role_admin->name);
@@ -43,18 +40,19 @@ class DwfwSeeder extends Seeder
         $timestamp = time();
         foreach (timezone_identifiers_list() as $key => $zone) {
             date_default_timezone_set($zone);
-            TimeZone::query()->create([
+            TimeZone::query()->firstOrCreate([
                 'name' => $zone,
                 'diff' => date('P', $timestamp),
-            ]);
+            ], []);
         }
 
         // update users with default timezone
         User::query()->update(['timezone_id' => TimeZone::DEFAULT_TIMEZONE_CODE]);
 
         // SETTINGS
-        Setting::query()->create([
+        Setting::query()->firstOrCreate([
             'key' => 'privacy_policy',
+        ], [
             'name' => 'Adatvédelmi nyilatkozat',
             'description' => 'Adatvédelmi nyilatkozat szövege, amit a regisztrációnál kell elfogadni.',
             'value' => '<p>Normally, both your asses would be dead as fucking fried chicken, but you happen to pull this shit while I&#39;m in a transitional period so I don&#39;t wanna kill you, I wanna help you. But I can&#39;t give you this case, it don&#39;t belong to me. Besides, I&#39;ve already been through too much shit this morning over this case to hand it over to your dumb ass.</p>',
@@ -65,8 +63,9 @@ class DwfwSeeder extends Seeder
         ]);
 
         // PARTNERS
-        $partner = Partner::query()->create([
+        $partner = Partner::query()->firstOrCreate([
             'name' => 'Different Fejlesztő Kft.',
+        ], [
             'contact_name' => 'Vezető Viktor',
             'contact_phone' => '+362013455467',
             'contact_email' => 'php@different.hu',

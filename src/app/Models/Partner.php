@@ -1,9 +1,10 @@
 <?php
 
-namespace Different\Dwfw\app\Models;
+namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
+use Different\Dwfw\app\Models\Traits\DwfwPartner;
 
 /**
  * Class Partner
@@ -19,6 +20,7 @@ use Carbon\Carbon;
 class Partner extends BaseModel
 {
     use CrudTrait;
+    use DwfwPartner;
 
     /*
     |--------------------------------------------------------------------------
@@ -54,10 +56,6 @@ class Partner extends BaseModel
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function users()
-    {
-        return $this->hasMany(User::class);
-    }
 
     /*
     |--------------------------------------------------------------------------
@@ -70,10 +68,6 @@ class Partner extends BaseModel
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-    public function getNameContactNameAttribute($value, string $separator = ' - '): string
-    {
-        return $this->name . $separator . $this->contact_name;
-    }
 
     /*
     |--------------------------------------------------------------------------

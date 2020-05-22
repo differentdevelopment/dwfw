@@ -9,10 +9,9 @@ use Carbon\Carbon;
 
 /**
  * Class TimeZone
- * @package App\Models
+ * @package Different\Dwfw\app\Models
  * @property string $name
  * @property string $diff
- * @property User $users
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
@@ -70,10 +69,6 @@ class TimeZone extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function users()
-    {
-        return $this->hasMany(User::class);
-    }
 
     /*
     |--------------------------------------------------------------------------

@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Creativeorange\Gravatar\Facades\Gravatar;
-use Different\Dwfw\app\Models\Partner;
-use Spatie\Permission\Traits\HasRoles;
-
+use Carbon\Carbon;
+use Different\Dwfw\app\Models\File;
+use Different\Dwfw\app\Models\TimeZone;
+use Different\Dwfw\app\Models\Traits\DwfwUser;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Carbon\Carbon;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * Class User
@@ -32,8 +32,9 @@ use Carbon\Carbon;
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasRoles;
     use CrudTrait;
+    use DwfwUser;
+    use HasRoles;
     use Notifiable;
 
     /*
@@ -41,10 +42,6 @@ class User extends Authenticatable implements MustVerifyEmail
     | GLOBAL VARIABLES
     |--------------------------------------------------------------------------
     */
-
-    protected $guard_name = 'web';
-
-    protected $table = 'users';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -74,39 +71,12 @@ class User extends Authenticatable implements MustVerifyEmail
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-    public function getProfileImage()
-    {
-        if ($this->profile_image_id) {
-            return route('image', $this->profile_image);
-        } else {
-            return Gravatar::fallback('https://placehold.it/160x160/662d8c/b284d1/&text=' . strtoupper(substr($this->email, 0, 1)))->get($this->email);
-        }
-    }
 
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function partner()
-    {
-        return $this->belongsTo( Partner::class);
-    }
-
-    public function profile_image()
-    {
-        return $this->belongsTo(File::class)->whereNull('partner_id');
-    }
-
-    public function user_tokens()
-    {
-        return $this->hasMany(UserToken::class);
-    }
-
-    public function timezone()
-    {
-        return $this->belongsTo(TimeZone::class);
-    }
 
     /*
     |--------------------------------------------------------------------------

@@ -37,6 +37,8 @@ class DwfwServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(realpath(__DIR__ . '/database/migrations/'));
 
+        $this->loadRoutesFrom(__DIR__ . '/routes/dwfw/routes.php');
+
         // register the artisan commands
         $this->commands($this->commands);
 

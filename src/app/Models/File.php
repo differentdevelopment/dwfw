@@ -5,7 +5,6 @@ namespace Different\Dwfw\app\Models;
 use App\Models\Partner;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\UploadedFile;
 use Intervention\Image\Facades\Image;
 
 /**
@@ -50,23 +49,6 @@ class File extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-    /**
-     * Stores file in storage and creates db entry
-     * @param UploadedFile $file
-     * @param Partner|int $partner
-     * @return File|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
-     */
-    public static function storeFile(UploadedFile $file, $partner = null): File
-    {
-        $partner_id = $partner === null ? null : ($partner instanceof Partner ? $partner->id : $partner);
-        $path = $file->store($partner_id, 'uploads');
-        return File::query()->create([
-            'partner_id' => $partner_id,
-            'original_name' => $file->getClientOriginalName(),
-            'mime_type' => $file->getClientMimeType(),
-            'file_path' => $path,
-        ]);
-    }
 
     /**
      * @param string|null $storage_path

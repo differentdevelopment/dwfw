@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 class Files extends Controller
 {
 
-    private const STORAGE_DIR = 'files/';
+    public const STORAGE_DIR = 'files/';
 
     /**
      * FIXME automatic model binding does not work here, dunno why - alitak@20200525

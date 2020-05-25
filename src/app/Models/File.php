@@ -4,6 +4,7 @@ namespace Different\Dwfw\app\Models;
 
 use App\Models\Partner;
 use Carbon\Carbon;
+use Different\Dwfw\app\Http\Controllers\Files;
 use Illuminate\Database\Eloquent\Model;
 use Intervention\Image\Facades\Image;
 
@@ -53,7 +54,7 @@ class File extends Model
     /**
      * @param string|null $storage_path
      */
-    public function resizeImage(?string $storage_path = '/app/public/uploads/'): void
+    public function resizeImage(?string $storage_path = 'app/' . Files::STORAGE_DIR): void
     {
         $img = Image::make(storage_path($storage_path) . $this->file_path)->resize(1500, 1500, function ($constraint) {
             $constraint->aspectRatio();

@@ -14,13 +14,10 @@ class ModifyUsersTableAddDwfw extends Migration
     public function up()
     {
         Schema::table('users', function ($table) {
-            $table->unsignedInteger('partner_id')->nullable();
-            $table->foreign('partner_id')->on('partners')->references('id')->onDelete('set null')->onUpdate('cascade');
+            $table->unsignedInteger('partner_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('set null');
             $table->string('last_device')->nullable();
-            $table->unsignedInteger('profile_image_id')->nullable();
-            $table->foreign('profile_image_id')->on('files')->references('id')->onUpdate('cascade')->onDelete('set null');
-            $table->unsignedInteger('timezone_id')->nullable()->after('partner_id');
-            $table->foreign('timezone_id')->on('timezones')->references('id')->onUpdate('cascade')->onDelete('set null');
+            $table->unsignedInteger('profile_image_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('set null');
+            $table->unsignedInteger('timezone_id')->nullable()->after('partner_id')->index()->constrained()->onUpdate('cascade')->onDelete('set null');
         });
     }
 

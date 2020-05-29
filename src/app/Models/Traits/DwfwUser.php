@@ -2,7 +2,7 @@
 
 namespace Different\Dwfw\app\Models\Traits;
 
-use App\Models\Partner;
+use Different\Dwfw\app\Models\Partner;
 use App\Models\UserToken;
 use Creativeorange\Gravatar\Facades\Gravatar;
 use Different\Dwfw\app\Models\File;

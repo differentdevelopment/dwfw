@@ -2,7 +2,7 @@
 
 use App\Models\User;
 use Backpack\Settings\app\Models\Setting;
-use App\Models\Partner;
+use Different\Dwfw\app\Models\Partner;
 use Different\Dwfw\app\Models\TimeZone;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;

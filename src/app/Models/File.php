@@ -2,7 +2,7 @@
 
 namespace Different\Dwfw\app\Models;
 
-use App\Models\Partner;
+use Different\Dwfw\app\Models\Partner;
 use Carbon\Carbon;
 use Different\Dwfw\app\Http\Controllers\Files;
 use Illuminate\Database\Eloquent\Model;

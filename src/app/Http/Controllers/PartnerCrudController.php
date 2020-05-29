@@ -3,7 +3,6 @@
 namespace Different\Dwfw\app\Http\Controllers;
 
 use Different\Dwfw\app\Http\Requests\PartnerRequest;
-//use App\Models\Partner;
 use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;

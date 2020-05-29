@@ -2,7 +2,7 @@
 
 namespace Different\Dwfw\app\Http\Controllers;
 
-use App\Models\Partner;
+use Different\Dwfw\app\Models\Partner;
 use Different\Dwfw\app\Models\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Routing\Controller;

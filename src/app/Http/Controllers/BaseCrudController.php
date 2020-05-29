@@ -7,7 +7,7 @@ use App\Http\Requests\MissionRequest;
 use App\Http\Requests\OptionRequest;
 use App\Models\Mission;
 use App\Models\MissionOption;
-use App\Models\Partner;
+use Different\Dwfw\app\Models\Partner;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;

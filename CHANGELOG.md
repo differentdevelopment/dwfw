@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.5.0] - 2020-05-29
+### Added
+- UsersCrud
+- PartnersCrud
+- translations
+
+## [0.4.0] - 2020-05-29
+### Added
+- CheckIfAdmin moved to package
+- auth/permission config updates
+
 ## [0.3.1] - 2020-05-25
 ### Fixed
 - image resizing problem

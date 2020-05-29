@@ -26,8 +26,4 @@ The DWFW is open-sourced software licensed under the [MIT license](https://opens
 - composer update
 - set .env for database, mail
 - php artisan backpack:install
-- php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider" --tag="config"
-- php artisan vendor:publish --provider="Backpack\PermissionManager\PermissionManagerServiceProvider"
-- php artisan vendor:publish --provider="Different\Dwfw\DwfwServiceProvider" --force
-- php artisan migrate 
-- php artisan dwfw:seed
+- php artisan dwfw:install

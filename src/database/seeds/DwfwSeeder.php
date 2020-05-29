@@ -1,5 +1,7 @@
 <?php
 
+namespace Different\Dwfw\database\seeds;
+
 use App\Models\User;
 use Backpack\Settings\app\Models\Setting;
 use Different\Dwfw\app\Models\Partner;

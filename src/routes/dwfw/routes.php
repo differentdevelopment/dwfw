@@ -14,3 +14,18 @@ Route::group(
     }
 );
 
+Route::group([
+    'prefix' => config('backpack.base.route_prefix', 'admin'),
+    'middleware' => ['web', config('backpack.base.middleware_key', 'admin'), 'timezone',],
+    'namespace' => 'Different\Dwfw\app\Http\Controllers',
+    'as' => 'admin.',
+], function () { // custom admin routes
+    Route::crud('/users', UsersCrudController::class);
+    Route::get('/users/{user}/verify', 'UsersCrudController@verifyUser')->name('verify');
+    Route::get('/user', function () {
+        abort(404);
+    });
+
+    Route::crud('/partners', PartnerCrudController::class);
+
+});

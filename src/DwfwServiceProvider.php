@@ -38,6 +38,10 @@ class DwfwServiceProvider extends ServiceProvider
 
         $this->loadRoutesFrom(__DIR__ . '/routes/dwfw/routes.php');
 
+        $this->loadViewsFrom(__DIR__ . '/resources/views', 'dwfw');
+
+        $this->loadTranslationsFrom(__DIR__ . '/resources/lang', 'dwfw');
+
         $this->commands($this->commands);
 
         $this->publishFiles();
@@ -57,7 +61,6 @@ class DwfwServiceProvider extends ServiceProvider
     {
         // Models
         $this->publishes([__DIR__ . '/app/Models/User.php' => app_path('Models/User.php')], 'models.user');
-        $this->publishes([__DIR__ . '/app/Models/Partner.php' => app_path('Models/Partner.php')], 'models.partner');
 
         // Seeder
         $this->publishes([__DIR__ . '/database/seeds/' => database_path('seeds')], 'seeds');
@@ -66,6 +69,9 @@ class DwfwServiceProvider extends ServiceProvider
         $this->publishes([__DIR__ . '/config/backpack/base.php' => config_path('backpack/base.php')], 'config.backpack.base');
         $this->publishes([__DIR__ . '/config/backpack/base.php' => config_path('backpack/base.php')], 'config.backpack.base');
         $this->publishes([__DIR__ . '/config/backpack/permissionmanager.php' => config_path('backpack/permissionmanager.php')], 'config.backpack.permissionmanager');
+
+        // Default sidebar overwrite
+        $this->publishes([__DIR__ . '/resources/views/sidebar_content.blade.php' => resource_path('views/vendor/backpack/base/inc/sidebar_content.blade.php')], 'config.backpack.base.sidebar');
 
         // core configs
         $this->publishes([__DIR__ . '/config/auth.php' => config_path('auth.php')], 'config.auth');

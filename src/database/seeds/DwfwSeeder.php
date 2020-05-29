@@ -71,8 +71,8 @@ class DwfwSeeder extends Seeder
             'contact_email' => 'php@different.hu',
         ]);
 
-//        $user->partner->id = $partner->id;
-//        $user->save();
+        $user->partner_id = $partner->id;
+        $user->save();
 
     }
 }

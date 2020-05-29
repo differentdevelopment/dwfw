@@ -28,7 +28,6 @@
         "backpack/logmanager": "4.0.*",
         "backpack/permissionmanager": "6.0.*",
         "backpack/settings": "3.0.*",
-        "barryvdh/laravel-elfinder": "0.4.*",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",

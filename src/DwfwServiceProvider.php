@@ -70,8 +70,9 @@ class DwfwServiceProvider extends ServiceProvider
         $this->publishes([__DIR__ . '/config/backpack/base.php' => config_path('backpack/base.php')], 'config.backpack.base');
         $this->publishes([__DIR__ . '/config/backpack/permissionmanager.php' => config_path('backpack/permissionmanager.php')], 'config.backpack.permissionmanager');
 
-        // Default sidebar overwrite
-        $this->publishes([__DIR__ . '/resources/views/sidebar_content.blade.php' => resource_path('views/vendor/backpack/base/inc/sidebar_content.blade.php')], 'config.backpack.base.sidebar');
+        // backpack default view files, snippets
+        $this->publishes([__DIR__ . '/resources/views/sidebar_content.blade.php' => resource_path('views/vendor/backpack/base/inc/sidebar_content.blade.php')], 'views.backpack.base.sidebar');
+        $this->publishes([__DIR__ . '/resources/views/upload.blade.php' => resource_path('views/vendor/backpack/crud/fields/upload.blade.php')], 'views.backpack.crud.fields.upload');
 
         // core configs
         $this->publishes([__DIR__ . '/config/auth.php' => config_path('auth.php')], 'config.auth');

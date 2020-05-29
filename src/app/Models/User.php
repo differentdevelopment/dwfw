@@ -66,6 +66,21 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
     protected $casts = [];
 
+    private $default_image;
+    private $default_image_icon;
+
+    /*
+    |--------------------------------------------------------------------------
+    | FUNCTIONS
+    |--------------------------------------------------------------------------
+    */
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->default_image = asset('images/assets/dwfw-show.png');
+        $this->default_image_icon = asset('images/assets/dwfw-show-icon.png');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -77,7 +92,10 @@ class User extends Authenticatable implements MustVerifyEmail
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
+    public function file_profile_image()
+    {
+        return $this->belongsTo(File::class, 'profile_image_id');
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -89,6 +107,13 @@ class User extends Authenticatable implements MustVerifyEmail
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+    public function getProfileImageAttribute()
+    {
+        if (!$this->file_profile_image) {
+            return '';
+        }
+        return route('file', $this->file_profile_image);
+    }
 
     /*
     |--------------------------------------------------------------------------

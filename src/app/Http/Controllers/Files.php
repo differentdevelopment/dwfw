@@ -4,6 +4,9 @@ namespace Different\Dwfw\app\Http\Controllers;
 
 use Different\Dwfw\app\Models\Partner;
 use Different\Dwfw\app\Models\File;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
@@ -18,7 +21,7 @@ class Files extends Controller
      * FIXME automatic model binding does not work here, dunno why - alitak@20200525
      * @param int $file
      * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws FileNotFoundException
      */
     public function retrieve($file)
     {
@@ -38,7 +41,7 @@ class Files extends Controller
      * FIXME automatic model binding does not work here, dunno why - alitak@20200525
      * @param int $file
      * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws FileNotFoundException
      */
     public function retrieveBase64($file)
     {
@@ -59,12 +62,14 @@ class Files extends Controller
      * Stores file in storage and creates db entry
      * @param UploadedFile $file
      * @param Partner|int $partner
-     * @return File|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+     * @param string|null $storage_dir
+     * @return File|Builder|Model
      */
-    public static function store(UploadedFile $file, $partner = null): File
+    public static function store(UploadedFile $file, $partner = null, string $storage_dir = null): File
     {
         $partner_id = $partner === null ? null : ($partner instanceof Partner ? $partner->id : $partner);
-        $path = Str::replaceFirst(self::STORAGE_DIR, '', $file->store(self::STORAGE_DIR . $partner_id));
+        $storage_dir = $storage_dir ?? $partner_id;
+        $path = Str::replaceFirst(self::STORAGE_DIR, '', $file->store(self::STORAGE_DIR . $storage_dir));
         return File::query()->create([
             'partner_id' => $partner_id,
             'original_name' => $file->getClientOriginalName(),

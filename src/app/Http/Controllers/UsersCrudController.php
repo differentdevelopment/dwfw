@@ -4,20 +4,33 @@ namespace Different\Dwfw\app\Http\Controllers;
 
 use Alert;
 use App\Models\User;
+use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
 use Backpack\PermissionManager\app\Http\Controllers\UserCrudController;
 use Carbon\Carbon;
+use Different\Dwfw\app\Http\Controllers\Traits\ColumnFaker;
+use Different\Dwfw\app\Http\Controllers\Traits\FileUpload;
 use Different\Dwfw\app\Models\TimeZone;
 
 class UsersCrudController extends UserCrudController
 {
+    use FileUpload;
+    use ColumnFaker;
     use ShowOperation {
         show as traitShow;
+    }
+    use CreateOperation {
+        store as traitStore;
+    }
+    use UpdateOperation {
+        update as traitUpdate;
     }
 
     public function setup()
     {
         parent::setup();
+        $this->crud->setModel(User::class);
         $this->crud->setRoute(backpack_url('users'));
         $this->crud->addButton('line', 'verify', 'view', 'dwfw::crud.buttons.users.verify', 'beginning');
     }
@@ -93,7 +106,38 @@ class UsersCrudController extends UserCrudController
                     'class' => 'form-group col-12 col-sm-6',
                 ],
             ],
+            [
+                'name' => 'last_device',
+                'label' => __('dwfw::users.last_device'),
+                'type' => 'text',
+                'wrapper' => [
+                    'class' => 'form-group col-12 col-sm-6',
+                ],
+            ],
+            [
+                'name' => 'profile_image',
+                'label' => __('dwfw::users.profile_image'),
+                'type' => 'upload',
+                'attribute' => 'original_name',
+                'upload' => true,
+                'wrapper' => [
+                    'class' => 'form-group col-12 col-sm-6',
+                ],
+            ],
+
         ]);
+    }
+
+    public function store()
+    {
+        $this->handleFileUpload('profile_image', null, 'users');
+        return parent::store();
+    }
+
+    public function update()
+    {
+        $this->handleFileUpload('profile_image', null, 'users');
+        return parent::update();
     }
 
     /*

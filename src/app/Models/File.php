@@ -63,6 +63,10 @@ class File extends Model
         $img->save(storage_path($storage_path) . $this->file_path);
     }
 
+    public function identifiableAttribute()
+    {
+        return 'original_name';
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

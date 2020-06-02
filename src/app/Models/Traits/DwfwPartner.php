@@ -13,7 +13,7 @@ trait DwfwPartner
 
     public function getNameContactNameAttribute($value, string $separator = ' - '): string
     {
-        return $this->name . $separator . $this->contact_name;
+        return $this->name . ($this->contact_name ? $separator . $this->contact_name : '');
     }
 
 }

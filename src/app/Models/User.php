@@ -86,6 +86,10 @@ class User extends Authenticatable implements MustVerifyEmail
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    public function verify()
+    {
+        $this->update(['email_verified_at' => Carbon::now()]);
+    }
 
     /*
     |--------------------------------------------------------------------------

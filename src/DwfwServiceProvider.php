@@ -63,6 +63,9 @@ class DwfwServiceProvider extends ServiceProvider
         // Models
         $this->publishes([__DIR__ . '/app/Models/User.php' => app_path('Models/User.php')], 'models.user');
 
+        // Factories
+        $this->publishes([__DIR__ . '/database/factories/UserFactory.php' => database_path('factories/UserFactory.php')], 'factories.user');
+
         // Seeder
 //        $this->publishes([__DIR__ . '/database/seeds/' => database_path('seeds')], 'seeds');
 

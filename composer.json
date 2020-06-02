@@ -52,6 +52,14 @@
             "Different\\Dwfw\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Different\\Dwfw\\Tests\\": "tests"
+        },
+        "exclude-from-classmap": [
+            "**/config"
+        ]
+    },
     "extra": {
         "laravel": {
             "providers": [

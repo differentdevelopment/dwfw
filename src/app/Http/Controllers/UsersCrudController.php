@@ -154,12 +154,8 @@ class UsersCrudController extends UserCrudController
 
     public function verifyUser(User $user)
     {
-        if (!$user->email_verified_at) {
-            $user->update(['email_verified_at' => Carbon::now()]);
-            Alert::success(__('dwfw::users.verified'))->flash();
-        } else {
-            Alert::error(__('dwfw::users.already_verified'))->flash();
-        }
+        $user->verify();
+        Alert::success(__('dwfw::users.verified'))->flash();
         return redirect(backpack_url('users'));
     }
 }

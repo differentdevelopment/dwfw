@@ -3,14 +3,11 @@
 namespace Different\Dwfw\Tests\Unit\Models;
 
 use Different\Dwfw\app\Models\TimeZone;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Different\Dwfw\Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
-use Tests\TestCase;
 
 class TimeZoneTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected function setUp(): void
     {
         parent::setUp();

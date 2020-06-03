@@ -3,18 +3,15 @@
 namespace Different\Dwfw\Tests\Unit\Models;
 
 use Different\Dwfw\app\Models\Partner;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Different\Dwfw\Tests\TestCase;
 
 class PartnerTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
-     * @dataProvider partnerDatas
+     * @dataProvider partnerTestDatas
      */
-    function it_verfies_partner_contact_name_with_name($expected, $partner_name, $contact_name)
+    function it_verifies_partner_contact_name_with_name($expected, $partner_name, $contact_name)
     {
         $this->assertEquals($expected, (new Partner([
             'name' => $partner_name,
@@ -22,7 +19,7 @@ class PartnerTest extends TestCase
         ]))->name_contact_name);
     }
 
-    function partnerDatas()
+    function partnerTestDatas()
     {
         return [
             ['Méla Béla Bt. - Vezető Viktor', 'Méla Béla Bt.', 'Vezető Viktor'],

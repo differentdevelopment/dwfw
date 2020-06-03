@@ -3,14 +3,11 @@
 namespace Tests\Feature\Cruds;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Role;
-use Tests\TestCase;
+use Different\Dwfw\Tests\TestCase;
 
 class UsersCrudTest extends TestCase
 {
-    use RefreshDatabase;
-
     private $user_admin;
     private $role_admin;
 

@@ -2,19 +2,14 @@
 
 namespace Different\Dwfw\Tests;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Support\Facades\Artisan;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
+    use RefreshDatabase;
 
     protected static $database_built = false;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        Artisan::call('migrate:fresh');
-    }
 
 }

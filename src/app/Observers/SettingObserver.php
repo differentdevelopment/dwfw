@@ -7,7 +7,7 @@ use Different\Dwfw\app\Models\Log;
 
 class SettingObserver extends Observer
 {
-    protected $ENTITY_TYPE = Log::ET_SETTING;
+    protected string $ENTITY_TYPE = Log::ET_SETTING;
 
     /**
      * @param Setting $setting

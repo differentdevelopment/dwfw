@@ -52,9 +52,9 @@ abstract class BaseCrudController extends CrudController
         $this->crud->addFilter([
             'name' => 'partner_id',
             'type' => 'select2_ajax',
-            'label' => __('admin.partner'),
+            'label' => __('dwfw::partners.partner'),
         ],
-            route('admin.partner.ajax-partner-list'),
+            route('admin.partners.ajax-partner-list'),
             function ($value) { // if the filter is active
                 if ($value) {
                     $this->crud->addClause('where', 'partner_id', $value);

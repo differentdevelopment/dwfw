@@ -7,7 +7,7 @@ use Different\Dwfw\app\Models\Log;
 
 class UserObserver extends Observer
 {
-    protected $ENTITY_TYPE = Log::ET_USER;
+    protected string $ENTITY_TYPE = Log::ET_USER;
 
     /**
      * @param User $user

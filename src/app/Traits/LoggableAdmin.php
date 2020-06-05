@@ -8,8 +8,7 @@ use Request;
 
 trait LoggableAdmin
 {
-    protected $ENTITY_TYPE = Log::ET_SYSTEM;
-    protected $ROUTE = 'admin';
+    protected string $ROUTE = 'admin';
 
     protected function log(string $event, ?int $entity_id = null, ?string $data = null, ?string $entity_type = null, ?int $user_id = null): void
     {
@@ -19,7 +18,7 @@ trait LoggableAdmin
         Log::create([
             'user_id' => $user_id ? $user_id : (Auth::user() ? Auth::user()->id : null),
             'route' => $this->ROUTE,
-            'entity_type' => $entity_type ?? $this->ENTITY_TYPE,
+            'entity_type' => $entity_type ?? $this->ENTITY_TYPE ?? Log::ET_SYSTEM,
             'entity_id' => $entity_id,
             'event' => $event,
             'data' => $data,

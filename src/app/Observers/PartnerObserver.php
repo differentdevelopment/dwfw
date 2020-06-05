@@ -6,7 +6,7 @@ use Different\Dwfw\app\Models\Log;
 
 class PartnerObserver extends Observer
 {
-    protected $ENTITY_TYPE = Log::ET_PARTNER;
+    protected string $ENTITY_TYPE = Log::ET_PARTNER;
 
     /**
      * @param Partner $partner

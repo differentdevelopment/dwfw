@@ -8,10 +8,10 @@ use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
 use Backpack\PermissionManager\app\Http\Controllers\UserCrudController;
-use Carbon\Carbon;
 use Different\Dwfw\app\Http\Controllers\Traits\ColumnFaker;
 use Different\Dwfw\app\Http\Controllers\Traits\FileUpload;
 use Different\Dwfw\app\Models\TimeZone;
+use Different\Dwfw\app\Traits\LoggableAdmin;
 
 class UsersCrudController extends UserCrudController
 {
@@ -26,6 +26,7 @@ class UsersCrudController extends UserCrudController
     use UpdateOperation {
         update as traitUpdate;
     }
+    use LoggableAdmin;
 
     public function setup()
     {

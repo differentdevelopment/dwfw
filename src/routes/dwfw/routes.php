@@ -20,12 +20,13 @@ Route::group([
     'namespace' => 'Different\Dwfw\app\Http\Controllers',
     'as' => 'admin.',
 ], function () { // custom admin routes
+    Route::crud('/logs', LogsCrudController::class);
     Route::crud('/users', UsersCrudController::class);
     Route::get('/users/{user}/verify', 'UsersCrudController@verifyUser')->name('verify');
     Route::get('/user', function () {
         abort(404);
     });
 
-    Route::crud('/partners', PartnerCrudController::class);
+    Route::crud('/partners', PartnersCrudController::class);
 
 });

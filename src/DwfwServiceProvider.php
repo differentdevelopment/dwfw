@@ -2,8 +2,14 @@
 
 namespace Different\Dwfw;
 
+use App\Models\User;
+use Backpack\Settings\app\Models\Setting;
 use Different\Dwfw\app\Console\Commands\Install;
 use Different\Dwfw\app\Http\Middleware\ConvertIdToTimeZone;
+use Different\Dwfw\app\Models\Partner;
+use Different\Dwfw\app\Observers\PartnerObserver;
+use Different\Dwfw\app\Observers\SettingObserver;
+use Different\Dwfw\app\Observers\UserObserver;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
@@ -33,6 +39,8 @@ class DwfwServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->registerObservers();
+
         $this->registerMiddlewareGroup($this->app->router);
 
         $this->loadMigrationsFrom(realpath(__DIR__ . '/database/migrations/'));
@@ -66,9 +74,6 @@ class DwfwServiceProvider extends ServiceProvider
         // Factories
         $this->publishes([__DIR__ . '/database/factories/UserFactory.php' => database_path('factories/UserFactory.php')], 'factories.user');
 
-        // Seeder
-//        $this->publishes([__DIR__ . '/database/seeds/' => database_path('seeds')], 'seeds');
-
         // Backpack related configs
         $this->publishes([__DIR__ . '/config/backpack/base.php' => config_path('backpack/base.php')], 'config.backpack.base');
         $this->publishes([__DIR__ . '/config/backpack/base.php' => config_path('backpack/base.php')], 'config.backpack.base');
@@ -90,5 +95,12 @@ class DwfwServiceProvider extends ServiceProvider
         if (File::exists(app_path('Http/Middleware/CheckIfAdmin.php'))) {
             File::delete(app_path('Http/Middleware/CheckIfAdmin.php'));
         }
+    }
+
+    public function registerObservers()
+    {
+        User::observe(UserObserver::class);
+        Setting::observe(SettingObserver::class);
+        Partner::observe(PartnerObserver::class);
     }
 }

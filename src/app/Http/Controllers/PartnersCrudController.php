@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
  * @package App\Http\Controllers\Admin
  * @property-read CrudPanel $crud
  */
-class PartnerCrudController extends BaseCrudController
+class PartnersCrudController extends BaseCrudController
 {
     use ListOperation;
     use CreateOperation;

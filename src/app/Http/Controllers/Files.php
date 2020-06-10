@@ -67,7 +67,7 @@ class Files extends Controller
      */
     public static function store(UploadedFile $file, $partner = null, string $storage_dir = null): File
     {
-        $partner_id = $partner === null ? null : ($partner instanceof Partner ? $partner->id : $partner);
+        $partner_id = $partner === null ? null : ($partner instanceof \App\Models\Partner ? $partner->id : $partner);
         $storage_dir = $storage_dir ?? $partner_id;
         $path = Str::replaceFirst(self::STORAGE_DIR, '', $file->store(self::STORAGE_DIR . $storage_dir));
         return File::query()->create([

@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.9.2] - 2020-06-??
+## [0.9.2] - 2020-06-10
 ### Added
 - image orientate method
 
@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - LoggableAdmin accepts array|object|string as data
 - LogsCrudController updated for prettier show page
 - updated observers getData method
+
+### Fixed
+- determining partner_id on file storing
 
 ## [0.9.1] - 2020-06-05
 ### Fixed

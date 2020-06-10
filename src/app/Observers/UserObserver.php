@@ -15,11 +15,6 @@ class UserObserver extends Observer
      */
     public function getData($user)
     {
-        return $this->implodeData([
-            $user->name,
-            $user->email,
-            $user->partner ? $user->partner->name_contact_name : '',
-            implode(', ', $user->roles->pluck('name')->toArray()),
-        ]);
+        return $user->load('roles')->load('partner');
     }
 }

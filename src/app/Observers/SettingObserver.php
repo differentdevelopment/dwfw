@@ -15,10 +15,7 @@ class SettingObserver extends Observer
      */
     public function getData($setting)
     {
-        return $this->implodeData([
-            $setting->name,
-            $setting->value,
-        ]);
+        return $setting->value;
     }
 
 }

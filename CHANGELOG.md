@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.9.2] - 2020-06-??
+### Added
+- image orientate method
+
+### Changed
+- LoggableAdmin accepts array|object|string as data
+- LogsCrudController updated for prettier show page
+- updated observers getData method
+
 ## [0.9.1] - 2020-06-05
 ### Fixed
 - Observer data, implementing fixes

@@ -23,6 +23,24 @@ class LogsCrudController extends BaseCrudController
 
         $this->setupColumnsFieldsFromMethod();
     }
+
+    protected function setupShowOperation()
+    {
+        $this->crud->set('show.setFromDb', false);
+        $this->crud->addColumn([
+            'name' => 'data',
+            'label' => 'Data',
+            'type' => 'closure',
+            'function' => function ($entry) {
+                return '<pre>' . json_encode(json_decode(utf8_decode($entry->data)), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . '</pre>';
+            }
+        ])->afterColumn('created_at');
+        $this->crud->addColumn([
+            'name' => 'ip_address',
+            'label' => 'Ip address',
+            'type' => 'text'
+        ])->afterColumn('data');
+    }
     //<editor-fold desc="columns/fields" defaultstate="collapsed">
 
     /**

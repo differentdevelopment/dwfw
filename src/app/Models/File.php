@@ -50,22 +50,43 @@ class File extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    /**
+     * @param string|null $storage_path
+     */
+    public function orientate(?string $storage_path = 'app/' . Files::STORAGE_DIR): void
+    {
+        $image_path = $this->getImagePath($storage_path);
+        Image::make($image_path)
+            ->orientate()
+            ->save($image_path);
+    }
 
     /**
      * @param string|null $storage_path
      */
     public function resizeImage(?string $storage_path = 'app/' . Files::STORAGE_DIR): void
     {
-        $img = Image::make(storage_path($storage_path) . $this->file_path)->resize(1500, 1500, function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-        });
-        $img->save(storage_path($storage_path) . $this->file_path);
+        $image_path = $this->getImagePath($storage_path);
+        Image::make($image_path)
+            ->resize(1500, 1500, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })
+            ->save($image_path);
     }
 
     public function identifiableAttribute()
     {
         return 'original_name';
+    }
+    
+    /**
+     * @param string|null $storage_path
+     * @return string
+     */
+    protected function getImagePath(?string $storage_path): string
+    {
+        return storage_path($storage_path . $this->file_path);
     }
     /*
     |--------------------------------------------------------------------------
@@ -90,4 +111,5 @@ class File extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+
 }

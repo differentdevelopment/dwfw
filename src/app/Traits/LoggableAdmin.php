@@ -10,18 +10,26 @@ trait LoggableAdmin
 {
     protected string $ROUTE = 'admin';
 
-    protected function log(string $event, ?int $entity_id = null, ?string $data = null, ?string $entity_type = null, ?int $user_id = null): void
+    /**
+     * @param string $event
+     * @param int|null $entity_id
+     * @param null $data
+     * @param string|null $entity_type
+     * @param int|null $user_id
+     * @return Log|null
+     */
+    protected function log(string $event, ?int $entity_id = null, $data = null, ?string $entity_type = null, ?int $user_id = null): ?Log
     {
         if (!in_array($entity_type, [Log::ET_AUTH]) && !Auth::user()) {
-            return;
+            return null;
         }
-        Log::create([
+        return Log::create([
             'user_id' => $user_id ? $user_id : (Auth::user() ? Auth::user()->id : null),
             'route' => $this->ROUTE,
             'entity_type' => $entity_type ?? $this->ENTITY_TYPE ?? Log::ET_SYSTEM,
             'entity_id' => $entity_id,
             'event' => $event,
-            'data' => $data,
+            'data' => is_array($data) || is_object($data) ? json_encode($data) : $data,
             'ip_address' => Request::ip(),
         ]);
     }

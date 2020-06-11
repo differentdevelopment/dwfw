@@ -14,11 +14,6 @@ class PartnerObserver extends Observer
      */
     public function getData($partner)
     {
-        return $this->implodeData([
-            $partner->name,
-            $partner->contact_name,
-            $partner->contact_phone,
-            $partner->contact_email,
-        ]);
+        return $partner;
     }
 }

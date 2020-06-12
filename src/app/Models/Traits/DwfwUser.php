@@ -2,6 +2,7 @@
 
 namespace Different\Dwfw\app\Models\Traits;
 
+use Carbon\Carbon;
 use Different\Dwfw\app\Models\Partner;
 use App\Models\UserToken;
 use Creativeorange\Gravatar\Facades\Gravatar;
@@ -12,6 +13,16 @@ trait DwfwUser
 {
     protected $guard_name = 'web';
 
+    /*
+    |--------------------------------------------------------------------------
+    | FUNCTIONS
+    |--------------------------------------------------------------------------
+    */
+    public function verify()
+    {
+        $this->update(['email_verified_at' => Carbon::now()]);
+    }
+
     public function getProfileImage()
     {
         if ($this->profile_image_id) {
@@ -21,6 +32,11 @@ trait DwfwUser
         }
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONS
+    |--------------------------------------------------------------------------
+    */
     public function partner()
     {
         return $this->belongsTo(Partner::class);
@@ -40,5 +56,34 @@ trait DwfwUser
     {
         return $this->belongsTo(TimeZone::class);
     }
+
+    public function file_profile_image()
+    {
+        return $this->belongsTo(File::class, 'profile_image_id');
+    }
+    /*
+    |--------------------------------------------------------------------------
+    | SCOPES
+    |--------------------------------------------------------------------------
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | ACCESSORS
+    |--------------------------------------------------------------------------
+    */
+    public function getProfileImageAttribute()
+    {
+        if (!$this->file_profile_image) {
+            return '';
+        }
+        return route('file', $this->file_profile_image);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | MUTATORS
+    |--------------------------------------------------------------------------
+    */
 
 }

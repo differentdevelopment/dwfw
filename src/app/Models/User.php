@@ -93,10 +93,7 @@ class User extends Authenticatable implements MustVerifyEmail
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function file_profile_image()
-    {
-        return $this->belongsTo(File::class, 'profile_image_id');
-    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -108,13 +105,6 @@ class User extends Authenticatable implements MustVerifyEmail
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-    public function getProfileImageAttribute()
-    {
-        if (!$this->file_profile_image) {
-            return '';
-        }
-        return route('file', $this->file_profile_image);
-    }
 
     /*
     |--------------------------------------------------------------------------

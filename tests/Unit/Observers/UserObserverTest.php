@@ -22,8 +22,8 @@ class UserObserverTest extends TestCase
                 'event' => LOG::E_CREATED,
                 'entity_type' => Log::ET_USER,
                 'entity_id' => (factory(User::class)->create())->id,
-            ]);
-        $this->assertEquals(1, $logs->count());
+            ])->get();
+        $this->assertCount(1, $logs);
     }
 
     /** @test */

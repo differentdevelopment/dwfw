@@ -47,4 +47,8 @@ trait BaseDwfwTrait
         return Carbon::createFromFormat('Y-m-d H:i:s', $date, $timezone->name)->utc();
     }
 
+    public function verify()
+    {
+        $this->update(['email_verified_at' => Carbon::now()]);
+    }
 }

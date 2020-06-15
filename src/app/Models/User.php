@@ -15,18 +15,19 @@ use Spatie\Permission\Traits\HasRoles;
 /**
  * Class User
  * @package App\Models
- * @property string name
- * @property string email
- * @property Carbon email_verified_at
- * @property string password
- * @property int partner_id
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property Carbon $email_verified_at
+ * @property string $password
+ * @property int $partner_id
  * @property Partner $partner
- * @property int timezone_id
+ * @property int $timezone_id
  * @property TimeZone $timezone
  * @property string $remember_token
  * @property int $profile_image_id
  * @property File $profile_image
- * @property string last_device
+ * @property string $last_device
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */

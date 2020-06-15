@@ -34,7 +34,7 @@ Route::group([
         'prefix' => 'partners',
         'as' => 'partners',
     ], function () {
-        Route::get('ajax_partner_list', 'PartnerCrudController@ajaxList')->name('.ajax-partner-list');
+        Route::get('ajax_partner_list', 'PartnersCrudController@ajaxList')->name('.ajax-partner-list');
         Route::crud('', PartnersCrudController::class);
     });
 

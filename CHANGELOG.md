@@ -5,9 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.9.6] - 2020-06-xx
+## [0.9.6] - 2020-06-15
 ### Added
 - DatabaseSeeder publish
+
+### Fixed
+- double routing on user profile image
 
 ## [0.9.5] - 2020-06-12
 ### Changed

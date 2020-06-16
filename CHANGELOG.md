@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.9.7] - 2020-06-16
+### Fixed
+- typo fixes
+
 ## [0.9.6] - 2020-06-15
 ### Added
 - DatabaseSeeder publish

@@ -9,8 +9,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Files extends Controller
 {
@@ -20,8 +22,7 @@ class Files extends Controller
     /**
      * FIXME automatic model binding does not work here, dunno why - alitak@20200525
      * @param int $file
-     * @return \Illuminate\Http\Response
-     * @throws FileNotFoundException
+     * @return StreamedResponse
      */
     public function retrieve($file)
     {
@@ -32,9 +33,48 @@ class Files extends Controller
             abort(404);
         }
 
-        return Response::make(app('files')->get($file_path), 200)
-            ->header('Content-Type', app('files')->mimeType($file_path))
-            ->header('Content-Disposition', 'inline; filename="' . $file->original_name . '"');
+        // https://stackoverflow.com/a/29997555
+        $size = app('files')->size($file_path);
+        $stream = fopen($file_path, "r");
+
+        $start = 0;
+        $length = $size;
+        $status = 200;
+
+        $headers = [
+            'Content-Disposition' => 'inline; filename="' . $file->original_name . '"',
+            'Content-Type' => app('files')->mimeType($file_path),
+            'Content-Length' => $size,
+            'Accept-Ranges' => 'bytes'
+        ];
+
+        if (false !== $range = Request::server('HTTP_RANGE', false)) {
+            list($param, $range) = explode('=', $range);
+            if (strtolower(trim($param)) !== 'bytes') {
+                header('HTTP/1.1 400 Invalid Request');
+                exit;
+            }
+            list($from, $to) = explode('-', $range);
+            if ($from === '') {
+                $end = $size - 1;
+                $start = $end - intval($from);
+            } elseif ($to === '') {
+                $start = intval($from);
+                $end = $size - 1;
+            } else {
+                $start = intval($from);
+                $end = intval($to);
+            }
+            $length = $end - $start + 1;
+            $status = 206;
+            $headers['Content-Range'] = sprintf('bytes %d-%d/%d', $start, $end, $size);
+        }
+
+        return Response::stream(function () use ($stream, $start, $length) {
+            fseek($stream, $start, SEEK_SET);
+            echo fread($stream, $length);
+            fclose($stream);
+        }, $status, $headers);
     }
 
     /**

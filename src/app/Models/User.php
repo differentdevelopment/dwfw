@@ -80,7 +80,6 @@ class User extends Authenticatable implements MustVerifyEmail
         parent::__construct($attributes);
         $this->default_image = asset('images/assets/dwfw-show.png');
         $this->default_image_icon = asset('images/assets/dwfw-show-icon.png');
-        dd("wow");
     }
 
     /*

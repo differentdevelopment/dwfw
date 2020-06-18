@@ -102,7 +102,9 @@ class DwfwServiceProvider extends ServiceProvider
 
     public function registerObservers()
     {
-        User::observe(UserObserver::class);
+        if (File::exists(app_path('Models/User.php'))) {
+            User::observe(UserObserver::class);
+        }
         Setting::observe(SettingObserver::class);
         Partner::observe(PartnerObserver::class);
     }

@@ -107,13 +107,63 @@ class Files extends Controller
      */
     public static function store(UploadedFile $file, $partner = null, string $storage_dir = null): File
     {
+        return Files::insertUploadedFileIntoDb($file, $partner, $storage_dir, $file->getClientOriginalName(), $file->getClientMimeType());
+    }
+
+    /**
+     * Stores base64 image in storage as file and creates db entry
+     * @param UploadedFile $file
+     * @param Partner|int $partner
+     * @param string|null $storage_dir
+     * @return File|Builder|Model
+     */
+    public static function storeBase64(string $base64, $partner = null, string $storage_dir = null): File
+    {
+        $image_parts = explode(";base64,", $base64);
+        $image_type_aux = explode("data:", $image_parts[0]);
+        $image_type_file = explode("/", $image_type_aux[1]);
+        $safe_name = Str::uuid()->toString() . '.' . $image_type_file[1];
+
+        $file_data = base64_decode($image_parts[1]);
+        $tmp_file_path = sys_get_temp_dir() . '/' . Str::uuid()->toString();
+        file_put_contents($tmp_file_path, $file_data);
+        $tmp_file = new \Illuminate\Http\File($tmp_file_path);
+        $file = new UploadedFile(
+            $tmp_file->getPathname(),
+            $tmp_file->getFilename(),
+            $tmp_file->getMimeType(),
+            0,
+            true
+        );
+
+        return Files::insertUploadedFileIntoDb($file, $partner, $storage_dir, $safe_name, $image_type_aux[1]);
+    }
+
+    /**
+     * Stores the UploadedFile and creates the db entry
+     * @param UploadedFile $file
+     * @param Partner|int $partner
+     * @param string|null $storage_dir
+     * @param string|null $original_name
+     * @param string|null $mime_type
+     * @return File|Builder|Model
+     */
+    private static function insertUploadedFileIntoDb(
+        UploadedFile $file,
+        $partner = null,
+        string $storage_dir = null,
+        string $original_name = null,
+        string $mime_type = null
+    ): File
+    {
         $partner_id = $partner === null ? null : ($partner instanceof \App\Models\Partner ? $partner->id : $partner);
         $storage_dir = $storage_dir ?? $partner_id;
         $path = Str::replaceFirst(self::STORAGE_DIR, '', $file->store(self::STORAGE_DIR . $storage_dir));
+
         return File::query()->create([
             'partner_id' => $partner_id,
-            'original_name' => $file->getClientOriginalName(),
-            'mime_type' => $file->getClientMimeType(),
+            'original_name' => $original_name,
+            'mime_type' => $mime_type,
             'file_path' => $path,
         ]);
     }

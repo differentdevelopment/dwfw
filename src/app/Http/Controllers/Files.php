@@ -44,7 +44,6 @@ class Files extends Controller
         $headers = [
             'Content-Disposition' => 'inline; filename="' . $file->original_name . '"',
             'Content-Type' => app('files')->mimeType($file_path),
-            'Content-Length' => $size,
             'Accept-Ranges' => 'bytes'
         ];
 

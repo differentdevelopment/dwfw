@@ -106,7 +106,7 @@ class Files extends Controller
      */
     public static function store(UploadedFile $file, $partner = null, string $storage_dir = null): File
     {
-        return Files::insertUploadedFileIntoDb($file, $partner, $storage_dir, $file->getClientOriginalName(), $file->getClientMimeType());
+        return Files::insertUploadedFileIntoDb($file, $partner, $storage_dir, $file->getClientOriginalName(), $file->getMimeType());
     }
 
     /**

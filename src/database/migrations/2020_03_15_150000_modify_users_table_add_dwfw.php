@@ -29,10 +29,7 @@ class ModifyUsersTableAddDwfw extends Migration
     public function down()
     {
         Schema::table('users', function ($table) {
-            $table->dropColumn('timezone_id');
-            $table->dropColumn('profile_image_id');
-            $table->dropColumn('partner_id');
-            $table->dropColumn('last_device');
+            $table->dropColumn(['timezone_id', 'profile_image_id', 'partner_id', 'last_device']);
         });
     }
 }

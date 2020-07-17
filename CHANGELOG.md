@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.10.5] - 2020-07-17
+### Changed
+- BaseCrudController@checkForColumnId searches for crud_title accessor 
+### Fixed
+- logs:clear route
+
+## [0.10.4] - 2020-07-16
+### Changed
+- migrations dropColumn changed to one operation
+
+## [0.10.3] - 2020-07-10
+### Added
+- log clearer artisan command
+
 ## [0.10.2] - 2020-06-26
 ### Changed
 - Changed uploaded file getclientmimetype to getmimetype

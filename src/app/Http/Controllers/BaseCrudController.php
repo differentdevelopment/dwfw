@@ -38,8 +38,8 @@ abstract class BaseCrudController extends CrudController
             $model = new $model_name;
             $this->{$column} = $model::findOrFail($this->{$column . '_id'});
             $this->crud->setRoute($this->crud->getRoute() . '/' . $this->{$column . '_id'} . '/' . $column);
-            $this->crud->setTitle($this->{$column}->name . ' - ' . $this->{$column}->contact_name);
-            $this->crud->setHeading($this->{$column}->name . ' - ' . $this->{$column}->contact_name);
+            $this->crud->setTitle($this->{$column}->crud_title ?? $this->{$column}->title ?? $this->{$column}->name ?? __('dwfw::dwfw.missing_crud_title'));
+            $this->crud->setHeading($this->{$column}->crud_title ?? $this->{$column}->title ?? $this->{$column}->name ?? __('dwfw::dwfw.missing_crud_title'));
 
             $this->crud->addClause('where', $column . '_id', '=', $this->{$column . '_id'});
             $this->crud->removeField($column . '_id');

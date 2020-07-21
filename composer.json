@@ -27,23 +27,23 @@
         "backpack/filemanager": "^1.1",
         "backpack/permissionmanager": "6.0.*",
         "backpack/settings": "3.0.*",
-        "fideloper/proxy": "^4.3",
+        "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^6.3",
+        "guzzlehttp/guzzle": "^6.5",
         "illuminate/support": "^7.12",
         "intervention/image": "^2.5",
         "jenssegers/agent": "^2.6",
-        "laravel/framework": "^7.16",
-        "laravel/tinker": "^2.4",
-        "laravel/ui": "^2.0"
+        "laravel/framework": "^7.20",
+        "laravel/ui": "^2.1"
     },
     "require-dev": {
-        "backpack/generators": "^3.0",
-        "laracasts/generators": "^1.0",
-        "facade/ignition": "^2.0",
+        "backpack/generators": "^3.1",
+        "facade/ignition": "^2.3",
         "fzaninotto/faker": "^1.9.1",
+        "laracasts/generators": "^1.1",
+        "laravel/tinker": "^2.4",
         "mockery/mockery": "^1.3.1",
-        "nunomaduro/collision": "^4.1",
+        "nunomaduro/collision": "^4.2",
         "phpunit/phpunit": "^8.5"
     },
     "autoload": {

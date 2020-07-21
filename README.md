@@ -27,3 +27,5 @@ The DWFW is open-sourced software licensed under the [MIT license](https://opens
 - set .env for database, mail
 - php artisan backpack:install
 - php artisan dwfw:install
+- composer require backpack/generators --dev
+- composer require laracasts/generators --dev

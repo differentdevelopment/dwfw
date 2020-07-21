@@ -9,13 +9,21 @@ trait BaseDwfwTrait
 {
     /**
      * @param array $data_array incoming array with lang keys
+     * @param string|null $namespace namespace for the given lang key - namespace::file_name.key
+     * @param string|null $file_name file name for given key
      * @return array localized array
      */
-    public static function localizeArray(array $data_array): array
+    public static function localizeArray(array $data_array, ?string $namespace = '', ?string $file_name = ''): array
     {
         $return = [];
-        foreach ($data_array as $key) {
-            $return[$key] = __('admin.' . $key);
+        if ($namespace) {
+            foreach ($data_array as $key) {
+                $return[$key] = __($namespace . '::' . $file_name . '.' . $key);
+            }
+        } else {
+            foreach ($data_array as $key) {
+                $return[$key] = __('admin.' . $key);
+            }
         }
         return $return;
     }

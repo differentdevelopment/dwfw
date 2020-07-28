@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.10.9] - 2020-07-29
+### added
+- Included HU localization files for Laravel
+
 ## [0.10.8] - 2020-07-29
 ### Changed
 - if getUserModelByRoute function set, it determines the model for user in logs crud

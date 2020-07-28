@@ -3,26 +3,18 @@
 namespace Tests\Feature\Cruds;
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Role;
 use Different\Dwfw\Tests\TestCase;
 
 class UsersCrudTest extends TestCase
 {
-    /** @var User user_admin */
-    private $user_admin;
-    private $user_not_admin;
-    private $role_admin;
+    use RefreshDatabase;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user_admin = factory(User::class)->create(['name' => 'Admin József']);
-        $this->user_not_admin = factory(User::class)->create(['name' => 'Teszt Elemér']);
-        $this->role_admin = Role::query()->create([
-            'name' => 'admin',
-            'guard_name' => 'web',
-        ]);
-        $this->user_admin->assignRole($this->role_admin->name);
+        $this->createAdminAndGuestUser();
     }
 
     /** @test */

@@ -49,7 +49,7 @@ class DwfwServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'dwfw');
 
-        $this->loadTranslationsFrom(__DIR__ . '/resources/lang', 'dwfw');
+        $this->loadTranslationsFrom(__DIR__ . '/resources/lang/dwfw', 'dwfw');
 
         $this->commands($this->commands);
 
@@ -79,7 +79,6 @@ class DwfwServiceProvider extends ServiceProvider
 
         // Backpack related configs
         $this->publishes([__DIR__ . '/config/backpack/base.php' => config_path('backpack/base.php')], 'config.backpack.base');
-        $this->publishes([__DIR__ . '/config/backpack/base.php' => config_path('backpack/base.php')], 'config.backpack.base');
         $this->publishes([__DIR__ . '/config/backpack/permissionmanager.php' => config_path('backpack/permissionmanager.php')], 'config.backpack.permissionmanager');
 
         // backpack default view files, snippets
@@ -88,6 +87,15 @@ class DwfwServiceProvider extends ServiceProvider
 
         // core configs
         $this->publishes([__DIR__ . '/config/auth.php' => config_path('auth.php')], 'config.auth');
+
+        // languages
+        $this->publishes([__DIR__ . '/resources/lang/hu/validation.php' => resource_path('lang/hu/validation.php')], 'core.langs');
+        $this->publishes([__DIR__ . '/resources/lang/hu/passwords.php' => resource_path('lang/hu/passwords.php')], 'core.langs');
+        $this->publishes([__DIR__ . '/resources/lang/hu/pagination.php' => resource_path('lang/hu/pagination.php')], 'core.langs');
+        $this->publishes([__DIR__ . '/resources/lang/hu/auth.php' => resource_path('lang/hu/auth.php')], 'core.langs');
+        $this->publishes([__DIR__ . '/resources/lang/hu.json' => resource_path('lang/hu.json')], 'core.langs');
+
+
     }
 
     private function cleanup()

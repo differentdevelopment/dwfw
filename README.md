@@ -30,3 +30,8 @@ The DWFW is open-sourced software licensed under the [MIT license](https://opens
 - composer require backpack/generators --dev
 - composer require laracasts/generators --dev
 - (optional) composer require barryvdh/laravel-debugbar --dev
+
+### Update
+#### update to version 0.10.9
+- composer update
+- php artisan vendor:publish --provider="Different\Dwfw\DwfwServiceProvider" --tag=core.langs

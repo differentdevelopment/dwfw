@@ -25,9 +25,7 @@ Route::group([
     // USERS
     Route::crud('/users', UsersCrudController::class);
     Route::get('/users/{user}/verify', 'UsersCrudController@verifyUser')->name('verify');
-    Route::get('/user', function () {
-        abort(404);
-    });
+    Route::get('/user', 'UsersCrudController@abortUserGrid');
 
     // PARTNERS
     Route::group([

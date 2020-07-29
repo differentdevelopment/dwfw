@@ -5,6 +5,7 @@ namespace Different\Dwfw\app\Http\Controllers;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Different\Dwfw\app\Models\Log;
+use App\Models\User;
 
 class LogsCrudController extends BaseCrudController
 {
@@ -53,9 +54,17 @@ class LogsCrudController extends BaseCrudController
             [
                 'name' => 'user_id',
                 'label' => __('dwfw::logs.user_id'),
-                'type' => 'select',
-                'entity' => 'user',
-                'attribute' => 'name',
+                'type' => 'closure',
+                'function' => function ($entry) {
+                    try {
+                        if (!function_exists('getUserModelByRoute') || !($model = getUserModelByRoute($entry->route))) {
+                            $model = new User;
+                        }
+                        return $model->findOrFail($entry->user_id)->name;
+                    } catch (\Exception $e) {
+                        return '';
+                    }
+                }
             ],
             [
                 'name' => 'route',

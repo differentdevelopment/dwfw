@@ -159,4 +159,9 @@ class UsersCrudController extends UserCrudController
         Alert::success(__('dwfw::users.verified'))->flash();
         return redirect(backpack_url('users'));
     }
+
+    public function abortUserGrid()
+    {
+        return abort(404);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace Different\Dwfw;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Backpack\Settings\app\Models\Setting;
 use Different\Dwfw\app\Console\Commands\Install;
@@ -12,6 +13,7 @@ use Different\Dwfw\app\Observers\SettingObserver;
 use Different\Dwfw\app\Observers\UserObserver;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class DwfwServiceProvider extends ServiceProvider
@@ -39,6 +41,19 @@ class DwfwServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if(method_exists(Controller::class, 'allowFileView')) {
+            Gate::define('viewFile', 'App\Http\Controllers\Controller@allowFileView');
+        } else{
+            Gate::define('viewFile', function($user = null){
+               return true;
+            });
+        }
+
+        app()->config["filesystems.disks.files"] = [ //Registering the disk
+            'driver' => 'local',
+            'root' => storage_path('app/files'),
+        ];
+
         $this->registerObservers();
 
         $this->registerMiddlewareGroup($this->app->router);

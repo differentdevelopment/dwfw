@@ -11,6 +11,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -18,16 +19,16 @@ class Files extends Controller
 {
 
     public const STORAGE_DIR = 'files/';
+    public const DEFAULT_DISK = 'files';
 
     /**
-     * FIXME automatic model binding does not work here, dunno why - alitak@20200525
-     * @param int $file
-     * @return StreamedResponse
+     * @param  File  $file
+     * @param  string  $disk
+     * @return StreamedResponse @return StreamedResponse
      */
-    public function retrieve($file)
+    public function retrieve(string $disk, File $file)
     {
-        $file = File::query()->findOrFail($file);
-        $file_path = storage_path('app/' . self::STORAGE_DIR . $file->file_path);
+        $file_path = Storage::disk($disk)->path($file->file_path);
 
         if (app('files')->missing($file_path)) {
             abort(404);
@@ -48,12 +49,12 @@ class Files extends Controller
         ];
 
         if (false !== $range = Request::server('HTTP_RANGE', false)) {
-            list($param, $range) = explode('=', $range);
+            [$param, $range] = explode('=', $range);
             if (strtolower(trim($param)) !== 'bytes') {
                 header('HTTP/1.1 400 Invalid Request');
                 exit;
             }
-            list($from, $to) = explode('-', $range);
+            [$from, $to] = explode('-', $range);
             if ($from === '') {
                 $end = $size - 1;
                 $start = $end - intval($from);
@@ -77,14 +78,14 @@ class Files extends Controller
     }
 
     /**
-     * FIXME automatic model binding does not work here, dunno why - alitak@20200525
-     * @param int $file
+     * @param  string  $disk
+     * @param  File  $file
      * @return \Illuminate\Http\Response
-     * @throws FileNotFoundException
      */
-    public function retrieveBase64($file)
+    public function retrieveBase64(string $disk, File $file)
     {
-        $file_path = storage_path('app/' . self::STORAGE_DIR . File::query()->findOrFail($file)->file_path);
+//        $file_path = storage_path('app/' . self::STORAGE_DIR . $file->file_path);
+        $file_path = Storage::disk($disk)->path($file->file_path);
         if (app('files')->missing($file_path)) {
             abort(404);
         }
@@ -104,9 +105,9 @@ class Files extends Controller
      * @param string|null $storage_dir
      * @return File|Builder|Model
      */
-    public static function store(UploadedFile $file, $partner = null, string $storage_dir = null): File
+    public static function store(UploadedFile $file, $partner = null, string $storage_dir = null, ?string $disk = self::DEFAULT_DISK): File
     {
-        return Files::insertUploadedFileIntoDb($file, $partner, $storage_dir, $file->getClientOriginalName(), $file->getMimeType());
+        return Files::insertUploadedFileIntoDb($file, $partner, $storage_dir, $file->getClientOriginalName(), $file->getMimeType(), $disk);
     }
 
     /**
@@ -116,7 +117,7 @@ class Files extends Controller
      * @param string|null $storage_dir
      * @return File|Builder|Model
      */
-    public static function storeBase64(string $base64, $partner = null, string $storage_dir = null): File
+    public static function storeBase64(string $base64, $partner = null, string $storage_dir = null, ?string $disk = self::DEFAULT_DISK): File
     {
         $image_parts = explode(";base64,", $base64);
         $image_type_aux = explode("data:", $image_parts[0]);
@@ -135,7 +136,7 @@ class Files extends Controller
             true
         );
 
-        return Files::insertUploadedFileIntoDb($file, $partner, $storage_dir, $safe_name, $image_type_aux[1]);
+        return Files::insertUploadedFileIntoDb($file, $partner, $storage_dir, $safe_name, $image_type_aux[1], $disk);
     }
 
     /**
@@ -152,12 +153,15 @@ class Files extends Controller
         $partner = null,
         string $storage_dir = null,
         string $original_name = null,
-        string $mime_type = null
+        string $mime_type = null,
+        ?string $disk = null
     ): File
     {
         $partner_id = $partner === null ? null : ($partner instanceof \App\Models\Partner ? $partner->id : $partner);
         $storage_dir = $storage_dir ?? $partner_id;
-        $path = Str::replaceFirst(self::STORAGE_DIR, '', $file->store(self::STORAGE_DIR . $storage_dir));
+//        $path = Str::replaceFirst($disk, '', $file->store($disk . $storage_dir));
+        $path = $file->hashName();
+        Storage::disk($disk)->put($path . $storage_dir, $file);
 
         return File::query()->create([
             'partner_id' => $partner_id,

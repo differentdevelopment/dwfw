@@ -5,12 +5,13 @@ use Illuminate\Support\Facades\Route;
 Route::group(
     [
         'namespace' => 'Different\Dwfw\app\Http\Controllers',
+        'middleware' => ['web'],
     ],
     function () {
-        Route::get('/file/{file:id}', 'Files@retrieve')->name('file');
-        Route::get('/file_b64/{file}', 'Files@retrieveBase64')->name('file-b64');
+        Route::get('/{disk}/file/{file}', 'Files@retrieve')->name('file')->middleware('can:viewFile');
+        Route::get('/{disk}/file_b64/{file}', 'Files@retrieveBase64')->name('file-b64')->middleware('can:viewFile');
 
-        Route::post('set_timezone', 'TimeZones@set')->name('set-timezone')->middleware(['web']);
+        Route::post('set_timezone', 'TimeZones@set')->name('set-timezone');
     }
 );
 

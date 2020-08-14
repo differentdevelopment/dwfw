@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.10.10] - 2020-08-14
+### added
+- Added Guard for file routes
+### changed
+- File handling methods - breaking change: file and file-b64 routes now have 1 more required parameter,
+and disk name should be included like {disk}/file/{file)
+
 ## [0.10.9] - 2020-07-29
 ### added
 - Included HU localization files for Laravel

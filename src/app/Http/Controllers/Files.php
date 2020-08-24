@@ -2,9 +2,8 @@
 
 namespace Different\Dwfw\app\Http\Controllers;
 
-use Different\Dwfw\app\Models\Partner;
 use Different\Dwfw\app\Models\File;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Different\Dwfw\app\Models\Partner;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
@@ -22,8 +21,8 @@ class Files extends Controller
     public const DEFAULT_DISK = 'files';
 
     /**
-     * @param  File  $file
-     * @param  string  $disk
+     * @param File $file
+     * @param string $disk
      * @return StreamedResponse @return StreamedResponse
      */
     public function retrieve(string $disk, File $file)
@@ -78,13 +77,12 @@ class Files extends Controller
     }
 
     /**
-     * @param  string  $disk
-     * @param  File  $file
+     * @param string $disk
+     * @param File $file
      * @return \Illuminate\Http\Response
      */
     public function retrieveBase64(string $disk, File $file)
     {
-//        $file_path = storage_path('app/' . self::STORAGE_DIR . $file->file_path);
         $file_path = Storage::disk($disk)->path($file->file_path);
         if (app('files')->missing($file_path)) {
             abort(404);
@@ -101,8 +99,9 @@ class Files extends Controller
     /**
      * Stores file in storage and creates db entry
      * @param UploadedFile $file
-     * @param Partner|int $partner
+     * @param null $partner
      * @param string|null $storage_dir
+     * @param string|null $disk
      * @return File|Builder|Model
      */
     public static function store(UploadedFile $file, $partner = null, string $storage_dir = null, ?string $disk = self::DEFAULT_DISK): File
@@ -142,10 +141,11 @@ class Files extends Controller
     /**
      * Stores the UploadedFile and creates the db entry
      * @param UploadedFile $file
-     * @param Partner|int $partner
+     * @param null $partner
      * @param string|null $storage_dir
      * @param string|null $original_name
      * @param string|null $mime_type
+     * @param string|null $disk
      * @return File|Builder|Model
      */
     private static function insertUploadedFileIntoDb(
@@ -159,15 +159,12 @@ class Files extends Controller
     {
         $partner_id = $partner === null ? null : ($partner instanceof \App\Models\Partner ? $partner->id : $partner);
         $storage_dir = $storage_dir ?? $partner_id;
-//        $path = Str::replaceFirst($disk, '', $file->store($disk . $storage_dir));
-        $path = $file->hashName();
-        Storage::disk($disk)->put($path . $storage_dir, $file);
-
+        Storage::disk($disk)->put($storage_dir, $file);
         return File::query()->create([
             'partner_id' => $partner_id,
             'original_name' => $original_name,
             'mime_type' => $mime_type,
-            'file_path' => $path,
+            'file_path' => $file->hashName(),
         ]);
     }
 

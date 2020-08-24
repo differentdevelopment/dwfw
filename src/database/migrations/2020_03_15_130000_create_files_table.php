@@ -14,7 +14,7 @@ class CreateFilesTable extends Migration
     public function up()
     {
         Schema::create('files', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->unsignedInteger('partner_id')->nullable();
             $table->foreign('partner_id')->on('partners')->references('id')->onUpdate('cascade')->onDelete('cascade');
             $table->string('original_name');

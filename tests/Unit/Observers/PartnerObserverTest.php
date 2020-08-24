@@ -4,7 +4,6 @@ namespace Different\Dwfw\tests\Unit\Models;
 
 use App\Models\User;
 use Different\Dwfw\app\Models\Log;
-use Different\Dwfw\app\Models\Partner;
 use Different\Dwfw\Tests\TestCase;
 
 class PartnerObserverTest extends TestCase
@@ -55,16 +54,6 @@ class PartnerObserverTest extends TestCase
                 'entity_id' => $partner->id,
             ]);
         $this->assertEquals(1, $logs->count());
-    }
-
-    /**
-     * @return mixed
-     */
-    protected function createPartner()
-    {
-        return Partner::create([
-            'name' => 'Foo',
-        ]);
     }
 
 }

@@ -26,7 +26,7 @@ class FilesTest extends TestCase
     {
         Storage::fake('photos');
         $fake_file = Files::store(UploadedFile::fake()->image('photo1.jpg'), null, 'foo', 'photos');
-        Storage::disk('photos')->assertExists('foo/' . $fake_file->file_path);
+        Storage::disk('photos')->assertExists($fake_file->file_path);
     }
 
     /**
@@ -37,6 +37,6 @@ class FilesTest extends TestCase
         Storage::fake('photos');
         $partner = $this->createPartner();
         $fake_file = Files::store(UploadedFile::fake()->image('photo1.jpg'), $partner->id, null, 'photos');
-        Storage::disk('photos')->assertExists($partner->id . '/' . $fake_file->file_path);
+        Storage::disk('photos')->assertExists($fake_file->file_path);
     }
 }

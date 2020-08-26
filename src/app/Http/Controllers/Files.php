@@ -164,7 +164,7 @@ class Files extends Controller
             'partner_id' => $partner_id,
             'original_name' => $original_name,
             'mime_type' => $mime_type,
-            'file_path' => $file->hashName(),
+            'file_path' => $storage_dir . '/' . $file->hashName(),
         ]);
     }
 

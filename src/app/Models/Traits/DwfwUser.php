@@ -77,7 +77,8 @@ trait DwfwUser
         if (!$this->file_profile_image) {
             return '';
         }
-        return route('file', $this->file_profile_image);
+        //add $profile_image_disk to your Model if you are about to use other disk than files for file_profile_image
+        return route('file', [$this->profile_image_disk ? $this->profile_image_disk : 'files' , $this->file_profile_image]);
     }
 
     /*

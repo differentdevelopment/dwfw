@@ -141,6 +141,11 @@ class UsersCrudController extends UserCrudController
         return parent::update();
     }
 
+    protected function getFilters()
+    {
+        return [];
+    }
+
     /*
     |--------------------------------------------------------------------------
     | CUSTOM NON-BACKPACK METHODS

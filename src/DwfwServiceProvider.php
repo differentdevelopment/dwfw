@@ -3,9 +3,11 @@
 namespace Different\Dwfw;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\CheckIpMiddleware;
 use App\Models\User;
 use Backpack\Settings\app\Models\Setting;
 use Different\Dwfw\app\Console\Commands\Install;
+use Different\Dwfw\app\Console\Commands\Upgrade;
 use Different\Dwfw\app\Http\Middleware\ConvertIdToTimeZone;
 use Different\Dwfw\app\Models\Partner;
 use Different\Dwfw\app\Observers\PartnerObserver;
@@ -20,6 +22,7 @@ class DwfwServiceProvider extends ServiceProvider
 {
     private $commands = [
         Install::class,
+        Upgrade::class,
     ];
     private $middlewares = [
         ConvertIdToTimeZone::class,
@@ -84,6 +87,7 @@ class DwfwServiceProvider extends ServiceProvider
     private function publishFiles()
     {
         // Models
+//        $this->publishes([__DIR__ . '/app/Models/BaseModel.php' => app_path('Models/BaseModel.php')], 'models.base');
         $this->publishes([__DIR__ . '/app/Models/User.php' => app_path('Models/User.php')], 'models.user');
 
         // Factories
@@ -110,6 +114,15 @@ class DwfwServiceProvider extends ServiceProvider
         $this->publishes([__DIR__ . '/resources/lang/hu/auth.php' => resource_path('lang/hu/auth.php')], 'core.langs');
         $this->publishes([__DIR__ . '/resources/lang/hu.json' => resource_path('lang/hu.json')], 'core.langs');
 
+        //backpack languages
+        $this->publishes([__DIR__ . '/resources/lang/backpack/hu/base.php' => resource_path('lang/vendor/backpack/hu/base.php')], 'backpack.langs');
+        $this->publishes([__DIR__ . '/resources/lang/backpack/hu/crud.php' => resource_path('lang/vendor/backpack/hu/crud.php')], 'backpack.langs');
+        $this->publishes([__DIR__ . '/resources/lang/backpack/hu/permissionmanager.php' => resource_path('lang/vendor/backpack/hu/permissionmanager.php')], 'backpack.langs');
+        $this->publishes([__DIR__ . '/resources/lang/backpack/hu/settings.php' => resource_path('lang/vendor/backpack/hu/settings.php')], 'backpack.langs');
+
+        //config
+        $this->publishes([__DIR__ . '/config/checkIp.php' => config_path('checkIp.php')], 'config.checkIp');
+        $this->publishes([__DIR__ . '/config/dwfw.php' => config_path('dwfw.php')], 'config.dwfw');
 
     }
 

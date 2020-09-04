@@ -113,6 +113,11 @@ class PartnersCrudController extends BaseCrudController
             ->get()
             ->pluck('name_contact_name', 'id');
     }
+
+    protected function getFilters()
+    {
+        return [];
+    }
     /*
     |--------------------------------------------------------------------------
     | CUSTOM NON-BACKPACK METHODS

@@ -23,6 +23,7 @@ class LogsCrudController extends BaseCrudController
         }
 
         $this->setupColumnsFieldsFromMethod();
+        $this->setupFiltersFromMethod();
     }
 
     protected function setupShowOperation()
@@ -97,6 +98,95 @@ class LogsCrudController extends BaseCrudController
     protected function getFields()
     {
         return [];
+    }
+
+    protected function getFilters()
+    {
+        return
+            [
+                [
+                    [
+                        'name' => 'user_id',
+                        'type' => 'select2',
+                        'label' => __('dwfw::logs.user_id'),
+                    ],
+                    function () {
+                        return User::all()->pluck('name', 'id')->toArray();
+                    },
+                    function ($value) {
+                        $this->crud->addClause('where', 'user_id', '=', $value);
+                    },
+                ],
+
+                [
+                    [
+                        'name' => 'route',
+                        'type' => 'select2',
+                        'label' => __('dwfw::logs.route'),
+                    ],
+                    function () {
+                        return Log::query()->pluck('route', 'route')->toArray(); //Needs to be key => value, even when they're the same
+                    },
+                    function ($value) {
+                        $this->crud->addClause('where', 'route', '=', $value);
+                    },
+                ],
+
+                [
+                    [
+                        'name' => 'entity_type',
+                        'type' => 'select2_multiple',
+                        'label' => __('dwfw::logs.entity_type'),
+                    ],
+                    function () {
+                        return Log::query()->pluck('entity_type', 'entity_type')->toArray(); //Needs to be key => value, even when they're the same
+                    },
+                    function ($values) {
+                        $this->crud->addClause('whereIn', 'entity_type', json_decode($values));
+                    },
+                ],
+                [
+                    [
+                        'name' => 'entity_id',
+                        'type' => 'select2',
+                        'label' => __('dwfw::logs.entity_id'),
+                    ],
+                    function () {
+                        return Log::query()->pluck('entity_id', 'entity_id')->toARray();
+                    },
+                    function ($value) {
+                        $this->crud->addClause('where', 'entity_id', $value);
+                    },
+                ],
+
+                [
+                    [
+                        'name' => 'event',
+                        'type' => 'select2_multiple',
+                        'label' => __('dwfw::logs.event'),
+                    ],
+                    function () {
+                        return Log::query()->pluck('event', 'event')->toARray();
+                    },
+                    function ($values) {
+                        $this->crud->addClause('whereIn', 'event', json_decode($values));
+                    },
+                ],
+
+                [
+                    [
+                      'name' => 'created_at',
+                      'type' => 'date_range',
+                      'label' => __('dwfw::logs.created_at')
+                    ],
+                    false,
+                    function ($value) {
+                        $dates = json_decode($value);
+                        $this->crud->addClause('where', 'created_at', '>=', $dates->from);
+                        $this->crud->addClause('where', 'created_at', '<=', $dates->to.' 23:59:59');
+                    },
+                ]
+            ];
     }
     //</editor-fold>
 

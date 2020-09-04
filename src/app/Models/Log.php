@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $data
  * @property string $ip_address
  */
-class Log extends Model
+class Log extends BaseModel
 {
     use CrudTrait;
 

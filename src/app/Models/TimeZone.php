@@ -15,7 +15,7 @@ use Carbon\Carbon;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
-class TimeZone extends Model
+class TimeZone extends BaseModel
 {
     use CrudTrait;
 

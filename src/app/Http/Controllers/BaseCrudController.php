@@ -18,9 +18,18 @@ abstract class BaseCrudController extends CrudController
         $this->crud->addFields($this->getFields());
     }
 
+    protected function setupFiltersFromMethod(): void
+    {
+        foreach($this->getFilters() as $filter) {
+            $this->crud->addFilter($filter[0], $filter[1], $filter[2]);
+        }
+    }
+
     abstract protected function getColumns();
 
     abstract protected function getFields();
+
+    abstract protected function getFilters();
 
     /**
      * Checks for {$column}_id

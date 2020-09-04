@@ -65,5 +65,10 @@
                 "Different\\Dwfw\\DwfwServiceProvider"
             ]
         }
+    },
+    "scripts": {
+        "post-update-cmd": [
+            "@php artisan dwfw:upgrade --ansi"
+        ]
     }
 }

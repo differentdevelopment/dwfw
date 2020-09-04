@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon $updated_at
  * @property Carbon $deleted_at
  */
-class Partner extends Model
+class Partner extends BaseModel
 {
     use CrudTrait;
     use DwfwPartner;

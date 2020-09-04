@@ -10,6 +10,12 @@ use Request;
 class LogTest extends TestCase
 {
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->createAdminAndGuestUser();
+    }
+
     /** @test */
     function it_returns_user_name()
     {
@@ -22,6 +28,20 @@ class LogTest extends TestCase
             'ip_address' => Request::ip(),
         ]);
         $this->assertEquals($user->username, $log->user_name);
+    }
+
+    /** @test */
+    function filters_exists()
+    {
+        $this
+            ->actingAs($this->user_admin)
+            ->get(route('admin./logs.index'))
+            ->assertSee('filter-name="userId"', false)
+            ->assertSee('filter-name="route"', false)
+            ->assertSee('filter-name="entityType"', false)
+            ->assertSee('filter-name="entityId"', false)
+            ->assertSee('filter-name="event"', false)
+            ->assertSee('filter-name="createdAt"', false);
     }
 
 }

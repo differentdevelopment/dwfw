@@ -20,7 +20,7 @@ use Intervention\Image\Facades\Image;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
-class File extends Model
+class File extends BaseModel
 {
 
     /*
@@ -79,7 +79,7 @@ class File extends Model
     {
         return 'original_name';
     }
-    
+
     /**
      * @param string|null $storage_path
      * @return string

@@ -14,11 +14,11 @@ return [
     */
 
     // Forms
-    'save_action_save_and_new'         => 'Save and new item',
-    'save_action_save_and_edit'        => 'Save and edit this item',
-    'save_action_save_and_back'        => 'Save and back',
-    'save_action_save_and_preview'     => 'Save and preview',
-    'save_action_changed_notification' => 'Default behaviour after saving has been changed.',
+    'save_action_save_and_new'         => 'Mentés és új létrehozása',
+    'save_action_save_and_edit'        => 'Mentés és szerkesztés',
+    'save_action_save_and_back'        => 'Mentés és vissza a listára',
+    'save_action_save_and_preview'     => 'Mentés és megtekintés',
+    'save_action_changed_notification' => 'Az alapértelmezett mentés utáni művelet megváltozott',
 
     // Create form
     'add'                 => 'Hozzáadás:',
@@ -43,8 +43,8 @@ return [
     'preview'                   => 'Előnézet',
     'delete'                    => 'Törlés',
     'admin'                     => 'Admin',
-    'details_row'               => 'This is the details row. Modify as you please.', //TODO ez a kettő mi lehet?
-    'details_row_loading_error' => 'There was an error loading the details. Please retry.',
+    'details_row'               => 'Ez a bővebben szekció, tetszés szerint módosítható.',
+    'details_row_loading_error' => 'Hiba a részletek betöltése közben. Kérjük próbálja újra.',
     'clone' => 'Másolás',
     'clone_success' => '<strong>Bejegyzés másolva</strong><br>Új bejegyzés létrehozva megegyező információkkal.',
     'clone_failure' => '<strong>Másolás sikertelen</strong><br>Az új bejegyzés létrehozása nem sikerült. Kérjük próbáld újra.',
@@ -75,7 +75,7 @@ return [
 
     // DataTables translation
     'emptyTable'     => 'Nincs rendelkezésre álló adat',
-    'info'           => '_START_ -tól _END_ -ig elem mutatása a _TOTAL_ -ből',
+    'info'           => 'Megjelenítve _START_ - _END_ a(z) _TOTAL_ találatból',
     'infoEmpty'      => 'Nincsenek bejegyzések',
     'infoFiltered'   => '(Szűrve _MAX_ elemből)',
     'infoPostFix'    => '.',

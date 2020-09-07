@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.10.15] - 2020-09-07
+### added
+- Trait DwfwTestCase
+
+### changed
+- backpackforlaravel translations fine-tune
+- Upgrade command progress bar customization
+
 ## [0.10.14] - 2020-09-02
 ### added
 - Filters for Log crud

@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.10.16] - 2020-09-11
+### added
+- Addded BackPack navbar fix for navbar colors
+
 ## [0.10.15] - 2020-09-07
 ### added
 - Trait DwfwTestCase

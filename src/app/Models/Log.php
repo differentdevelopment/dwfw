@@ -58,6 +58,7 @@ class Log extends BaseModel
         'event',
         'data',
         'ip_address',
+        'status',
     ];
     // protected $hidden = [];
     protected $dates = [
@@ -81,6 +82,11 @@ class Log extends BaseModel
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function entity()
+    {
+        return $this->morphTo();
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -97,6 +103,18 @@ class Log extends BaseModel
         return $this->user->username;
     }
 
+    public function getLogNameAttribute()
+    {
+        if (method_exists($this->entity_type, 'logName') && $this->entity) {
+            return $this->entity->logName();
+        } else {
+            if ($this->entity) {
+                return $this->entity->name ?? '-'; //Returns '-' if logName function doesn't exists in the given model and it also doesn't have name attribute
+            } else {
+                return __('dwfw::logs.deleted_entry');
+            }
+        }
+    }
     /*
     |--------------------------------------------------------------------------
     | MUTATORS

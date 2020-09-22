@@ -38,11 +38,45 @@ class UsersCrudController extends UserCrudController
 
     public function show($id)
     {
-        $this->crud->hasAccessOrFail('list');
-        $user = User::find($id);
-        $this->data['crud'] = $this->crud;
-        $this->data['user'] = $user;
-        return view('admin.users.show', $this->data);
+        if (view()->exists('admin.users.show')) {
+            $this->crud->hasAccessOrFail('list');
+            $user = User::find($id);
+            $this->data['crud'] = $this->crud;
+            $this->data['user'] = $user;
+            return view('admin.users.show', $this->data);
+        } else {
+            return $this->traitShow($id);
+        }
+    }
+
+    protected function setupShowOperation(){
+        $this->crud->set('show.setFromDb', false);
+        $this->crud->addColumn([
+            'name' => 'profile_image',
+            'label' => __('dwfw::users.profile_image'),
+            'type' => 'image',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'name',
+            'label' => __('dwfw::users.user'),
+            'type' => 'text',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'email',
+            'label' => 'E-mail',
+            'type' => 'email',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'partner',
+            'label' => __('dwfw::partners.partner'),
+            'type' => 'relationship',
+        ]);
+        $this->crud->addColumn([
+            'name' => 'email_verified_at',
+            'label' => __('dwfw::users.verified_at'),
+            'type' => 'date',
+        ]);
+
     }
 
     public function setupListOperation()

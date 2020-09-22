@@ -20,7 +20,6 @@ class Upgrade extends Command
     protected $upgrade_methods = [
         '0.10.14' => 'upgrade_to_0_10_14',
         '0.10.15' => 'upgrade_to_0_10_15',
-        '0.10.16' => 'upgrade_to_0_10_16',
     ];
     protected $progressBar;
     protected $signature = 'dwfw:upgrade
@@ -40,6 +39,7 @@ class Upgrade extends Command
                 }
             }
         }
+        $this->updateVersionNumber();
         $this->info($this->finish_message);
     }
 
@@ -54,6 +54,15 @@ class Upgrade extends Command
 
         $this->info(' Upgrading to ' . $version . '. Please wait...');
         $this->progressBar->advance();
+    }
+
+    private function updateVersionNumber(){
+        $this->line(' Publishing new version number');
+        $this->executeArtisanProcess('vendor:publish', [
+            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
+            '--tag' => 'config.dwfw',
+            '--force' => '--force',
+        ]);
     }
 
     private function insertStringToFile($file_path, $string = '')
@@ -116,12 +125,6 @@ class Upgrade extends Command
             '--force' => '--force',
         ]);
 
-        $this->line(' Publishing new version number');
-        $this->executeArtisanProcess('vendor:publish', [
-            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
-            '--tag' => 'config.dwfw',
-            '--force' => '--force',
-        ]);
         $this->finish_message = ' DWFW succesfully upgraded. New version: 0.10.14';
         $this->info(' DWFW upgrade to 0.10.14 finished.');
         $this->progressBar->finish();
@@ -130,12 +133,6 @@ class Upgrade extends Command
     private function upgrade_to_0_10_15()
     {
         $this->start_progress_bar('0.10.15', 3);
-        $this->line(' Publishing new version number');
-        $this->executeArtisanProcess('vendor:publish', [
-            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
-            '--tag' => 'config.dwfw',
-            '--force' => '--force',
-        ]);
         $this->line(' Updating Backpack translations');
         $this->executeArtisanProcess('vendor:publish', [
             '--provider' => 'Different\Dwfw\DwfwServiceProvider',
@@ -143,23 +140,6 @@ class Upgrade extends Command
             '--force' => '--force',
         ]);
         $this->finish_message = ' DWFW succesfully upgraded. New version: 0.10.15';
-        $this->progressBar->finish();
-    }
-
-
-    private function upgrade_to_0_10_16()
-    {
-        $this->start_progress_bar('0.10.16', 3);
-        $this->line(' Publishing backpack fix');
-        $this->executeArtisanProcess('vendor:publish', [
-            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
-            '--tag' => 'sass.admin.backpack_fix',
-            '--force' => '--force',
-        ]);
-
-        $this->insertStringToFile('webpack.mix.js', 'mix.sass(\'resources/sass/admin/backpack_fix.scss\', \'public/css\');');
-
-        $this->finish_message = ' DWFW succesfully upgraded. New version: 0.10.16';
         $this->progressBar->finish();
     }
 

@@ -37,4 +37,15 @@ class UsersCrudTest extends TestCase
             ->assertUnauthorized();
     }
 
+    /** @test */
+    function user_show_exists()
+    {
+        $this
+            ->actingAs($this->user_admin)
+            ->get('/admin/users/' . $this->user_not_admin->id . '/show')
+            ->assertSee($this->user_not_admin->name)
+            ->assertSee($this->user_not_admin->email)
+            ->assertSee($this->user_not_admin->email_verified_at);
+    }
+
 }

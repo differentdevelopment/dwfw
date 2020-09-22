@@ -88,10 +88,29 @@ class LogsCrudController extends BaseCrudController
                 'type' => 'text',
             ],
             [
+              'name' => 'status',
+              'label' => __('dwfw::logs.status'),
+            ],
+            [
                 'name' => 'created_at',
                 'label' => __('dwfw::logs.created_at'),
                 'type' => 'datetime',
             ],
+            [
+                'label' => __('dwfw::logs.entity_name'),
+                'type' => 'closure',
+                'function' => function ($entry) {
+                    if ($entry->entity_id == null) {
+                        return $entry->entity_type;
+                    }
+                    try {
+                        return $entry->log_name;
+                    } catch (\Exception $e) {
+                        return '';
+                    }
+                },
+            ],
+
         ];
     }
 
@@ -166,7 +185,7 @@ class LogsCrudController extends BaseCrudController
                         'label' => __('dwfw::logs.event'),
                     ],
                     function () {
-                        return Log::query()->pluck('event', 'event')->toARray();
+                        return Log::query()->pluck('event', 'event')->toArray();
                     },
                     function ($values) {
                         $this->crud->addClause('whereIn', 'event', json_decode($values));
@@ -184,6 +203,20 @@ class LogsCrudController extends BaseCrudController
                         $dates = json_decode($value);
                         $this->crud->addClause('where', 'created_at', '>=', $dates->from);
                         $this->crud->addClause('where', 'created_at', '<=', $dates->to.' 23:59:59');
+                    },
+                ],
+
+                [
+                    [
+                        'name' => 'status',
+                        'type' => 'select2_multiple',
+                        'label' => __('dwfw::logs.status')
+                    ],
+                    function() {
+                        return Log::query()->pluck('status', 'status')->toArray();
+                    },
+                    function ($values) {
+                        $this->crud->addClause('whereIn', 'status', json_decode($values));
                     },
                 ]
             ];

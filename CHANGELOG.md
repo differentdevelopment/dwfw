@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.10.17] - 2020-09-22
+### added
+- Status for logs
+
+### changed
+- Log entity_type + entity_id -> polymorph
+- Upgrade automatically publishes version at the end of the process
+
+### fixed
+- User preview error if no view file declared for it.
+- Backpack navbar fix removed
+
 ## [0.10.16] - 2020-09-11
 ### added
 - Addded BackPack navbar fix for navbar colors

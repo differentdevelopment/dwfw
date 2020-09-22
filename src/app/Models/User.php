@@ -5,6 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Different\Dwfw\app\Models\File;
+use Different\Dwfw\app\Models\Partner;
 use Different\Dwfw\app\Models\TimeZone;
 use Different\Dwfw\app\Models\Traits\DwfwUser;
 use Illuminate\Contracts\Auth\MustVerifyEmail;

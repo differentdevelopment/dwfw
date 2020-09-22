@@ -123,8 +123,6 @@ class DwfwServiceProvider extends ServiceProvider
         $this->publishes([__DIR__ . '/config/checkIp.php' => config_path('checkIp.php')], 'config.checkIp');
         $this->publishes([__DIR__ . '/config/dwfw.php' => config_path('dwfw.php')], 'config.dwfw');
 
-        // styles
-        $this->publishes([__DIR__ . '/resources/sass/admin/backpack_fix.scss' => resource_path('/sass/admin/backpack_fix.scss')], 'sass.admin.backpack_fix');
     }
 
     private function cleanup()

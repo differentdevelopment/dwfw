@@ -121,7 +121,7 @@ class DwfwServiceProvider extends ServiceProvider
 
         //config
         $this->publishes([__DIR__ . '/config/checkIp.php' => config_path('checkIp.php')], 'config.checkIp');
-        $this->publishes([__DIR__ . '/config/dwfw.php' => config_path('dwfw.php')], 'config.dwfw');
+//        $this->publishes([__DIR__ . '/config/dwfw.php' => config_path('dwfw.php')], 'config.dwfw');
 
     }
 

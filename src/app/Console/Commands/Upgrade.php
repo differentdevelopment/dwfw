@@ -4,6 +4,7 @@ namespace Different\Dwfw\app\Console\Commands;
 
 use Backpack\CRUD\app\Console\Commands\Traits\PrettyCommandOutput;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class Upgrade extends Command
@@ -11,7 +12,7 @@ class Upgrade extends Command
 
     use PrettyCommandOutput;
 
-    protected $finish_message = ' Dwfw is already upgraded to the most recent version'; //Needs to be changed in the upgrade methods
+    protected string $finish_message;
 
     /**
      * Array of methods used for upgrading to the given version
@@ -40,6 +41,7 @@ class Upgrade extends Command
             }
         }
         $this->updateVersionNumber();
+        $this->finish_message = ' DWFW succesfully upgraded.';
         $this->info($this->finish_message);
     }
 
@@ -58,11 +60,8 @@ class Upgrade extends Command
 
     private function updateVersionNumber(){
         $this->line(' Publishing new version number');
-        $this->executeArtisanProcess('vendor:publish', [
-            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
-            '--tag' => 'config.dwfw',
-            '--force' => '--force',
-        ]);
+        File::copy(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config/dwfw.php', config_path('dwfw.php'));
+        return config('dwfw.version');
     }
 
     private function insertStringToFile($file_path, $string = '')
@@ -125,8 +124,6 @@ class Upgrade extends Command
             '--force' => '--force',
         ]);
 
-        $this->finish_message = ' DWFW succesfully upgraded. New version: 0.10.14';
-        $this->info(' DWFW upgrade to 0.10.14 finished.');
         $this->progressBar->finish();
     }
 
@@ -139,7 +136,6 @@ class Upgrade extends Command
             '--tag' => 'backpack.langs',
             '--force' => '--force',
         ]);
-        $this->finish_message = ' DWFW succesfully upgraded. New version: 0.10.15';
         $this->progressBar->finish();
     }
 

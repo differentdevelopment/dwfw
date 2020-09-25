@@ -4,6 +4,7 @@ namespace Different\Dwfw\app\Models;
 
 use App\Models\User;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Backpack\Settings\app\Models\Setting;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -26,9 +27,9 @@ class Log extends BaseModel
     const ET_SYSTEM = 'SYSTEM';
     const ET_OPERATION = 'OPERATION';
     const ET_CLOTH_MODEL = 'CLOTH_MODEL';
-    const ET_SETTING = 'SETTING';
-    const ET_PARTNER = 'PARTNER';
-    const ET_USER = 'USER';
+    const ET_SETTING = Setting::class;
+    const ET_PARTNER = Partner::class;
+    const ET_USER = User::class;
     const ET_AUTH = 'AUTH';
     const ET_PRODUCTION = 'PRODUCTION';
     const ET_PACKAGE = 'PACKAGE';

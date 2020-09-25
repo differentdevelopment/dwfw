@@ -6,10 +6,10 @@ use Different\Dwfw\app\Models\Log;
 use Illuminate\Support\Facades\Auth;
 use Request;
 
-trait LoggableAdmin
+trait LoggableWeb
 {
     use Loggable;
-    protected string $ROUTE = 'admin';
+    protected string $ROUTE = 'web';
 
     /**
      * @param string $event
@@ -21,9 +21,6 @@ trait LoggableAdmin
      */
     protected function log(string $event, ?int $entity_id = null, $data = null, ?string $entity_type = null, ?int $user_id = null, string $status = 'OK'): ?Log
     {
-        if (!in_array($entity_type, [Log::ET_AUTH]) && !Auth::user()) {
-            return null;
-        }
         return $this->baseLog($this->ROUTE, $event, $entity_id, $data, $entity_type, $user_id, $status);
     }
 }

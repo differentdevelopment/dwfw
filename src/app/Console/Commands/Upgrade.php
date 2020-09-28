@@ -21,6 +21,7 @@ class Upgrade extends Command
     protected $upgrade_methods = [
         '0.10.14' => 'upgrade_to_0_10_14',
         '0.10.15' => 'upgrade_to_0_10_15',
+        '0.10.24' => 'upgrade_to_0_10_24',
     ];
     protected $progressBar;
     protected $signature = 'dwfw:upgrade
@@ -60,7 +61,7 @@ class Upgrade extends Command
 
     private function updateVersionNumber(){
         $this->line(' Publishing new version number');
-        File::copy(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config/dwfw.php', config_path('dwfw.php'));
+        File::copy(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config/dwfw.php', config_path('dwfw.php'));
         return config('dwfw.version');
     }
 
@@ -137,6 +138,16 @@ class Upgrade extends Command
             '--force' => '--force',
         ]);
         $this->progressBar->finish();
+    }
+
+    private function upgrade_to_0_10_24()
+    {
+        $this->start_progress_bar('0.10.24', 3);
+        $this->line(' Publishing test utilities');
+        $this->executeArtisanProcess('vendor:publish', [
+            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
+            '--tag' => 'tests.utilities',
+        ]);
     }
 
 }

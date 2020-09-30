@@ -20,6 +20,7 @@ trait DwfwTestCase
                 ->decodeResponseJson();
             $this->assertTrue($response['error']);
             $this->assertArrayHasKey($required_field, $response['message']);
+            $this->assertEquals(1, sizeof($response['message']));  // https://bug.different.hu/view.php?id=6636
         }
     }
 
@@ -27,6 +28,7 @@ trait DwfwTestCase
     {
         $this->assertTrue($response['error']);
         $this->assertArrayHasKey($property, $response['message']);
+        $this->assertEquals(1, sizeof($response['message']));  // https://bug.different.hu/view.php?id=6636
     }
 
 

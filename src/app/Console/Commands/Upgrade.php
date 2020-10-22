@@ -12,8 +12,8 @@ class Upgrade extends Command
 
     use PrettyCommandOutput;
 
+    const VERSION = '0.10.27';
     protected string $finish_message;
-
     /**
      * Array of methods used for upgrading to the given version
      * @var array
@@ -22,6 +22,7 @@ class Upgrade extends Command
         '0.10.14' => 'upgrade_to_0_10_14',
         '0.10.15' => 'upgrade_to_0_10_15',
         '0.10.24' => 'upgrade_to_0_10_24',
+        '0.10.27' => 'upgrade_to_0_10_27',
     ];
     protected $progressBar;
     protected $signature = 'dwfw:upgrade
@@ -31,6 +32,7 @@ class Upgrade extends Command
 
     public function handle()
     {
+        $this->makeConfigFileIfNotExists();
         foreach ($this->upgrade_methods as $version => $upgrade) {
             if ($version > config('dwfw.version') ?? '0.10.13') {
                 if (is_callable([$this, $upgrade])) {
@@ -55,17 +57,28 @@ class Upgrade extends Command
 
         $this->progressBar->start();
 
-        $this->info(' Upgrading to ' . $version . '. Please wait...');
+        $this->info("\nUpgrading to " . $version . '. Please wait...');
         $this->progressBar->advance();
     }
 
-    private function updateVersionNumber(){
+    private function makeConfigFileIfNotExists()
+    {
+        if (!File::exists(config_path('dwfw.php'))) {
+            $this->line(' Publishing dwfw config file (dwfw.php)');
+            File::copy(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config/dwfw.php', config_path('dwfw.php'));
+        }
+    }
+
+    private function updateVersionNumber()
+    {
+        $disk = Storage::disk(config('backpack.base.root_disk_name'));
+        $contents = $disk->get('config/dwfw.php');
         $this->line(' Publishing new version number');
-        File::copy(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config/dwfw.php', config_path('dwfw.php'));
+        $disk->put('config/dwfw.php', str_replace(config('dwfw.version'), self::VERSION, $contents));
         return config('dwfw.version');
     }
 
-    private function insertStringToFile($file_path, $string = '')
+    private function insertStringToFile($file_path, $string = '', $is_config_entry = false)
     {
         $disk = Storage::disk(config('backpack.base.root_disk_name'));
 
@@ -76,11 +89,14 @@ class Upgrade extends Command
             if ($this->getLastLineNumberThatContains($string, $file_lines)) {
                 return $this->info(' String already exists in ' . $file_path . '.');
             }
-
-            if ($disk->put($file_path, $contents . PHP_EOL . $string)) {
-                $this->info('Successfully added string to ' . $file_path . '.');
+            if (!$is_config_entry && $disk->put($file_path, $contents . PHP_EOL . $string)) {
+                $this->info(' Successfully added string to ' . $file_path . '.');
             } else {
-                $this->error('Could not write to ' . $file_path . ' file.');
+                if ($is_config_entry && $disk->put($file_path, str_replace(']', "\t" . $string . ",\n]", $contents))) {
+                    $this->info(' Successfully added config entry to ' . $file_path . '.');
+                } else {
+                    $this->error(' Could not write to ' . $file_path . ' file.');
+                }
             }
         } else {
             $this->error('The ' . $file_path . ' file does not exist.');
@@ -90,8 +106,8 @@ class Upgrade extends Command
     /**
      * Parse the given file stream and return the line number where a string is found.
      *
-     * @param string $needle The string that's being searched for.
-     * @param array $haystack The file where the search is being performed.
+     * @param  string  $needle  The string that's being searched for.
+     * @param  array  $haystack  The file where the search is being performed.
      * @return bool|int         The last line number where the string was found. Or false.
      */
     private function getLastLineNumberThatContains($needle, $haystack)
@@ -148,6 +164,14 @@ class Upgrade extends Command
             '--provider' => 'Different\Dwfw\DwfwServiceProvider',
             '--tag' => 'tests.utilities',
         ]);
+        $this->progressBar->finish();
+    }
+
+    private function upgrade_to_0_10_27()
+    {
+        $this->start_progress_bar('0.10.27', 2);
+        $this->insertStringToFile('config/dwfw.php', "'profile_has_image' => true", true);
+        $this->progressBar->finish();
     }
 
 }

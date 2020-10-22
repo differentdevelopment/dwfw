@@ -149,7 +149,9 @@ class UsersCrudController extends UserCrudController
                     'class' => 'form-group col-12 col-sm-6',
                 ],
             ],
-            [
+        ]);
+        if(config('dwfw.profile_has_image') !== false) {
+            $this->crud->addField([
                 'name' => 'profile_image',
                 'label' => __('dwfw::users.profile_image'),
                 'type' => 'upload',
@@ -158,9 +160,8 @@ class UsersCrudController extends UserCrudController
                 'wrapper' => [
                     'class' => 'form-group col-12 col-sm-6',
                 ],
-            ],
-
-        ]);
+            ]);
+        }
     }
 
     public function store()

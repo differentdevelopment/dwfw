@@ -1,3 +1,5 @@
 <?php
 
-return ['version' => '0.10.24'];
+return [
+    'version' => '0.10.27',
+];

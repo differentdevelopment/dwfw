@@ -60,12 +60,12 @@ class LogTest extends TestCase
         $this
             ->actingAs($this->user_admin)
             ->get(route('admin./logs.index'))
-            ->assertSee('filter-name="userId"', false)
+            ->assertSee('filter-name="user_id"', false)
             ->assertSee('filter-name="route"', false)
-            ->assertSee('filter-name="entityType"', false)
-            ->assertSee('filter-name="entityId"', false)
+            ->assertSee('filter-name="entity_type"', false)
+            ->assertSee('filter-name="entity_id"', false)
             ->assertSee('filter-name="event"', false)
-            ->assertSee('filter-name="createdAt"', false)
+            ->assertSee('filter-name="created_at"', false)
             ->assertSee('filter-name="status"', false);
     }
 

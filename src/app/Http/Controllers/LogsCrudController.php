@@ -2,10 +2,10 @@
 
 namespace Different\Dwfw\app\Http\Controllers;
 
+use App\Models\User;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Different\Dwfw\app\Models\Log;
-use App\Models\User;
 
 class LogsCrudController extends BaseCrudController
 {
@@ -28,7 +28,6 @@ class LogsCrudController extends BaseCrudController
 
     protected function setupShowOperation()
     {
-        $this->crud->set('show.setFromDb', false);
         $this->crud->addColumn([
             'name' => 'data',
             'label' => 'Data',
@@ -37,11 +36,6 @@ class LogsCrudController extends BaseCrudController
                 return '<pre>' . json_encode(json_decode(utf8_decode($entry->data)), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . '</pre>';
             }
         ])->afterColumn('created_at');
-        $this->crud->addColumn([
-            'name' => 'ip_address',
-            'label' => 'Ip address',
-            'type' => 'text'
-        ])->afterColumn('data');
     }
     //<editor-fold desc="columns/fields" defaultstate="collapsed">
 
@@ -65,7 +59,32 @@ class LogsCrudController extends BaseCrudController
                     } catch (\Exception $e) {
                         return '';
                     }
-                }
+                },
+                'searchLogic' => function ($query, $column, $searchTerm) {
+                    $query->orWhereHas('user', function ($q) use ($column, $searchTerm) {
+                        $q->where('name', 'like', '%' . $searchTerm . '%');
+                    });
+                },
+            ],
+            [
+                'name' => 'user_email',
+                'label' => __('dwfw::logs.user_email'),
+                'type' => 'closure',
+                'function' => function ($entry) {
+                    try {
+                        if (!function_exists('getUserModelByRoute') || !($model = getUserModelByRoute($entry->route))) {
+                            $model = new User;
+                        }
+                        return $model->findOrFail($entry->user_id)->email;
+                    } catch (\Exception $e) {
+                        return '';
+                    }
+                },
+                'searchLogic' => function ($query, $column, $searchTerm) {
+                    $query->orWhereHas('user', function ($q) use ($column, $searchTerm) {
+                        $q->where('email', 'like', '%' . $searchTerm . '%');
+                    });
+                },
             ],
             [
                 'name' => 'route',
@@ -88,8 +107,8 @@ class LogsCrudController extends BaseCrudController
                 'type' => 'text',
             ],
             [
-              'name' => 'status',
-              'label' => __('dwfw::logs.status'),
+                'name' => 'status',
+                'label' => __('dwfw::logs.status'),
             ],
             [
                 'name' => 'created_at',
@@ -110,7 +129,11 @@ class LogsCrudController extends BaseCrudController
                     }
                 },
             ],
-
+            [
+                'name' => 'ip_address',
+                'label' => __('dwfw::logs.ip_address'),
+                'type' => 'text',
+            ],
         ];
     }
 
@@ -194,31 +217,28 @@ class LogsCrudController extends BaseCrudController
 
                 [
                     [
-                      'name' => 'created_at',
-                      'type' => 'date_range',
-                      'label' => __('dwfw::logs.created_at')
+                        'name' => 'created_at',
+                        'type' => 'date_range',
+                        'label' => __('dwfw::logs.created_at')
                     ],
                     false,
                     function ($value) {
                         $dates = json_decode($value);
                         $this->crud->addClause('where', 'created_at', '>=', $dates->from);
-                        $this->crud->addClause('where', 'created_at', '<=', $dates->to.' 23:59:59');
+                        $this->crud->addClause('where', 'created_at', '<=', $dates->to . ' 23:59:59');
                     },
                 ],
-
                 [
                     [
-                        'name' => 'status',
-                        'type' => 'select2_multiple',
-                        'label' => __('dwfw::logs.status')
+                        'type' => 'text',
+                        'name' => 'ip_address',
+                        'label' => __('dwfw::logs.ip_address'),
                     ],
-                    function() {
-                        return Log::query()->pluck('status', 'status')->toArray();
+                    false,
+                    function ($value) {
+                        $this->crud->addClause('where', 'ip_address', 'LIKE', "%$value%");
                     },
-                    function ($values) {
-                        $this->crud->addClause('whereIn', 'status', json_decode($values));
-                    },
-                ]
+                ],
             ];
     }
     //</editor-fold>

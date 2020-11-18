@@ -33,7 +33,8 @@ class TimeZoneTest extends TestCase
             ['Africa/Blantyre', '+02:00',],
             ['America/Araguaina', '-03:00',],
             ['Pacific/Midway', '-11:00',],
-            ['Europe/Amsterdam', '+02:00', 'Europe'],
+            ['Europe/Amsterdam', '+01:00', 'Europe'],
+            ['Europe/Athens', '+02:00', 'Europe'],
             ['Africa/Blantyre', '+02:00', 'Africa'],
         ];
     }

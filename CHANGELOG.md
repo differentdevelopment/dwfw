@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.10.29] - 2020-11-18
+###fixed
+-Timezone test
+-Log Filter test
+
+###removed
+-Privacy policy from setting seed
+
 ## [0.10.27] - 2020-10-22
 ###added
 -Editing and saving profile images can be removed by setting has_profile_image false in dwfw.php

@@ -45,6 +45,11 @@ class File extends BaseModel
         'updated_at',
     ];
 
+    protected $default_attributes = [
+        'resize_x' => 1500,
+        'resize_y' => 1500,
+    ];
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -62,13 +67,16 @@ class File extends BaseModel
     }
 
     /**
-     * @param string|null $storage_path
+     * A PHP a 8.0 verziótól képes lett kezelni a nevesített paramétereket, így onnantól lehet hívni csak attribútumra. Előtte sajnos meg kell majd adni a storage_pathot..
+     * @param null|string $storage_path
+     * @param array $attributes
      */
-    public function resizeImage(?string $storage_path = 'app/' . Files::STORAGE_DIR): void
+    public function resizeImage(?string $storage_path = 'app/' . Files::STORAGE_DIR, array $attributes = []): void
     {
+        $attributes = array_merge($this->default_attributes, $attributes);
         $image_path = $this->getImagePath($storage_path);
         Image::make($image_path)
-            ->resize(1500, 1500, function ($constraint) {
+            ->resize($attributes['resize_x'], $attributes['resize_y'], function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             })

@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.10.31] - 2020-11-25
+###changed
+-File - resizeImage() optional attributes parameter
+
 ## [0.10.29] - 2020-11-18
 ###fixed
 -Timezone test

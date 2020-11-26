@@ -61,6 +61,7 @@ class File extends BaseModel
     public function orientate(?string $storage_path = 'app/' . Files::STORAGE_DIR): void
     {
         $image_path = $this->getImagePath($storage_path);
+        ini_set('memory_limit','256M');
         Image::make($image_path)
             ->orientate()
             ->save($image_path);
@@ -75,6 +76,7 @@ class File extends BaseModel
     {
         $attributes = array_merge($this->default_attributes, $attributes);
         $image_path = $this->getImagePath($storage_path);
+        ini_set('memory_limit','256M');
         Image::make($image_path)
             ->resize($attributes['resize_x'], $attributes['resize_y'], function ($constraint) {
                 $constraint->aspectRatio();

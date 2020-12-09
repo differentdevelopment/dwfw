@@ -168,4 +168,17 @@ class Files extends Controller
         ]);
     }
 
+    public static function delete(File $file, string $storage_dir = null, ?string $disk = self::DEFAULT_DISK)
+    {
+        $storage_dir = $storage_dir ?? $file->partner_id;
+        if ($storage_dir !== null) {
+            $storage_dir .= '/';
+        }
+
+        if (!Storage::disk($disk)->delete($storage_dir . $file->file_path)) {
+            // a törlés nem sikerült.. 404 jó ilyenkor? FIXME hogy milyen üzenetet dobjon ilyenkor! Kell-e egyáltalán, vagy szedje ki a db-ből és megvagyunk
+//            abort(404);
+        }
+        $file->delete();
+    }
 }

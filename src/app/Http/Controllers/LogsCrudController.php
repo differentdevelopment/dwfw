@@ -6,6 +6,7 @@ use App\Models\User;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Different\Dwfw\app\Models\Log;
+use Illuminate\Http\Request;
 
 class LogsCrudController extends BaseCrudController
 {
@@ -149,12 +150,10 @@ class LogsCrudController extends BaseCrudController
                 [
                     [
                         'name' => 'user_id',
-                        'type' => 'select2',
+                        'type' => 'select2_ajax',
                         'label' => __('dwfw::logs.user_id'),
                     ],
-                    function () {
-                        return User::all()->pluck('name', 'id')->toArray();
-                    },
+                    route('admin.ajax-user-options'),
                     function ($value) {
                         $this->crud->addClause('where', 'user_id', '=', $value);
                     },
@@ -167,7 +166,7 @@ class LogsCrudController extends BaseCrudController
                         'label' => __('dwfw::logs.route'),
                     ],
                     function () {
-                        return Log::query()->pluck('route', 'route')->toArray(); //Needs to be key => value, even when they're the same
+                        return Log::query()->groupBy('route')->pluck('route', 'route')->toArray(); //Needs to be key => value, even when they're the same
                     },
                     function ($value) {
                         $this->crud->addClause('where', 'route', '=', $value);
@@ -181,7 +180,7 @@ class LogsCrudController extends BaseCrudController
                         'label' => __('dwfw::logs.entity_type'),
                     ],
                     function () {
-                        return Log::query()->pluck('entity_type', 'entity_type')->toArray(); //Needs to be key => value, even when they're the same
+                        return Log::query()->groupBy('entity_type')->pluck('entity_type', 'entity_type')->toArray(); //Needs to be key => value, even when they're the same
                     },
                     function ($values) {
                         $this->crud->addClause('whereIn', 'entity_type', json_decode($values));
@@ -190,12 +189,10 @@ class LogsCrudController extends BaseCrudController
                 [
                     [
                         'name' => 'entity_id',
-                        'type' => 'select2',
+                        'type' => 'text',
                         'label' => __('dwfw::logs.entity_id'),
                     ],
-                    function () {
-                        return Log::query()->pluck('entity_id', 'entity_id')->toARray();
-                    },
+                    false,
                     function ($value) {
                         $this->crud->addClause('where', 'entity_id', $value);
                     },
@@ -204,14 +201,12 @@ class LogsCrudController extends BaseCrudController
                 [
                     [
                         'name' => 'event',
-                        'type' => 'select2_multiple',
+                        'type' => 'text',
                         'label' => __('dwfw::logs.event'),
                     ],
-                    function () {
-                        return Log::query()->pluck('event', 'event')->toArray();
-                    },
-                    function ($values) {
-                        $this->crud->addClause('whereIn', 'event', json_decode($values));
+                    false,
+                    function ($value) {
+                        $this->crud->addClause('where', 'event', $value);
                     },
                 ],
 
@@ -225,7 +220,7 @@ class LogsCrudController extends BaseCrudController
                     function ($value) {
                         $dates = json_decode($value);
                         $this->crud->addClause('where', 'created_at', '>=', $dates->from);
-                        $this->crud->addClause('where', 'created_at', '<=', $dates->to . ' 23:59:59');
+                        $this->crud->addClause('where', 'created_at', '<=', $dates->to);
                     },
                 ],
                 [
@@ -241,6 +236,13 @@ class LogsCrudController extends BaseCrudController
                 ],
             ];
     }
+
+    protected function userOptions(Request $request)
+    {
+        $term = $request->input('term');
+        return User::query()->where('name', 'like', '%'.$term.'%')->get()->pluck('name', 'id');
+    }
+
     //</editor-fold>
 
     /*

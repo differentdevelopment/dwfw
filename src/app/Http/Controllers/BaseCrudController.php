@@ -35,7 +35,7 @@ abstract class BaseCrudController extends CrudController
      * Checks for {$column}_id
      * @param string $column The name of the foreign key column, without the "_id" suffix
      */
-    protected function checkForColumnId(string $column): void
+    protected function checkForColumnId(string $column)
     {
         if ('partner' == $column) {
             $this->{$column . '_id'} = backpack_user()->hasRole('partner') ? backpack_user()->{$column . '_id'} : Route::current()->parameter($column . '_id');
@@ -53,7 +53,10 @@ abstract class BaseCrudController extends CrudController
             $this->crud->addClause('where', $column . '_id', '=', $this->{$column . '_id'});
             $this->crud->removeField($column . '_id');
             $this->crud->removeColumn($column . '_id');
+
+            return $this->{$column};  // ha már úgyis legyűjtöttük, akkor adjuk már vissza, hátha szükség van rá
         }
+        return null;
     }
 
     protected function addPartnerFilter()

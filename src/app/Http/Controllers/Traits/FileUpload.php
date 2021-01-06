@@ -29,7 +29,7 @@ trait FileUpload
     }
 
     /**
-     * @param $value
+     * @param string $value
      * @return bool
      */
     private function isBase64Image($value) {

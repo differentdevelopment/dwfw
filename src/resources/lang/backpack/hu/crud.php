@@ -21,13 +21,13 @@ return [
     'save_action_changed_notification' => 'Az alapértelmezett mentés utáni művelet megváltozott',
 
     // Create form
-    'add'                 => 'Hozzáadás:',
+    'add'                 => 'Hozzáadás',
     'back_to_all'         => 'Vissza ide: ',
     'cancel'              => 'Mégse',
     'add_a_new'           => 'Új hozzáadása ',
 
     // Edit form
-    'edit'                 => 'Szerkesztés:',
+    'edit'                 => 'Szerkesztés',
     'save'                 => 'Mentés',
 
     // Translatable models

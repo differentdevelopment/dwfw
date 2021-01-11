@@ -56,6 +56,11 @@ class PartnersCrudController extends BaseCrudController
                 'type' => 'text',
             ],
             [
+                'name' => 'short_name',
+                'label' => __('dwfw::partners.short_name'),
+                'type' => 'text',
+            ],
+            [
                 'name' => 'contact_name',
                 'label' => __('dwfw::partners.contact_name'),
                 'type' => 'text',
@@ -86,6 +91,11 @@ class PartnersCrudController extends BaseCrudController
                 'type' => 'text',
             ],
             [
+                'name' => 'short_name',
+                'label' => __('dwfw::partners.short_name'),
+                'type' => 'text',
+            ],
+            [
                 'name' => 'contact_name',
                 'label' => __('dwfw::partners.contact_name'),
                 'type' => 'text',
@@ -109,6 +119,7 @@ class PartnersCrudController extends BaseCrudController
     {
         return Partner::query()
             ->where('name', 'like', '%' . $request->input('term') . '%')
+            ->orWhere('short_name', 'like', '%' . $request->input('term') . '%')
             ->orWhere('contact_name', 'like', '%' . $request->input('term') . '%')
             ->get()
             ->pluck('name_contact_name', 'id');

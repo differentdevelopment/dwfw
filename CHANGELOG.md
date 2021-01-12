@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.11.2] - 2021-01-12
+###changed
+-add indexes to log table
+
 ## [0.11.1] - 2021-01-11
 ###changed
 -partner with short name

@@ -5,71 +5,73 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.12.0] - 2021-01-13
+- Version upgrade
+
 ## [0.11.3] - 2021-01-12
 ###changed
--
 
 ## [0.11.2] - 2021-01-12
 ###changed
--add indexes to log table
+- add indexes to log table
 
 ## [0.11.1] - 2021-01-11
 ###changed
--partner with short name
--required php version changed to 7.4 or greater
+- partner with short name
+- required php version changed to 7.4 or greater
 
 ## [0.11.0] - 2021-01-06
 ###changed
--checkForColumnId with return value
--file upload with new functions
+- checkForColumnId with return value
+- file upload with new functions
 
 ## [0.10.36] - 2020-12-16
 ###changed
--Optimize log filters
+- Optimize log filters
 
 ## [0.10.34] - 2020-12-09
 ###changed
--File delete option appeared
+- File delete option appeared
 
 ## [0.10.33] - 2020-11-26
 ###changed
--File - Image memory problem fix
+- File - Image memory problem fix
 
 ## [0.10.31] - 2020-11-25
 ###changed
--File - resizeImage() optional attributes parameter
+- File - resizeImage() optional attributes parameter
 
 ## [0.10.29] - 2020-11-18
 ###fixed
--Timezone test
--Log Filter test
+- Timezone test
+- Log Filter test
 
 ###removed
--Privacy policy from setting seed
+- Privacy policy from setting seed
 
 ## [0.10.27] - 2020-10-22
 ###added
--Editing and saving profile images can be removed by setting has_profile_image false in dwfw.php
+- Editing and saving profile images can be removed by setting has_profile_image false in dwfw.php
 
 ###changed
--upgrade method improve to add config entries to dwfw.php
--it_should_have_required_fields test method returns accurate error messages
+- upgrade method improve to add config entries to dwfw.php
+- it_should_have_required_fields test method returns accurate error messages
 
 ## [0.10.25] - 2020-09-28
 ###changed
--it_should_have_required_fields improve
+- it_should_have_required_fields improve
 
 ## [0.10.24] - 2020-09-28
 ###added
--Test utilities
+- Test utilities
 
 ## [0.10.23] - 2020-09-25
 ###fixed
--Enity type must be fqcn when generating logs related to Partner, Setting and User models
+- Enity type must be fqcn when generating logs related to Partner, Setting and User models
 
 ## [0.10.22] - 2020-09-25
 ###added
--Loggable, LoggableApi and LoggableWeb traits
+- Loggable, LoggableApi and LoggableWeb traits
 
 ## [0.10.21] - 2020-09-23
 ###changed

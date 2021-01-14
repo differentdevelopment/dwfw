@@ -23,6 +23,7 @@ class PartnerFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
+            'short_name' => $this->faker->firstName,
             'contact_name' => $this->faker->name,
             'contact_phone' => $this->faker->phoneNumber,
             'contact_email' => $this->faker->unique()->safeEmail,

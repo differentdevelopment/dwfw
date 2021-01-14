@@ -7,12 +7,12 @@ use Carbon\Carbon;
 use Different\Dwfw\app\Models\Traits\DwfwPartner;
 use Different\Dwfw\database\factories\PartnerFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Partner
  * @package App\Models
  * @property string $name
+ * @property string $short_name
  * @property string $contact_name
  * @property string $contact_phone
  * @property string $contact_email
@@ -38,6 +38,7 @@ class Partner extends BaseModel
     protected $guarded = ['id'];
     protected $fillable = [
         'name',
+        'short_name',
         'contact_name',
         'contact_phone',
         'contact_email',

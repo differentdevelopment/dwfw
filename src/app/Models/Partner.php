@@ -5,6 +5,7 @@ namespace Different\Dwfw\app\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Different\Dwfw\app\Models\Traits\DwfwPartner;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -22,6 +23,7 @@ class Partner extends BaseModel
 {
     use CrudTrait;
     use DwfwPartner;
+    use HasFactory;
 
     /*
     |--------------------------------------------------------------------------

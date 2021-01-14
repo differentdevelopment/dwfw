@@ -8,6 +8,7 @@ use Different\Dwfw\app\Models\File;
 use Different\Dwfw\app\Models\Partner;
 use Different\Dwfw\app\Models\TimeZone;
 use Different\Dwfw\app\Models\Traits\DwfwUser;
+use Different\Dwfw\database\factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -73,6 +74,10 @@ class User extends Authenticatable implements MustVerifyEmail
     private $default_image;
     private $default_image_icon;
 
+    protected static function newFactory()
+    {
+        return UserFactory::new();
+    }
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -90,6 +95,10 @@ class User extends Authenticatable implements MustVerifyEmail
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    public function logName()
+    {
+        return 'name';
+    }
 
     /*
     |--------------------------------------------------------------------------

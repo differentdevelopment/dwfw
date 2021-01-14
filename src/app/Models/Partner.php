@@ -5,6 +5,7 @@ namespace Different\Dwfw\app\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Different\Dwfw\app\Models\Traits\DwfwPartner;
+use Different\Dwfw\database\factories\PartnerFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -47,6 +48,11 @@ class Partner extends BaseModel
         'updated_at',
         'deleted_at',
     ];
+
+    protected static function newFactory()
+    {
+        return PartnerFactory::new();
+    }
 
     /*
     |--------------------------------------------------------------------------

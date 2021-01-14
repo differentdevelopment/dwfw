@@ -9,6 +9,7 @@ use Different\Dwfw\app\Models\Partner;
 use Different\Dwfw\app\Models\TimeZone;
 use Different\Dwfw\app\Models\Traits\DwfwUser;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -36,6 +37,7 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use CrudTrait;
     use DwfwUser;
+    use HasFactory;
     use HasRoles;
     use Notifiable;
 

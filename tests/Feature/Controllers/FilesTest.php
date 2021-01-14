@@ -1,6 +1,6 @@
 <?php
 
-namespace Different\Dwfw\Tests\Unit\Models;
+namespace Tests\Feature\Controllers;
 
 use Different\Dwfw\app\Http\Controllers\Files;
 use Different\Dwfw\Tests\TestCase;

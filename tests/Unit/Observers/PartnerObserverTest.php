@@ -11,7 +11,7 @@ class PartnerObserverTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->actingAs(factory(User::class)->create());
+        $this->actingAs(User::factory()->create());
     }
 
     /** @test */

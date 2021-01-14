@@ -16,7 +16,7 @@ class LogTest extends TestCase
     {
         parent::setUp();
         $this->createAdminAndGuestUser();
-        $this->user = factory(User::class)->create();
+        $this->user = User::factory()->create();
         $this->log = Log::create([
             'user_id' => $this->user->id,
             'route' => 'admin',

@@ -23,8 +23,8 @@ abstract class TestCase extends BaseTestCase
 
     protected function createAdminAndGuestUser(): void
     {
-        $this->user_admin = factory(User::class)->create(['name' => 'Admin József']);
-        $this->user_not_admin = factory(User::class)->create(['name' => 'Teszt Elemér']);
+        $this->user_admin = User::factory()->create(['name' => 'Admin József']);
+        $this->user_not_admin = User::factory()->create(['name' => 'Teszt Elemér']);
         $this->role_admin = Role::query()->create([
             'name' => 'admin',
             'guard_name' => 'web',

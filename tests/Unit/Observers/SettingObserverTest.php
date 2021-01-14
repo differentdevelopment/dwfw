@@ -13,7 +13,7 @@ class SettingObserverTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->actingAs(factory(User::class)->create());
+        $this->actingAs(User::factory()->create());
         Artisan::call('db:seed', [
             '--class' => 'Different\\Dwfw\\database\\seeds\\DwfwSeeder',
         ]);

@@ -4,7 +4,6 @@
 namespace Different\Dwfw\Tests\Unit\Traits;
 
 use App\Models\User;
-use Different\Dwfw\app\Models\Log;
 use Different\Dwfw\app\Traits\LoggableAdmin;
 use Different\Dwfw\Tests\TestCase;
 
@@ -15,7 +14,7 @@ class LoggableAdminTest extends TestCase
     /** @test */
     public function it_handles_array_on_data()
     {
-        $this->actingAs($user = factory(User::class)->create());
+        $this->actingAs($user = User::factory()->create());
 
         $log = $this->log('test_event', 1, ['foo' => 'bar']);
 

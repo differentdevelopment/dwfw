@@ -21,7 +21,7 @@ class UserObserverTest extends TestCase
             ->where([
                 'event' => LOG::E_CREATED,
                 'entity_type' => Log::ET_USER,
-                'entity_id' => (factory(User::class)->create())->id,
+                'entity_id' => (User::factory()->create())->id,
             ]);
         $this->assertEquals(1, $logs->count());
     }
@@ -29,7 +29,7 @@ class UserObserverTest extends TestCase
     /** @test */
     function it_logs_updated_user()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->name = 'Foo Bar';
         $user->save();
         $logs = Log::query()
@@ -44,7 +44,7 @@ class UserObserverTest extends TestCase
     /** @test */
     function it_logs_deleted_user()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->delete();
         $logs = Log::query()
             ->where([
@@ -60,7 +60,7 @@ class UserObserverTest extends TestCase
      */
     protected function createUser()
     {
-        return factory(User::class)->create();
+        return User::factory()->create();
     }
 
 }

@@ -12,7 +12,7 @@ class UserTest extends TestCase
     function it_verfies_user()
     {
         /** @var User $user */
-        $user = factory(User::class)->create(['email_verified_at' => null,]);
+        $user = User::factory()->create(['email_verified_at' => null,]);
         $this->assertNull($user->email_verified_at);
         $user->verify();
         $this->assertNotNull($user->email_verified_at);

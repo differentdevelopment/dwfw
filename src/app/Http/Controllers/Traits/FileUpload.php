@@ -34,7 +34,7 @@ trait FileUpload
      */
     private function isBase64Image($value) {
         $explode = explode(',', $value);
-        $allow = ['png', 'jpg', 'svg'];
+        $allow = ['png', 'jpg', 'jpeg', 'svg', 'gif'];
         $format = str_replace(
             [
                 'data:image/',

@@ -27,6 +27,11 @@ class LogsCrudController extends BaseCrudController
         $this->setupFiltersFromMethod();
     }
 
+    protected function isJson($string) {
+        json_decode($string);
+        return (json_last_error() == JSON_ERROR_NONE);
+    }
+
     protected function setupShowOperation()
     {
         $this->crud->addColumn([
@@ -34,7 +39,10 @@ class LogsCrudController extends BaseCrudController
             'label' => 'Data',
             'type' => 'closure',
             'function' => function ($entry) {
-                return '<pre>' . json_encode(json_decode(utf8_decode($entry->data)), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . '</pre>';
+                if($this->isJson($entry->data)){
+                    return '<pre>' . json_encode(json_decode(utf8_decode($entry->data)), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . '</pre>';
+                }
+                return '<pre>' . json_encode(utf8_decode($entry->data), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . '</pre>';
             }
         ])->afterColumn('created_at');
     }

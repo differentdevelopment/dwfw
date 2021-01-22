@@ -8,6 +8,7 @@
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('partners') }}"><i class="nav-icon fa fa-user-tie"></i> @lang('dwfw::partners.partners')</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('users') }}"><i class="nav-icon fa fa-user"></i> @lang('dwfw::users.users')</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('setting') }}"><i class="nav-icon fa fa-cog"></i> @lang('dwfw::settings.settings')</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('spammer') }}"><i class="nav-icon fa fa-cog"></i> @lang('dwfw::spammers.spammers')</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('logs') }}"><i class="nav-icon fa fa-history"></i> @lang('dwfw::logs.logs')</a></li>
 
     </ul>

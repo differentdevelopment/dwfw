@@ -12,7 +12,7 @@ class Upgrade extends Command
 
     use PrettyCommandOutput;
 
-    const VERSION = '0.13.4';
+    const VERSION = '0.13.6';
     protected string $finish_message;
     /**
      * Array of methods used for upgrading to the given version
@@ -23,6 +23,7 @@ class Upgrade extends Command
         '0.10.15' => 'upgrade_to_0_10_15',
         '0.10.24' => 'upgrade_to_0_10_24',
         '0.10.27' => 'upgrade_to_0_10_27',
+        '0.13.6' => 'upgrade_to_0_13_6',
     ];
     protected $progressBar;
     protected $signature = 'dwfw:upgrade
@@ -171,6 +172,18 @@ class Upgrade extends Command
     {
         $this->start_progress_bar('0.10.27', 2);
         $this->insertStringToFile('config/dwfw.php', "'profile_has_image' => true", true);
+        $this->progressBar->finish();
+    }
+
+    private function upgrade_to_0_13_6()
+    {
+        $this->start_progress_bar('0.13.36', 1);
+        $this->line(' Publishing backpack login view');
+        $this->executeArtisanProcess('vendor:publish', [
+            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
+            '--tag' => 'backpack.login',
+            '--force' => '--force',
+        ]);
         $this->progressBar->finish();
     }
 

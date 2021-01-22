@@ -3,7 +3,6 @@
 namespace Different\Dwfw;
 
 use App\Http\Controllers\Controller;
-use App\Http\Middleware\CheckIpMiddleware;
 use App\Models\User;
 use Backpack\Settings\app\Models\Setting;
 use Different\Dwfw\app\Console\Commands\Install;
@@ -65,6 +64,8 @@ class DwfwServiceProvider extends ServiceProvider
 
         $this->loadRoutesFrom(__DIR__ . '/routes/dwfw/routes.php');
 
+        $this->loadRoutesFrom(__DIR__ . '/routes/backpack/base.php');
+
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'dwfw');
 
         $this->loadTranslationsFrom(__DIR__ . '/resources/lang/dwfw', 'dwfw');
@@ -116,12 +117,12 @@ class DwfwServiceProvider extends ServiceProvider
         $this->publishes([__DIR__ . '/resources/lang/backpack/hu/permissionmanager.php' => resource_path('lang/vendor/backpack/hu/permissionmanager.php')], 'backpack.langs');
         $this->publishes([__DIR__ . '/resources/lang/backpack/hu/settings.php' => resource_path('lang/vendor/backpack/hu/settings.php')], 'backpack.langs');
 
-        //config
-        $this->publishes([__DIR__ . '/config/checkIp.php' => config_path('checkIp.php')], 'config.checkIp');
 
         //utilites
         $this->publishes([__DIR__ . DIRECTORY_SEPARATOR .'../tests/utilities/functions.php' => base_path() . '/tests/utilities/functions.php'], 'tests.utilities');
 
+        //Backpack login view
+        $this->publishes([__DIR__ . '/resources/views/vendor/backpack/base/auth/login.blade.php' => resource_path() . '/views/vendor/backpack/base/auth/login.blade.php'], 'backpack.login');
     }
 
     private function cleanup()

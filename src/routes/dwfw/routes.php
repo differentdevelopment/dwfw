@@ -26,6 +26,7 @@ Route::group([
 ], function () { // custom admin routes
     Route::get('logs/ajax-user-options', 'LogsCrudController@userOptions')->name('ajax-user-options');
     Route::crud('/logs', LogsCrudController::class);
+    Route::crud('/spammers', SpammersCrudController::class);
 
     // USERS
     Route::crud('/users', UsersCrudController::class);

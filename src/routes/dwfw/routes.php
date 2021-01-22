@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Auth::routes(['verify' => true]);
+//use Illuminate\Support\Facades\Auth; //TODO EZ A KÉT SOR ERRORT OKOZOTT MINDEN RENDSZERÜNKBEN
+//Auth::routes(['verify' => true]);
 
 Route::group(
     [

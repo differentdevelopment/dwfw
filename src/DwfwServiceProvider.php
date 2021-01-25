@@ -62,9 +62,9 @@ class DwfwServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(realpath(__DIR__ . '/database/migrations/'));
 
-        $this->loadRoutesFrom(__DIR__ . '/routes/dwfw/routes.php');
-
         $this->loadRoutesFrom(__DIR__ . '/routes/backpack/base.php');
+
+        $this->loadRoutesFrom(__DIR__ . '/routes/dwfw/routes.php');
 
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'dwfw');
 
@@ -117,12 +117,17 @@ class DwfwServiceProvider extends ServiceProvider
         $this->publishes([__DIR__ . '/resources/lang/backpack/hu/permissionmanager.php' => resource_path('lang/vendor/backpack/hu/permissionmanager.php')], 'backpack.langs');
         $this->publishes([__DIR__ . '/resources/lang/backpack/hu/settings.php' => resource_path('lang/vendor/backpack/hu/settings.php')], 'backpack.langs');
 
+        //config
+        $this->publishes([__DIR__ . '/config/checkIp.php' => config_path('checkIp.php')], 'config.checkIp');
 
         //utilites
         $this->publishes([__DIR__ . DIRECTORY_SEPARATOR .'../tests/utilities/functions.php' => base_path() . '/tests/utilities/functions.php'], 'tests.utilities');
 
         //Backpack login view
         $this->publishes([__DIR__ . '/resources/views/vendor/backpack/base/auth/login.blade.php' => resource_path() . '/views/vendor/backpack/base/auth/login.blade.php'], 'backpack.login');
+
+        //Spatie Honey
+        $this->publishes([__DIR__ . '/app/SpamResponder/SpamRespond.php' => app_path() . '/SpamResponder/SpamRespond.php'], 'spatie-honey.spam-respond');
     }
 
     private function cleanup()

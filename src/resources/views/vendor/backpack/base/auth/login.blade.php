@@ -8,7 +8,7 @@
                 <div class="card-body">
                     <form class="col-md-12 p-t-10" role="form" method="POST" action="{{ route('backpack.auth.login') }}">
                         {!! csrf_field() !!}
-
+                        <x-honeypot />
                         <div class="form-group">
                             <label class="control-label" for="{{ $username }}">{{ config('backpack.base.authentication_column_name') }}</label>
 
@@ -46,8 +46,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <x-honey recaptcha="login"/>
 
                         <div class="form-group">
                             <div>

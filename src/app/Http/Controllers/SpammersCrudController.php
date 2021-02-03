@@ -14,6 +14,7 @@ use Different\Dwfw\app\Models\Partner;
 use Different\Dwfw\app\Models\Spammer;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+use Spatie\Permission\Middlewares\PermissionMiddleware;
 
 /**
  * Class PartnerCrudController
@@ -26,6 +27,12 @@ class SpammersCrudController extends BaseCrudController
     use CreateOperation;
     use DeleteOperation;
     use ShowOperation;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware(PermissionMiddleware::class . ':manage bans');
+    }
 
     public function setup()
     {

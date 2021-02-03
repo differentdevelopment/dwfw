@@ -15,6 +15,8 @@ class UsersCrudTest extends TestCase
     {
         parent::setUp();
         $this->createAdminAndGuestUser();
+        $this->createPermissions();
+        $this->addPermissionsForAdmin();
     }
 
     /** @test */

@@ -7,6 +7,7 @@ use Different\Dwfw\app\Models\Partner;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 abstract class TestCase extends BaseTestCase
@@ -14,6 +15,14 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
     use RefreshDatabase;
     use WithFaker;
+
+    const PERMISSIONS = [
+        'login backend',
+        'manage users',
+        'manage bans',
+        'view logs',
+        'manage settings',
+    ];
 
     protected static $database_built = false;
     protected $role_admin;
@@ -44,6 +53,25 @@ abstract class TestCase extends BaseTestCase
             'contact_phone' => $this->faker->phoneNumber,
             'contact_email' => $this->faker->unique()->safeEmail,
         ]);
+    }
+
+    protected function createPermissions(): void
+    {
+        foreach(self::PERMISSIONS as $permission) {
+            Permission::create([
+                'name' => $permission,
+                'guard_name' => 'web',
+            ]);
+        }
+    }
+
+    protected function addPermissionsForAdmin(): void
+    {
+        $role_admin = Role::query()->where('name', 'admin')->first();
+        foreach(self::PERMISSIONS as $permission)
+        {
+            $role_admin->givePermissionTo($permission);
+        }
     }
 
 }

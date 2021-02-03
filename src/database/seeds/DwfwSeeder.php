@@ -7,10 +7,19 @@ use Backpack\Settings\app\Models\Setting;
 use Different\Dwfw\app\Models\Partner;
 use Different\Dwfw\app\Models\TimeZone;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class DwfwSeeder extends Seeder
 {
+    const PERMISSIONS = [
+        'login backend',
+        'manage users',
+        'manage bans',
+        'view logs',
+        'manage settings',
+    ];
+
     public function run()
     {
         // USERS
@@ -30,10 +39,19 @@ class DwfwSeeder extends Seeder
             'name' => 'admin',
             'guard_name' => 'web',
         ], []);
-        $role_partner = Role::query()->firstOrCreate([
-            'name' => 'partner',
-            'guard_name' => 'web',
-        ], []);
+//        $role_partner = Role::query()->firstOrCreate([
+//            'name' => 'partner',
+//            'guard_name' => 'web',
+//        ], []);
+
+        foreach(self::PERMISSIONS as $permission)
+        {
+            Permission::create([
+                'name' => $permission,
+                'guard_name' => 'web',
+            ]);
+            $role_admin->givePermissionTo($permission);
+        }
 
         // add admin role to base user
         $user->assignRole($role_admin->name);

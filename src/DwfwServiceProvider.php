@@ -64,6 +64,8 @@ class DwfwServiceProvider extends ServiceProvider
 
         $this->loadRoutesFrom(__DIR__ . '/routes/backpack/base.php');
 
+        $this->loadRoutesFrom(__DIR__ . '/routes/backpack/settings.php');
+
         $this->loadRoutesFrom(__DIR__ . '/routes/dwfw/routes.php');
 
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'dwfw');

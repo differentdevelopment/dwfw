@@ -22,7 +22,7 @@ class CheckIfAdmin
      */
     private function checkIfUserIsAdmin($user)
     {
-        return $user->hasRole('admin') || $user->hasRole('partner');
+        return $user->hasPermissionTo('login backend');
     }
 
     /**

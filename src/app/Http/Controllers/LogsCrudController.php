@@ -7,11 +7,19 @@ use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Different\Dwfw\app\Models\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Spatie\Permission\Middlewares\PermissionMiddleware;
 
 class LogsCrudController extends BaseCrudController
 {
     use ListOperation;
     use ShowOperation;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware(PermissionMiddleware::class . ':view logs');
+    }
 
     public function setup()
     {

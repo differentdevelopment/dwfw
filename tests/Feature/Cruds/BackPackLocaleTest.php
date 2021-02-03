@@ -16,6 +16,8 @@ class BackPackLocaleTest extends TestCase
     {
         parent::setUp();
         $this->createAdminAndGuestUser();
+        $this->createPermissions();
+        $this->addPermissionsForAdmin();
         $this->locale = App::getLocale();
     }
 

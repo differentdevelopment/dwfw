@@ -12,6 +12,7 @@ use Different\Dwfw\app\Http\Controllers\Traits\ColumnFaker;
 use Different\Dwfw\app\Http\Controllers\Traits\FileUpload;
 use Different\Dwfw\app\Models\TimeZone;
 use Different\Dwfw\app\Traits\LoggableAdmin;
+use Spatie\Permission\Middlewares\PermissionMiddleware;
 
 class UsersCrudController extends UserCrudController
 {
@@ -27,6 +28,12 @@ class UsersCrudController extends UserCrudController
         update as traitUpdate;
     }
     use LoggableAdmin;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware(PermissionMiddleware::class . ':manage users');
+    }
 
     public function setup()
     {

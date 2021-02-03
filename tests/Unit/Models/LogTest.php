@@ -16,6 +16,8 @@ class LogTest extends TestCase
     {
         parent::setUp();
         $this->createAdminAndGuestUser();
+        $this->createPermissions();
+        $this->addPermissionsForAdmin();
         $this->user = User::factory()->create();
         $this->log = Log::create([
             'user_id' => $this->user->id,

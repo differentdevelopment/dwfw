@@ -105,6 +105,7 @@ class DwfwServiceProvider extends ServiceProvider
 
         // core configs
         $this->publishes([__DIR__ . '/config/auth.php' => config_path('auth.php')], 'config.auth');
+        $this->publishes([__DIR__ . '/config/cache.php' => config_path('cache.php')], 'config.cache');
 
         // languages
         $this->publishes([__DIR__ . '/resources/lang/hu/validation.php' => resource_path('lang/hu/validation.php')], 'core.langs');
@@ -130,6 +131,9 @@ class DwfwServiceProvider extends ServiceProvider
 
         //Spatie Honey
         $this->publishes([__DIR__ . '/app/SpamResponder/SpamRespond.php' => app_path() . '/SpamResponder/SpamRespond.php'], 'spatie-honey.spam-respond');
+
+        //index.php
+        $this->publishes([__DIR__ . '/public/index.php' => public_path() . '/index.php'], 'index');
     }
 
     private function cleanup()

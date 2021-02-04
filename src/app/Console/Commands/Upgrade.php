@@ -12,7 +12,7 @@ class Upgrade extends Command
 
     use PrettyCommandOutput;
 
-    const VERSION = '0.13.9';
+    const VERSION = '0.14.0';
     protected string $finish_message;
     /**
      * Array of methods used for upgrading to the given version
@@ -25,6 +25,7 @@ class Upgrade extends Command
         '0.10.27' => 'upgrade_to_0_10_27',
         '0.13.6' => 'upgrade_to_0_13_6',
         '0.13.9' => 'upgrade_to_0_13_9',
+        '0.14.0' => 'upgrade_to_0_14_0',
     ];
     protected $progressBar;
     protected $signature = 'dwfw:upgrade
@@ -35,8 +36,9 @@ class Upgrade extends Command
     public function handle()
     {
         $this->makeConfigFileIfNotExists();
+        $current_version = config('dwfw.version') !== '0.13.10' && config('dwfw.version') !== '0.13.11' ? config('dwfw.version') : '0.13.9';
         foreach ($this->upgrade_methods as $version => $upgrade) {
-            if ($version > config('dwfw.version') ?? '0.10.13') {
+            if ($version > $current_version ?? '0.10.13') {
                 if (is_callable([$this, $upgrade])) {
                     $this->$upgrade();
                 } else {
@@ -213,6 +215,24 @@ class Upgrade extends Command
         $this->executeArtisanProcess('vendor:publish', [
             '--provider' => 'Different\Dwfw\DwfwServiceProvider',
             '--tag' => 'config.checkIp',
+            '--force' => '--force',
+        ]);
+        $this->progressBar->finish();
+    }
+
+    private function upgrade_to_0_14_0()
+    {
+        $this->start_progress_bar('0.14.0', 4);
+        $this->line(' Publishing cache config file');
+        $this->executeArtisanProcess('vendor:publish', [
+            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
+            '--tag' => 'config.cache',
+            '--force' => '--force',
+        ]);
+        $this->line(' Publishing index.php file');
+        $this->executeArtisanProcess('vendor:publish', [
+            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
+            '--tag' => 'index',
             '--force' => '--force',
         ]);
         $this->progressBar->finish();

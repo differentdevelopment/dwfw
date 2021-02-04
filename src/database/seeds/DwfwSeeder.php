@@ -35,26 +35,27 @@ class DwfwSeeder extends Seeder
         ]);
 
         // BASE ROLES
+        $role_super_admin = Role::query()->firstOrCreate([
+            'name' => 'super admin',
+            'guard_name' => 'web',
+        ],[]);
+
         $role_admin = Role::query()->firstOrCreate([
             'name' => 'admin',
             'guard_name' => 'web',
         ], []);
-//        $role_partner = Role::query()->firstOrCreate([
-//            'name' => 'partner',
-//            'guard_name' => 'web',
-//        ], []);
 
         foreach(self::PERMISSIONS as $permission)
         {
-            Permission::create([
+            Permission::firstOrcreate([
                 'name' => $permission,
                 'guard_name' => 'web',
-            ]);
+            ], []);
             $role_admin->givePermissionTo($permission);
         }
 
         // add admin role to base user
-        $user->assignRole($role_admin->name);
+        $user->assignRole($role_super_admin->name);
 
         // TIMEZONES
         $timestamp = time();

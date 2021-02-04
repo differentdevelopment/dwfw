@@ -43,6 +43,10 @@ class DwfwServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('super admin') ? true : null;
+        });
+
         if(method_exists(Controller::class, 'allowFileView')) {
             Gate::define('viewFile', 'App\Http\Controllers\Controller@allowFileView');
         } else{

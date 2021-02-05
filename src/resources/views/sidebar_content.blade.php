@@ -1,7 +1,8 @@
 <!-- This file is used to store sidebar items, starting with Backpack\Base 0.9.0 -->
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="la la-home nav-icon"></i> {{ trans('backpack::base.dashboard') }}</a></li>
 
-@canany('manage users|manage settings|view logs|manage bans')
+@if(auth()->user()->hasAnyPermission('view logs', 'manage users', 'manage settings', 'manage bans') || auth()->user()->hasRole('super admin'))
+    {{--    canany blade directive doesnt work--}}
     <li class="nav-item nav-dropdown">
         <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fa fa-users-cog"></i> Admin zone</a>
         <ul class="nav-dropdown-items">
@@ -20,4 +21,4 @@
             @endcan
         </ul>
     </li>
-@endcanany
+@endif

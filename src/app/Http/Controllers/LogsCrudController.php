@@ -167,12 +167,12 @@ class LogsCrudController extends BaseCrudController
                 [
                     [
                         'name' => 'user_id',
-                        'type' => 'select2_ajax',
+                        'type' => 'select2_ajax_multiple',
                         'label' => __('dwfw::logs.user_id'),
                     ],
                     route('admin.ajax-user-options'),
-                    function ($value) {
-                        $this->crud->addClause('where', 'user_id', '=', $value);
+                    function ($values) {
+                        $this->crud->addClause('whereIn', 'user_id', json_decode($values));
                     },
                 ],
 

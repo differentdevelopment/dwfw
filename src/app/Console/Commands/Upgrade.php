@@ -12,7 +12,7 @@ class Upgrade extends Command
 
     use PrettyCommandOutput;
 
-    const VERSION = '0.14.1';
+    const VERSION = '0.14.2';
     protected string $finish_message;
     /**
      * Array of methods used for upgrading to the given version
@@ -26,6 +26,7 @@ class Upgrade extends Command
         '0.13.6' => 'upgrade_to_0_13_6',
         '0.13.9' => 'upgrade_to_0_13_9',
         '0.14.0' => 'upgrade_to_0_14_0',
+        '0.14.2' => 'upgrade_to_0_14_2',
     ];
     protected $progressBar;
     protected $signature = 'dwfw:upgrade
@@ -238,4 +239,15 @@ class Upgrade extends Command
         $this->progressBar->finish();
     }
 
+    private function upgrade_to_0_14_2()
+    {
+        $this->start_progress_bar('0.14.2', 2);
+        $this->line(' Publishing select2 ajax multiple filter');
+        $this->executeArtisanProcess('vendor:publish', [
+            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
+            '--tag' => 'backpack.filters',
+            '--force' => '--force',
+        ]);
+        $this->progressBar->finish();
+    }
 }

@@ -133,6 +133,9 @@ class DwfwServiceProvider extends ServiceProvider
         //Backpack login view
         $this->publishes([__DIR__ . '/resources/views/vendor/backpack/base/auth/login.blade.php' => resource_path() . '/views/vendor/backpack/base/auth/login.blade.php'], 'backpack.login');
 
+        //Select2 Ajax multiple filter for Backpack
+        $this->publishes([__DIR__ . '/resources/views/vendor/backpack/crud/filters/select2_ajax_multiple.blade.php' => resource_path() . '/views/vendor/backpack/crud/filters/select2_ajax_multiple.blade.php'], 'backpack.filters');
+
         //Spatie Honey
         $this->publishes([__DIR__ . '/app/SpamResponder/SpamRespond.php' => app_path() . '/SpamResponder/SpamRespond.php'], 'spatie-honey.spam-respond');
 

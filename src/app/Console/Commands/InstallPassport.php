@@ -34,7 +34,7 @@ class InstallPassport extends Command
      */
     public function handle() :void
     {
-        $this->progressBar = $this->output->createProgressBar(5);
+        $this->progressBar = $this->output->createProgressBar(3);
         $this->progressBar->minSecondsBetweenRedraws(0);
         $this->progressBar->maxSecondsBetweenRedraws(120);
         $this->progressBar->setRedrawFrequency(1);
@@ -51,6 +51,10 @@ class InstallPassport extends Command
             $this->info(' Passport install cancelled');
             exit;
         }
+
+        $this->executeArtisanProcess('migrate', [
+            '--force' => '--force',
+        ]);
 
         $this->executeArtisanProcess('passport:install', [
             '--force' => '--force',

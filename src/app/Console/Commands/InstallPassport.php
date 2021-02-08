@@ -4,6 +4,8 @@ namespace Different\Dwfw\app\Console\Commands;
 
 use Backpack\CRUD\app\Console\Commands\Traits\PrettyCommandOutput;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class InstallPassport extends Command
 {
@@ -34,6 +36,7 @@ class InstallPassport extends Command
      */
     public function handle() :void
     {
+
         $this->progressBar = $this->output->createProgressBar(3);
         $this->progressBar->minSecondsBetweenRedraws(0);
         $this->progressBar->maxSecondsBetweenRedraws(120);
@@ -52,14 +55,6 @@ class InstallPassport extends Command
             exit;
         }
 
-        $this->executeArtisanProcess('migrate', [
-            '--force' => '--force',
-        ]);
-
-        $this->executeArtisanProcess('passport:install', [
-            '--force' => '--force',
-        ]);
-
         $this->line(' Publishing DWFW passport files');
         $this->executeArtisanProcess('vendor:publish', [
             '--provider' => 'Different\Dwfw\DwfwServiceProvider',
@@ -67,8 +62,28 @@ class InstallPassport extends Command
             '--force' => '--force',
         ]);
 
+        $this->createPostmanCollectionFromStub();
         $this->progressBar->finish();
+        $this->warn(' Run php artisan:migrate && php artisan passport:install');
         $this->warn(' Don\'t forget to add HasApiTokens Trait and Uncomment Notification functions in your User model!');
         $this->info(' DWFW installation finished.');
+    }
+
+    private function createPostmanCollectionFromStub()
+    {
+        $file_name = env('APP_NAME') . 'postman_collection.json';
+
+        $this->createFromStub(
+            'Dwfw.postman_collection.stub',
+            base_path(env('APP_NAME') . '.postman_collection.json'),
+        );
+    }
+
+    private function createFromStub(string $stub_name, $file_path)
+    {
+        $stub_content = File::get(__DIR__ . '/../../../../' . $stub_name);
+        $stub_content = str_replace('DummyAppName', env('APP_NAME'), $stub_content);
+        $stub_content = str_replace('DummyUrl', env('APP_URL') . '/', $stub_content);
+        File::put($file_path, $stub_content);
     }
 }

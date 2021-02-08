@@ -1,0 +1,461 @@
+{
+	"info": {
+		"_postman_id": "5f529e95-e3cf-4986-8eaf-a58c12f8c233",
+		"name": "DummyAppName",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Generate Token (Login)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.collectionVariables.set(\"MY_TOKEN\", jsonData['access_token']);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"equals": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{USER}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{PASSWORD}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MY_URL}}api/v1/login",
+							"host": [
+								"{{MY_URL}}api"
+							],
+							"path": [
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.collectionVariables.set(\"MY_TOKEN\", jsonData['access_token']);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"equals": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{$randomEmail}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "{{$randomFullName}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MY_URL}}api/v1/register",
+							"host": [
+								"{{MY_URL}}api"
+							],
+							"path": [
+								"v1",
+								"register"
+							]
+						},
+						"description": "JSON: {\r\n    'token'\r\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "(Auth) Registration Confirm",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{MY_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"equals": true,
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "pin",
+									"value": "302971",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MY_URL}}api/v1/register-confirm",
+							"host": [
+								"{{MY_URL}}api"
+							],
+							"path": [
+								"v1",
+								"register-confirm"
+							]
+						},
+						"description": "JSON: {\r\n    'token'\r\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "(Auth) New Pin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{MY_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"equals": true,
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{MY_URL}}api/v1/new-pin",
+							"host": [
+								"{{MY_URL}}api"
+							],
+							"path": [
+								"v1",
+								"new-pin"
+							]
+						},
+						"description": "JSON: {\r\n    'token'\r\n}"
+					},
+					"response": []
+				},
+				{
+					"name": "Lost Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"equals": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "fejlesztes@different.hu",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MY_URL}}api/v1/lost-password",
+							"host": [
+								"{{MY_URL}}api"
+							],
+							"path": [
+								"v1",
+								"lost-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lost Password Recovery",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "password",
+									"value": "123456789",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "123456789",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "fejlesztes@different.hu",
+									"type": "text"
+								},
+								{
+									"key": "hash",
+									"value": "12345678",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MY_URL}}api/v1/password-recovery",
+							"host": [
+								"{{MY_URL}}api"
+							],
+							"path": [
+								"v1",
+								"password-recovery"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "(Auth) User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{MY_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{MY_URL}}api/v1/user",
+							"host": [
+								"{{MY_URL}}api"
+							],
+							"path": [
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "(Auth) Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{MY_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{MY_URL}}api/v1/logout",
+							"host": [
+								"{{MY_URL}}api"
+							],
+							"path": [
+								"v1",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "MY_URL",
+			"value": "DummyUrl"
+		},
+		{
+			"key": "MY_TOKEN",
+			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNTVlODI4MzdhOGY0ZmRmYjkyZmJhM2Y5YzZhZGZjMzUwYjE3YTZkN2Q3YjdjMmI0NjlmNjZhNmRlOTIyZTRkODYzMzc1Yzc4ZmMxODAyOTkiLCJpYXQiOiIxNjEyNzg5NDI4LjAxMjY0MCIsIm5iZiI6IjE2MTI3ODk0MjguMDEyNjQ1IiwiZXhwIjoiMTY0NDMyNTQyOC4wMDAxOTYiLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.laDWbGFEMHHVZjysZFI8Bf9sYicL7wAUAkFyAFZIJPZ16qt6EUaLudADxA_6K_eoZXlR388pMU6pDjDs2Qfk9gapcsiu7KNi2zFMbWnbvdBcaKSH75vvDvFH--2NRrABdjTvtfnOkD_1qzqrR1Hwn6Jl6--BIpAzuIJsjyr_ceEWYrqiWXto0poILoH5N1MnLxVPKXjD2txdfretrWB9RLYafxDGD0Aiv9CP1fjMimR9tQDhhsujVLj0KUz4_HVEZc_LEb2LZhg3OtnLEvszKZvCumCmpMXen9iF09p03Yq9p8FkpzijGX00oJ0wm_4WScpASC4V972iG6kQa2-To06SBwVOpj7AvQdO7pub6eJblWZvbZ3AuiyBISIqGvyCfjEs344E_he6GK3igJPwwvCi-53gg_VknvwIPdgdgq3LpLz1b7nByzOjPJiU-kHuoPEqC9RzDs-i-z-xcamoBz7shTmxOgRCDyjnU9C5eoMlW4H4_kqFtuTFEO3ddj-et2ZLg7yRyuoI0BJmi4jwVOEUy8ooZ4YbiDF0UOPlv1Lp1AcFUgO_Osg2xKx6zLk0f_YvD5x2Wvl0SentJ1_-9UhY35vazG9evB8zdVGNM0V1SGcnvT3cCPuP1X0scUREuWzIuwNxnboVYi8YS_eLhYENsOgR0z-bOKmQYrVWljI"
+		},
+		{
+			"key": "USER",
+			"value": ""
+		},
+		{
+			"key": "PASSWORD",
+			"value": ""
+		}
+	]
+}

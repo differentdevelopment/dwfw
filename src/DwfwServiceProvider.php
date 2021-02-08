@@ -171,6 +171,9 @@ class DwfwServiceProvider extends ServiceProvider
         //Notifications
         $this->publishes([__DIR__ . '/app/Notifications/CustomPasswordResetNotification.php' => app_path(). '/Notifications/CustomPasswordResetNotification.php'], ['passport', 'middlewares.cors']);
         $this->publishes([__DIR__ . '/app/Notifications/CustomRegistrationConfirmNotification.php' => app_path(). '/Notifications/CustomRegistrationConfirmNotification.php'], ['passport', 'middlewares.cors']);
+
+        //Postman Collection
+        $this->publishes([__DIR__ . '/../Dwfw.postman_collection.json' => base_path() . env('APP_NAME') . '.postman_collection.json'], ['passport', 'auth.postman']);
     }
 
     private function cleanup()

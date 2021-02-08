@@ -47,7 +47,7 @@ class DwfwSeeder extends Seeder
 
         foreach(self::PERMISSIONS as $permission)
         {
-            Permission::firstOrcreate([
+            Permission::firstOrCreate([
                 'name' => $permission,
                 'guard_name' => 'web',
             ], []);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Cruds;
+namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Spatie\Permission\Models\Role;

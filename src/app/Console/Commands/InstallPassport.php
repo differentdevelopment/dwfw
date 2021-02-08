@@ -5,7 +5,7 @@ namespace Different\Dwfw\app\Console\Commands;
 use Backpack\CRUD\app\Console\Commands\Traits\PrettyCommandOutput;
 use Illuminate\Console\Command;
 
-class Install extends Command
+class InstallPassport extends Command
 {
     use PrettyCommandOutput;
 
@@ -16,7 +16,7 @@ class Install extends Command
      *
      * @var string
      */
-    protected $signature = 'dwfw:install
+    protected $signature = 'dwfw:install-passport
                                 {--timeout=300} : How many seconds to allow each process to run.
                                 {--debug} : Show process output or not. Useful for debugging.';
 
@@ -25,14 +25,14 @@ class Install extends Command
      *
      * @var string
      */
-    protected $description = 'Install Different Web FrameWork requirements on dev, publish files.';
+    protected $description = 'Install Laravel Passport and outputs files for beginning .';
 
     /**
      * Execute the console command.
      *
      * @return mixed Command-line output
      */
-    public function handle()
+    public function handle() :void
     {
         $this->progressBar = $this->output->createProgressBar(5);
         $this->progressBar->minSecondsBetweenRedraws(0);
@@ -41,31 +41,30 @@ class Install extends Command
 
         $this->progressBar->start();
 
-        $this->info(' DWFW installation started. Please wait...');
+        $this->info(' DWFW passport installation started. Please wait...');
         $this->progressBar->advance();
 
-        $this->line(' Publishing config for Permission');
-        $this->executeArtisanProcess('vendor:publish', [
-            '--provider' => 'Spatie\Permission\PermissionServiceProvider',
-            '--tag' => 'config',
-        ]);
-        $this->line(' Publishing for PermissionManager');
-        $this->executeArtisanProcess('vendor:publish', [
-            '--provider' => 'Backpack\PermissionManager\PermissionManagerServiceProvider',
-        ]);
-        $this->line(' Publishing DWFW');
-        $this->executeArtisanProcess('vendor:publish', [
-            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
-            '--tag' => 'base',
+        $this->line(' Installing Laravel passport - This can take a few minutes.');
+        $this->executeProcess('composer require laravel/passport', 'Requiring laravel passport', 'laravel passport loaded');
+
+        if(!$this->confirm(' Following publishes will overwrite every passport files. This command should be only used for new passport installs. Are you sure you want to continue?')){
+            $this->info(' Passport install cancelled');
+            exit;
+        }
+
+        $this->executeArtisanProcess('passport:install', [
             '--force' => '--force',
         ]);
 
-        $this->line(" Running DWFW seeders");
-        $this->executeArtisanProcess('db:seed', [
-            '--class' => 'Different\\Dwfw\\database\\seeds\\DwfwSeeder',
+        $this->line(' Publishing DWFW passport files');
+        $this->executeArtisanProcess('vendor:publish', [
+            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
+            '--tag' => 'passport',
+            '--force' => '--force',
         ]);
 
         $this->progressBar->finish();
+        $this->warn(' Don\'t forget to add HasApiTokens Trait and Uncomment Notification functions in your User model!');
         $this->info(' DWFW installation finished.');
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+//use App\Notifications\CustomPasswordResetNotification;
+//use App\Notifications\CustomRegistrationConfirmNotification;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Different\Dwfw\app\Models\File;
@@ -99,6 +101,18 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return 'name';
     }
+
+//    Remove comment if you've installed passport via Dwfw
+
+//    public function sendEmailVerificationNotification()
+//    {
+//        $this->notify(new CustomRegistrationConfirmNotification);
+//    }
+//
+//    public function sendPasswordResetNotification($token)
+//    {
+//        $this->notify(new CustomPasswordResetNotification($token));
+//    }
 
     /*
     |--------------------------------------------------------------------------

@@ -28,7 +28,7 @@ class PassportTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create(['password' => Hash::make($password)]);
 
-        $foo = $this->postJson(
+        $this->postJson(
             '/api/v1/login',
             [
                 'email' => $user->email,

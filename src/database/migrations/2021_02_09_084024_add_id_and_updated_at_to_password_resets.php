@@ -15,7 +15,7 @@ class AddIdAndUpdatedAtToPasswordResets extends Migration
     {
 
         Schema::table('password_resets', function (Blueprint $table) {
-            if(!Schema::hasColumn('password_resets', 'id')) {
+            if(!Schema::hasColumn('password_resets', 'id') && config('app.env') !== 'testing') { //Tesztek meghalnak, ha utólag akarunk id-t hozzáadni
                 $table->id();
             }
             if(!Schema::hasColumn('password_resets', 'updated_at')) {

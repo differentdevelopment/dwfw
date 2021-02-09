@@ -6,6 +6,7 @@ use Different\Dwfw\app\Http\Controllers\Traits\ColumnFaker;
 use Different\Dwfw\app\Http\Controllers\Traits\FileUpload;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 abstract class BaseCrudController extends CrudController
 {
@@ -43,7 +44,7 @@ abstract class BaseCrudController extends CrudController
             $this->{$column . '_id'} = Route::current()->parameter($column . '_id');
         }
         if ($this->{$column . '_id'}) {
-            $model_name = 'App\Models\\' . ucfirst($column);
+            $model_name = 'App\Models\\' . Str::studly($column);
             $model = new $model_name;
             $this->{$column} = $model::findOrFail($this->{$column . '_id'});
             $this->crud->setRoute($this->crud->getRoute() . '/' . $this->{$column . '_id'} . '/' . $column);

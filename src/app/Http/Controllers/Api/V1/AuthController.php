@@ -100,7 +100,7 @@ class AuthController extends Controller
         }
 
         if ($request->user()->email_verify_pin != $request->validated()['pin']) {
-            $this->log('AUTH_REG_CONFIRMED_BAD_PIN', 'v1/register-confirm', $request->user()->id, $request->user(), User::class, $request->user()->id);
+            $this->log('AUTH_REG_CONFIRMED_BAD_PIN', $request->user()->id, $request->user(), User::class, $request->user()->id);
             BaseApiFormRequest::throwError('Hibás PIN kód.');
         }
         $request->user()->markEmailAsVerified();

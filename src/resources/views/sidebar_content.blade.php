@@ -19,6 +19,12 @@
             @can('manage bans')
                 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('spammers') }}"><i class="nav-icon fa fa-ban"></i> @lang('dwfw::spammers.spammers')</a></li>
             @endcan
+            @can('manage permissions')
+                <li class="nav-item"><a class="nav-link" href="{{ backpack_url('permission') }}"><i class="nav-icon fas fa-clipboard-check"></i> @lang('backpack::permissionmanager.permission_plural')</a></li>
+            @endcan
+            @can('manage roles')
+                <li class="nav-item"><a class="nav-link" href="{{ backpack_url('role') }}"><i class="nav-icon fas fa-users-cog"></i> @lang('backpack::permissionmanager.roles')</a></li>
+            @endcan
         </ul>
     </li>
 @endif

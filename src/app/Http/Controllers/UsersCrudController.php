@@ -10,6 +10,8 @@ use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
 use Backpack\PermissionManager\app\Http\Controllers\UserCrudController;
 use Different\Dwfw\app\Http\Controllers\Traits\ColumnFaker;
 use Different\Dwfw\app\Http\Controllers\Traits\FileUpload;
+use Different\Dwfw\app\Http\Requests\UserStoreRequest;
+use Different\Dwfw\app\Http\Requests\UserUpdateRequest;
 use Different\Dwfw\app\Models\TimeZone;
 use Different\Dwfw\app\Traits\LoggableAdmin;
 use Spatie\Permission\Middlewares\PermissionMiddleware;
@@ -174,12 +176,14 @@ class UsersCrudController extends UserCrudController
     public function store()
     {
         $this->handleFileUpload('profile_image', null, 'users');
+        $this->crud->setValidation(UserStoreRequest::class);
         return parent::store();
     }
 
     public function update()
     {
         $this->handleFileUpload('profile_image', null, 'users');
+        $this->crud->setValidation(UserUpdateRequest::class);
         return parent::update();
     }
 

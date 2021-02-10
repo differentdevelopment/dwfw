@@ -18,6 +18,8 @@ class DwfwSeeder extends Seeder
         'manage bans',
         'view logs',
         'manage settings',
+        'manage roles',
+        'manage permissions',
     ];
 
     public function run()

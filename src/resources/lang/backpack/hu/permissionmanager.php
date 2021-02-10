@@ -14,8 +14,8 @@ return [
     'role'                  => 'Szerep',
     'roles'                 => 'Szerepek',
     'roles_have_permission' => 'Szerepek a megfelelő jogosultsággal',
-    'permission_singular'   => 'jogosultság',
-    'permission_plural'     => 'jogosultságok',
+    'permission_singular'   => 'Jogosultság',
+    'permission_plural'     => 'Jogosultságok',
     'user_singular'         => 'Felhasználó',
     'user_plural'           => 'Felhasználók',
     'email'                 => 'Email',
@@ -26,5 +26,4 @@ return [
     'user'                  => 'Felhasználó',
     'users'                 => 'Felhasználók',
     'guard_type'            => 'Guard Típusa',
-
 ];

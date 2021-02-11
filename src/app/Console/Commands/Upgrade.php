@@ -12,7 +12,7 @@ class Upgrade extends Command
 
     use PrettyCommandOutput;
 
-    const VERSION = '0.14.2';
+    const VERSION = '0.14.3';
     protected string $finish_message;
     /**
      * Array of methods used for upgrading to the given version
@@ -27,6 +27,7 @@ class Upgrade extends Command
         '0.13.9' => 'upgrade_to_0_13_9',
         '0.14.0' => 'upgrade_to_0_14_0',
         '0.14.2' => 'upgrade_to_0_14_2',
+        '0.14.3' => 'upgrade_to_0_14_3',
     ];
     protected $progressBar;
     protected $signature = 'dwfw:upgrade
@@ -249,5 +250,18 @@ class Upgrade extends Command
             '--force' => '--force',
         ]);
         $this->progressBar->finish();
+    }
+
+    private function upgrade_to_0_14_3()
+    {
+        $this->start_progress_bar('0.14.3', 2);
+        $this->line( 'Publishing permission lang file');
+        $this->executeArtisanProcess('vendor:publish', [
+            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
+            '--tag' => 'permission.lang',
+            '--force' => '--force',
+        ]);
+        $this->progressBar->finish();
+        $this->info('You can now remove backpack/permissionmanager if installed');
     }
 }

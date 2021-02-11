@@ -22,7 +22,7 @@ class MenuTest extends TestCase
     {
         $this
             ->actingAs($this->user_admin)
-            ->get(route('admin./users.index'))
+            ->get(route('users.index'))
             ->assertSee(__('dwfw::users.users'))
             ->assertSee(__('dwfw::settings.settings'))
             ->assertSee(__('dwfw::logs.logs'))

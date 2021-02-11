@@ -57,13 +57,13 @@ class BackPackLocaleTest extends TestCase
     /** @test */
     function testPermissionManagerLocalization(){
         $this->actingAs($this->user_admin)
-            ->get(route('user.edit', $this->user_not_admin))
+            ->get(route('users.edit', $this->user_not_admin))
             ->assertSee(trans('backpack::permissionmanager.user_role_permission'))
             ->assertSee(trans('backpack::permissionmanager.password_confirmation'));
 
         if($this->locale !== 'en'){
             $this->actingAs($this->user_admin)
-                ->get(route('user.edit', $this->user_not_admin))
+                ->get(route('users.edit', $this->user_not_admin))
                 ->assertDontSee('User Role Permissions')
                 ->assertDontSee('Password');
         }

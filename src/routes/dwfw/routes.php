@@ -1,5 +1,10 @@
 <?php
 
+//use Different\Dwfw\app\Http\Controllers\LogsCrudController;
+use Different\Dwfw\app\Http\Controllers\LogsCrudController;
+use Different\Dwfw\app\Http\Controllers\PartnersCrudController;
+use Different\Dwfw\app\Http\Controllers\SpammersCrudController;
+use Different\Dwfw\app\Http\Controllers\UsersCrudController;
 use Illuminate\Support\Facades\Route;
 
 //use Illuminate\Support\Facades\Auth; //TODO EZ A KÉT SOR ERRORT OKOZOTT MINDEN RENDSZERÜNKBEN
@@ -21,24 +26,23 @@ Route::group(
 Route::group([
     'prefix' => config('backpack.base.route_prefix', 'admin'),
     'middleware' => ['web', config('backpack.base.middleware_key', 'admin'), 'timezone',],
-    'namespace' => 'Different\Dwfw\app\Http\Controllers',
     'as' => 'admin.',
 ], function () { // custom admin routes
-    Route::get('logs/ajax-user-options', 'LogsCrudController@userOptions')->name('ajax-user-options');
+    Route::get('logs/ajax-user-options', [LogsCrudController::class, 'userOptions'])->name('ajax-user-options');
     Route::crud('/logs', LogsCrudController::class);
     Route::crud('/spammers', SpammersCrudController::class);
 
     // USERS
     Route::crud('/users', UsersCrudController::class);
-    Route::get('/users/{user}/verify', 'UsersCrudController@verifyUser')->name('verify');
-    Route::get('/user', 'UsersCrudController@abortUserGrid');
+    Route::get('/users/{user}/verify', [UsersCrudController::class ,'verifyUser'])->name('verify');
+    Route::get('/user', [UsersCrudController::class, 'abortUserGrid']);
 
     // PARTNERS
     Route::group([
         'prefix' => 'partners',
         'as' => 'partners',
     ], function () {
-        Route::get('ajax_partner_list', 'PartnersCrudController@ajaxList')->name('.ajax-partner-list');
+        Route::get('ajax_partner_list', [PartnersCrudController::class, 'ajaxList'])->name('.ajax-partner-list');
         Route::crud('', PartnersCrudController::class);
     });
 

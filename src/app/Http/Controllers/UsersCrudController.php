@@ -4,20 +4,23 @@ namespace Different\Dwfw\app\Http\Controllers;
 
 use Alert;
 use App\Models\User;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-use Backpack\PermissionManager\app\Http\Controllers\UserCrudController;
 use Different\Dwfw\app\Http\Controllers\Traits\ColumnFaker;
 use Different\Dwfw\app\Http\Controllers\Traits\FileUpload;
 use Different\Dwfw\app\Http\Requests\UserStoreRequest;
 use Different\Dwfw\app\Http\Requests\UserUpdateRequest;
 use Different\Dwfw\app\Models\TimeZone;
 use Different\Dwfw\app\Traits\LoggableAdmin;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Middlewares\PermissionMiddleware;
 
-class UsersCrudController extends UserCrudController
+class UsersCrudController extends BaseCrudController
 {
+
     use FileUpload;
     use ColumnFaker;
     use ShowOperation {
@@ -30,6 +33,7 @@ class UsersCrudController extends UserCrudController
         update as traitUpdate;
     }
     use LoggableAdmin;
+    use ListOperation;
 
     public function __construct()
     {
@@ -39,10 +43,13 @@ class UsersCrudController extends UserCrudController
 
     public function setup()
     {
-        parent::setup();
-        $this->crud->setModel(User::class);
+        //        $this->crud->setModel(config('backpack.permissionmanager.models.user'));
         $this->crud->setRoute(backpack_url('users'));
+        $this->crud->setEntityNameStrings(trans('backpack::permissionmanager.user'), trans('backpack::permissionmanager.users'));
+        $this->crud->setModel(User::class);
         $this->crud->addButton('line', 'verify', 'view', 'dwfw::crud.buttons.users.verify', 'beginning');
+//        $this->crud->setEditView('backpack::crud.edit_with_permissions');
+        $this->setupColumnsFieldsFromMethod();
     }
 
     public function show($id)
@@ -58,109 +65,160 @@ class UsersCrudController extends UserCrudController
         }
     }
 
-    protected function setupShowOperation(){
-        $this->crud->set('show.setFromDb', false);
-        $this->crud->addColumn([
-            'name' => 'profile_image',
-            'label' => __('dwfw::users.profile_image'),
-            'type' => 'image',
-        ]);
-        $this->crud->addColumn([
-            'name' => 'name',
-            'label' => __('dwfw::users.user'),
-            'type' => 'text',
-        ]);
-        $this->crud->addColumn([
-            'name' => 'email',
-            'label' => 'E-mail',
-            'type' => 'email',
-        ]);
-        $this->crud->addColumn([
-            'name' => 'partner',
-            'label' => __('dwfw::partners.partner'),
-            'type' => 'relationship',
-        ]);
-        $this->crud->addColumn([
-            'name' => 'email_verified_at',
-            'label' => __('dwfw::users.verified_at'),
-            'type' => 'date',
-        ]);
-
-    }
-
-    public function setupListOperation()
+    public function getColumns()
     {
-        parent::setupListOperation();
-        $this->crud->addColumn([
-            'name' => 'partner',
-            'label' => __('dwfw::partners.partner'),
-            'type' => 'select',
-            'entity' => 'partner',
-            'searchLogic' => function ($query, $column, $searchTerm) {
-                $query->orWhereHas('partner', function ($q) use ($column, $searchTerm) {
-                    $q->where('name', 'like', '%' . $searchTerm . '%')
-                        ->orWhere('contact_name', 'like', '%' . $searchTerm . '%');
-                });
-            }
-        ])->afterColumn('name');
-        $this->crud->addColumn([
-            'name' => 'email_verified_at',
-            'label' => __('dwfw::users.verified_at'),
-            'type' => 'date',
-        ])->afterColumn('partner');
-    }
-
-    protected function addUserFields()
-    {
-        parent::addUserFields();
-        $this->crud->addField([
-            'name' => 'partner_id',
-            'label' => __('dwfw::partners.partner'),
-            'type' => 'select',
-            'entity' => 'partner',
-            'attribute' => 'name_contact_name',
-            'options' => (function ($query) {
-                return $query->orderBy('name', 'ASC')->orderBy('contact_name', 'ASC')->get();
-            }),
-            'wrapper' => [
-                'class' => 'form-group col-12 col-sm-12',
+        return [
+            [
+                'name' => 'name',
+                'label' => trans('backpack::permissionmanager.name'),
+                'type' => 'text',
             ],
-        ])->beforeField('name');
-        $this->crud->addFields([
+            [
+                'name' => 'email',
+                'label' => trans('backpack::permissionmanager.email'),
+                'type' => 'email',
+            ],
+            [ // n-n relationship (with pivot table)
+              'label' => trans('backpack::permissionmanager.roles'), // Table column heading
+              'type' => 'select_multiple',
+              'name' => 'roles', // the method that defines the relationship in your Model
+              'entity' => 'roles', // the method that defines the relationship in your Model
+              'attribute' => 'name', // foreign key attribute that is shown to user
+              'model' => config('permission.models.role'), // foreign key model
+            ],
+            [ // n-n relationship (with pivot table)
+              'label' => trans('backpack::permissionmanager.extra_permissions'), // Table column heading
+              'type' => 'select_multiple',
+              'name' => 'permissions', // the method that defines the relationship in your Model
+              'entity' => 'permissions', // the method that defines the relationship in your Model
+              'attribute' => 'display_name', // foreign key attribute that is shown to user
+              'model' => config('permission.models.permission'), // foreign key model
+            ],
+            [
+                'name' => 'partner',
+                'label' => __('dwfw::partners.partner'),
+                'type' => 'select',
+                'entity' => 'partner',
+                'searchLogic' => function ($query, $column, $searchTerm) {
+                    $query->orWhereHas('partner', function ($q) use ($column, $searchTerm) {
+                        $q->where('name', 'like', '%' . $searchTerm . '%')
+                          ->orWhere('contact_name', 'like', '%' . $searchTerm . '%');
+                    });
+                },
+            ],
             [
                 'name' => 'email_verified_at',
                 'label' => __('dwfw::users.verified_at'),
                 'type' => 'date',
-                'wrapper' => [
-                    'class' => 'form-group col-12 col-sm-6',
-                ],
             ],
+
+        ];
+    }
+
+    protected function getFields()
+    {
+        return [
             [
-                'name' => 'timezone_id',
-                'label' => __('dwfw::timezones.timezone'),
-                'type' => 'select',
-                'entity' => 'timezone',
-                'attribute' => 'name_with_diff',
-                'model' => 'Different\Dwfw\app\Models\TimeZone',
-                'options' => (function ($query) {
-                    return $query->orderBy('name', 'ASC')->get();
-                }),
-                'default' => TimeZone::DEFAULT_TIMEZONE_CODE,
-                'wrapper' => [
-                    'class' => 'form-group col-12 col-sm-6',
-                ],
-            ],
-            [
-                'name' => 'last_device',
-                'label' => __('dwfw::users.last_device'),
+                'name' => 'name',
+                'label' => trans('backpack::permissionmanager.name'),
                 'type' => 'text',
-                'wrapper' => [
-                    'class' => 'form-group col-12 col-sm-6',
+            ],
+            [
+                'name' => 'email',
+                'label' => trans('backpack::permissionmanager.email'),
+                'type' => 'email',
+            ],
+            [
+                'name' => 'password',
+                'label' => trans('backpack::permissionmanager.password'),
+                'type' => 'password',
+            ],
+            [
+                'name' => 'password_confirmation',
+                'label' => trans('backpack::permissionmanager.password_confirmation'),
+                'type' => 'password',
+            ],
+            [
+//                // two interconnected entities
+                'label' => trans('backpack::permissionmanager.user_role_permission'),
+                'field_unique_name' => 'user_role_permission',
+                'type' => 'checklist_dependency',
+                'name' => ['roles', 'permissions'],
+                'subfields' => [
+                    'primary' => [
+                        'label' => trans('backpack::permissionmanager.roles'),
+                        'name' => 'roles', // the method that defines the relationship in your Model
+                        'entity' => 'roles', // the method that defines the relationship in your Model
+                        'entity_secondary' => 'permissions', // the method that defines the relationship in your Model
+                        'attribute' => 'name', // foreign key attribute that is shown to user
+                        'model' => config('permission.models.role'), // foreign key model
+                        'pivot' => true, // on create&update, do you need to add/delete pivot table entries?]
+                        'number_columns' => 3, //can be 1,2,3,4,6
+                    ],
+                    'secondary' => [
+                        'label' => ucfirst(trans('backpack::permissionmanager.permission_singular')),
+                        'name' => 'permissions', // the method that defines the relationship in your Model
+                        'entity' => 'permissions', // the method that defines the relationship in your Model
+                        'entity_primary' => 'roles', // the method that defines the relationship in your Model
+                        'attribute' => 'display_name', // foreign key attribute that is shown to user
+                        'model' => config('permission.models.permission'), // foreign key model
+                        'pivot' => true, // on create&update, do you need to add/delete pivot table entries?]
+                        'number_columns' => 3, //can be 1,2,3,4,6
+                    ],
                 ],
             ],
-        ]);
-        if(config('dwfw.profile_has_image') !== false) {
-            $this->crud->addField([
+            [
+                'name'  => 'separator',
+                'type'  => 'custom_html',
+                'value' => '<a target="blank" href="' . backpack_url('permission'). '"><i class="fas fa-info-circle"></i> ' .__('backpack::permissionmanager.permission_descriptions').'</a>'
+            ],
+            [
+                'name' => 'partner_id',
+                'label' => __('dwfw::partners.partner'),
+                'type' => 'select',
+                'entity' => 'partner',
+                'attribute' => 'name_contact_name',
+                'options' => (function ($query) {
+                    return $query->orderBy('name', 'ASC')->orderBy('contact_name', 'ASC')->get();
+                }),
+                'wrapper' => [
+                    'class' => 'form-group col-12 col-sm-12',
+                ],
+            ],
+
+                [
+                    'name' => 'email_verified_at',
+                    'label' => __('dwfw::users.verified_at'),
+                    'type' => 'date',
+                    'wrapper' => [
+                        'class' => 'form-group col-12 col-sm-6',
+                    ],
+                ],
+                [
+                    'name' => 'timezone_id',
+                    'label' => __('dwfw::timezones.timezone'),
+                    'type' => 'select',
+                    'entity' => 'timezone',
+                    'attribute' => 'name_with_diff',
+                    'model' => 'Different\Dwfw\app\Models\TimeZone',
+                    'options' => (function ($query) {
+                        return $query->orderBy('name', 'ASC')->get();
+                    }),
+                    'default' => TimeZone::DEFAULT_TIMEZONE_CODE,
+                    'wrapper' => [
+                        'class' => 'form-group col-12 col-sm-6',
+                    ],
+                ],
+                [
+                    'name' => 'last_device',
+                    'label' => __('dwfw::users.last_device'),
+                    'type' => 'text',
+                    'wrapper' => [
+                        'class' => 'form-group col-12 col-sm-6',
+                    ],
+                ],
+
+            [
                 'name' => 'profile_image',
                 'label' => __('dwfw::users.profile_image'),
                 'type' => 'upload',
@@ -169,27 +227,55 @@ class UsersCrudController extends UserCrudController
                 'wrapper' => [
                     'class' => 'form-group col-12 col-sm-6',
                 ],
-            ]);
-        }
+            ],
+        ];
     }
 
     public function store()
     {
         $this->handleFileUpload('profile_image', null, 'users');
         $this->crud->setValidation(UserStoreRequest::class);
-        return parent::store();
+        $this->crud->setRequest($this->crud->validateRequest());
+        $this->crud->setRequest($this->handlePasswordInput($this->crud->getRequest()));
+        $this->crud->unsetValidation(); // validation has already been run
+
+        return $this->traitStore();
     }
 
     public function update()
     {
         $this->handleFileUpload('profile_image', null, 'users');
         $this->crud->setValidation(UserUpdateRequest::class);
-        return parent::update();
+        $this->crud->setRequest($this->crud->validateRequest());
+        $this->crud->setRequest($this->handlePasswordInput($this->crud->getRequest()));
+        $this->crud->unsetValidation(); // validation has already been run
+
+        return $this->traitUpdate();
     }
 
     protected function getFilters()
     {
         return [];
+    }
+
+    /**
+     * Handle password input fields.
+     */
+    protected function handlePasswordInput($request)
+    {
+        // Remove fields not present on the user.
+        $request->request->remove('password_confirmation');
+        $request->request->remove('roles_show');
+        $request->request->remove('permissions_show');
+
+        // Encrypt password if specified.
+        if ($request->input('password')) {
+            $request->request->set('password', Hash::make($request->input('password')));
+        } else {
+            $request->request->remove('password');
+        }
+
+        return $request;
     }
 
     /*

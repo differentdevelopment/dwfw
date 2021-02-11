@@ -68,11 +68,11 @@ class DwfwServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(realpath(__DIR__ . '/database/migrations/'));
 
+        $this->loadRoutesFrom(__DIR__ . '/routes/dwfw/routes.php');
+
         $this->loadRoutesFrom(__DIR__ . '/routes/backpack/base.php');
 
         $this->loadRoutesFrom(__DIR__ . '/routes/backpack/settings.php');
-
-        $this->loadRoutesFrom(__DIR__ . '/routes/dwfw/routes.php');
 
         $this->loadRoutesFrom(__DIR__ . '/routes/backpack/permissionmanager.php');
 
@@ -127,7 +127,7 @@ class DwfwServiceProvider extends ServiceProvider
         //backpack languages
         $this->publishes([__DIR__ . '/resources/lang/backpack/hu/base.php' => resource_path('lang/vendor/backpack/hu/base.php')], ['base', 'backpack.langs']);
         $this->publishes([__DIR__ . '/resources/lang/backpack/hu/crud.php' => resource_path('lang/vendor/backpack/hu/crud.php')], ['base', 'backpack.langs']);
-        $this->publishes([__DIR__ . '/resources/lang/backpack/hu/permissionmanager.php' => resource_path('lang/vendor/backpack/hu/permissionmanager.php')], ['base', 'backpack.langs']);
+        $this->publishes([__DIR__ . '/resources/lang/backpack/hu/permissionmanager.php' => resource_path('lang/vendor/backpack/hu/permissionmanager.php')], ['base', 'backpack.langs', 'permission.lang']);
         $this->publishes([__DIR__ . '/resources/lang/backpack/hu/settings.php' => resource_path('lang/vendor/backpack/hu/settings.php')], ['base', 'backpack.langs']);
 
         //config

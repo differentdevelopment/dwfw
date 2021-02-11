@@ -50,7 +50,7 @@ class PermissionTest extends TestCase
     {
         return [
             ['setting.index', 'manage settings',],
-            ['admin./users.index', 'manage users',],
+            ['users.index', 'manage users',],
             ['admin./spammers.index', 'manage bans',],
             ['admin./logs.index', 'view logs'],
         ];

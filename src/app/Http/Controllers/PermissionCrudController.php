@@ -9,6 +9,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Backpack\PermissionManager\app\Http\Requests\PermissionStoreCrudRequest as StoreRequest;
 use Backpack\PermissionManager\app\Http\Requests\PermissionUpdateCrudRequest as UpdateRequest;
 use Different\Dwfw\app\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 // VALIDATION
 
@@ -18,8 +19,8 @@ class PermissionCrudController extends CrudController
 
     public function setup()
     {
-        $this->role_model = $role_model = config('backpack.permissionmanager.models.role');
-        $this->permission_model = $permission_model = config('backpack.permissionmanager.models.permission');
+        $this->role_model = $role_model = Role::class;
+        $this->permission_model = $permission_model = Permission::class;
 
         $this->crud->setModel($permission_model);
         $this->crud->setEntityNameStrings(trans('backpack::permissionmanager.permission_singular'), trans('backpack::permissionmanager.permission_plural'));

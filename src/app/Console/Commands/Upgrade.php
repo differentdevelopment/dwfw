@@ -254,14 +254,19 @@ class Upgrade extends Command
 
     private function upgrade_to_0_14_3()
     {
-        $this->start_progress_bar('0.14.3', 2);
+        $this->start_progress_bar('0.14.3', 3);
         $this->line( 'Publishing permission lang file');
         $this->executeArtisanProcess('vendor:publish', [
             '--provider' => 'Different\Dwfw\DwfwServiceProvider',
             '--tag' => 'permission.lang',
             '--force' => '--force',
         ]);
+        $this->line( 'Publishing permission config file');
+        $this->executeArtisanProcess('vendor:publish', [
+            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
+            '--tag' => 'config.permission',
+            '--force' => '--force',
+        ]);
         $this->progressBar->finish();
-        $this->info('You can now remove backpack/permissionmanager if installed');
     }
 }

@@ -14,7 +14,7 @@ return [
     'models' => [
         'user'       => App\Models\User::class,
         'permission' => Different\Dwfw\app\Models\Permission::class,
-        'role'       => Backpack\PermissionManager\app\Models\Role::class,
+        'role'       => Different\Dwfw\app\Models\Role::class,
     ],
 
     /*

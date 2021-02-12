@@ -71,6 +71,17 @@ class Role extends Model implements RoleContract
         );
     }
 
+    public function getDisplayNameAttribute()
+    {
+        $translated = __('backpack::permissionmanager.' . $this->name);
+        if('backpack::permissionmanager.' . $this->name == $translated)
+        {
+            return $this->name;
+        } else {
+            return $translated;
+        }
+    }
+
     /**
      * Find a role by its name and guard name.
      *

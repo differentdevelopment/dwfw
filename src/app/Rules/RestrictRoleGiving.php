@@ -2,7 +2,7 @@
 
 namespace Different\Dwfw\app\Rules;
 
-use Backpack\PermissionManager\app\Models\Role;
+use Different\Dwfw\app\Models\Role;
 use Illuminate\Contracts\Validation\Rule;
 
 class RestrictRoleGiving implements Rule

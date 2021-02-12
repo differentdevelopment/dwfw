@@ -6,8 +6,8 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Backpack\PermissionManager\app\Http\Requests\PermissionStoreCrudRequest as StoreRequest;
-use Backpack\PermissionManager\app\Http\Requests\PermissionUpdateCrudRequest as UpdateRequest;
+//use Backpack\PermissionManager\app\Http\Requests\PermissionStoreCrudRequest as StoreRequest;
+//use Backpack\PermissionManager\app\Http\Requests\PermissionUpdateCrudRequest as UpdateRequest;
 use Different\Dwfw\app\Models\Permission;
 use Spatie\Permission\Models\Role;
 

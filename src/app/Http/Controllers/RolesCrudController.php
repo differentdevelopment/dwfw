@@ -3,8 +3,10 @@
 namespace Different\Dwfw\app\Http\Controllers;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Backpack\PermissionManager\app\Http\Requests\RoleStoreCrudRequest as StoreRequest;
-use Backpack\PermissionManager\app\Http\Requests\RoleUpdateCrudRequest as UpdateRequest;
+use Different\Dwfw\app\Http\Requests\RoleStoreCrudRequest as StoreRequest;
+use Different\Dwfw\app\Http\Requests\RoleUpdateCrudRequest as UpdateRequest;
+use Different\Dwfw\app\Models\Permission;
+use Different\Dwfw\app\Models\Role;
 
 // VALIDATION
 
@@ -18,8 +20,8 @@ class RolesCrudController extends CrudController
 
     public function setup()
     {
-        $this->role_model = $role_model = config('backpack.permissionmanager.models.role');
-        $this->permission_model = $permission_model = config('backpack.permissionmanager.models.permission');
+        $this->role_model = $role_model = Role::class;
+        $this->permission_model = $permission_model = Permission::class;
 
         $this->crud->setModel($role_model);
         $this->crud->setEntityNameStrings(trans('backpack::permissionmanager.role'), trans('backpack::permissionmanager.roles'));

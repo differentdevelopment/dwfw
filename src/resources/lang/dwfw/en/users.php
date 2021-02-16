@@ -9,4 +9,6 @@ return [
     'already_verified' => 'Users registration already verified',
     'profile_image' => 'Profile image',
     'last_device' => 'Last device',
+    'name' => 'Name',
+    'email' => 'E-mail',
 ];

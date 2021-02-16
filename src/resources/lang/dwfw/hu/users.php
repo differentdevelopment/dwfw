@@ -11,4 +11,6 @@ return [
     'last_device' => 'Utolsó eszköz',
     'password' => 'Jelszó',
     'super_admin_role_error'=> 'Super admin szerepet csak super admin adhat!',
+    'name' => 'Név',
+    'email' => 'E-mail',
 ];

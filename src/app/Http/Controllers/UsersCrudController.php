@@ -50,6 +50,7 @@ class UsersCrudController extends BaseCrudController
         $this->crud->addButton('line', 'verify', 'view', 'dwfw::crud.buttons.users.verify', 'beginning');
 //        $this->crud->setEditView('backpack::crud.edit_with_permissions');
         $this->setupColumnsFieldsFromMethod();
+        $this->setupFiltersFromMethod();
     }
 
     public function show($id)
@@ -255,7 +256,30 @@ class UsersCrudController extends BaseCrudController
 
     protected function getFilters()
     {
-        return [];
+        return [
+            [
+                [
+                    'name' => 'name',
+                    'type' => 'text',
+                    'label' => __('dwfw::users.name'),
+                ],
+                false,
+                function ($value) {
+                    $this->crud->addClause('where', 'name', 'like', '%' . $value . '%');
+                },
+            ],
+            [
+                [
+                    'name' => 'email',
+                    'type' => 'text',
+                    'label' => __('dwfw::users.email'),
+                ],
+                false,
+                function ($value) {
+                    $this->crud->addClause('where', 'email', 'like', '%' . $value . '%');
+                },
+            ],
+        ];
     }
 
     /**

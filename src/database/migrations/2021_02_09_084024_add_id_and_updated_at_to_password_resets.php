@@ -15,10 +15,10 @@ class AddIdAndUpdatedAtToPasswordResets extends Migration
     {
 
         Schema::table('password_resets', function (Blueprint $table) {
-            if(!Schema::hasColumn('password_resets', 'id') && config('app.env') !== 'testing') { //Tesztek meghalnak, ha utólag akarunk id-t hozzáadni
+            if (!Schema::hasColumn('password_resets', 'id') && !App::environment('testing')) { //Tesztek meghalnak, ha utólag akarunk id-t hozzáadni
                 $table->id();
             }
-            if(!Schema::hasColumn('password_resets', 'updated_at')) {
+            if (!Schema::hasColumn('password_resets', 'updated_at')) {
                 $table->timestamp('updated_at')->nullable();
             }
         });
@@ -31,8 +31,12 @@ class AddIdAndUpdatedAtToPasswordResets extends Migration
      */
     public function down()
     {
+        if (Schema::hasColumn('password_resets', 'id') && !App::environment('testing')) {
+            Schema::table('password_resets', function (Blueprint $table) {
+                $table->dropColumn('id');
+            });
+        }
         Schema::table('password_resets', function (Blueprint $table) {
-            $table->dropColumn('id');
             $table->dropColumn('updated_at');
         });
     }

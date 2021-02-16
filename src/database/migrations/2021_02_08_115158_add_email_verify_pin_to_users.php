@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class AddEmailVerifyPinToUsers extends Migration
 {
+
     /**
      * Run the migrations.
      *
@@ -14,7 +15,9 @@ class AddEmailVerifyPinToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('email_verify_pin')->nullable();
+            if (!Schema::hasColumn('users', 'email_verify_pin')) {
+                $table->string('email_verify_pin')->nullable();
+            }
         });
     }
 

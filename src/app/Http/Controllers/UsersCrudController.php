@@ -145,6 +145,11 @@ class UsersCrudController extends BaseCrudController
                 'field_unique_name' => 'user_role_permission',
                 'type' => 'checklist_dependency',
                 'name' => ['roles', 'permissions'],
+                'primary_query' => function($query){
+                    if(!backpack_user()->hasRole('super admin')) {
+                        $query->where('name', '<>', 'super admin');
+                    }
+                },
                 'subfields' => [
                     'primary' => [
                         'label' => trans('backpack::permissionmanager.roles'),

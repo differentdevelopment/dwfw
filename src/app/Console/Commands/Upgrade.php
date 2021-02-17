@@ -12,7 +12,7 @@ class Upgrade extends Command
 
     use PrettyCommandOutput;
 
-    const VERSION = '0.14.3';
+    const VERSION = '0.14.4';
     protected string $finish_message;
     /**
      * Array of methods used for upgrading to the given version
@@ -28,6 +28,7 @@ class Upgrade extends Command
         '0.14.0' => 'upgrade_to_0_14_0',
         '0.14.2' => 'upgrade_to_0_14_2',
         '0.14.3' => 'upgrade_to_0_14_3',
+        '0.14.4' => 'upgrade_to_0_14_4',
     ];
     protected $progressBar;
     protected $signature = 'dwfw:upgrade
@@ -268,5 +269,16 @@ class Upgrade extends Command
             '--force' => '--force',
         ]);
         $this->progressBar->finish();
+    }
+
+    private function upgrade_to_0_14_4()
+    {
+        $this->start_progress_bar('0.14.4', 2);
+        $this->line(' Publishing Checklist Dependency field view file');
+        $this->executeArtisanProcess('vendor:publish', [
+            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
+            '--tag' => 'views.backpack.crud.fields.checklist_dependency',
+            '--force' => '--force',
+        ]);
     }
 }

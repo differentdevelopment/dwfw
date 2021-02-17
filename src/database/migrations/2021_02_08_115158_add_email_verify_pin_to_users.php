@@ -28,11 +28,11 @@ class AddEmailVerifyPinToUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('email_verify_pin');
-        });
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('remember_token');
-        });
+        if (!App::environment('testing')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropColumn('email_verify_pin');
+                $table->dropColumn('remember_token');
+            });
+        }
     }
 }

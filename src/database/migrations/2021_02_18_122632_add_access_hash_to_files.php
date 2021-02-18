@@ -14,7 +14,8 @@ class AddAccessHashToFiles extends Migration
     public function up()
     {
         Schema::table('files', function (Blueprint $table) {
-            $table->string('access_hash')->unique()->nullable();
+            $table->string('access_hash')->nullable()->default(null);
+            $table->unique('access_hash');
         });
     }
 

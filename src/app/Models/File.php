@@ -38,6 +38,7 @@ class File extends BaseModel
         'original_name',
         'mime_type',
         'file_path',
+        'access_hash',
     ];
     // protected $hidden = [];
     protected $dates = [

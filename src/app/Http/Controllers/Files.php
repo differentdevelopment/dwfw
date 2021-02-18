@@ -160,11 +160,13 @@ class Files extends Controller
         $partner_id = $partner === null ? null : ($partner instanceof \App\Models\Partner ? $partner->id : $partner);
         $storage_dir = $storage_dir ?? $partner_id;
         Storage::disk($disk)->put($storage_dir, $file);
+        $file_hash = $file->hashName();
         return File::query()->create([
             'partner_id' => $partner_id,
             'original_name' => $original_name,
             'mime_type' => $mime_type,
-            'file_path' => $storage_dir . '/' . $file->hashName(),
+            'file_path' => $storage_dir . '/' . $file_hash,
+            'access_hash' => $file_hash,
         ]);
     }
 

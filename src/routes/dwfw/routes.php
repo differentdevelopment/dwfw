@@ -16,10 +16,10 @@ Route::group(
         'middleware' => ['web'],
     ],
     function () {
-        Route::get('/{disk}/file/{file}', 'Files@retrieve')->name('file')->middleware('can:viewFile');
-        Route::get('/{disk}/file_b64/{file}', 'Files@retrieveBase64')->name('file-b64')->middleware('can:viewFile');
-//        Route::get('/{disk}/file/{file:access_hash}', 'Files@retrieve')->name('file')->middleware('can:viewFile'); //TODO ÉLETBE LÉP HA KINT AZ ÚJ MYPATENT
-//        Route::get('/{disk}/file_b64/{file:access_hash}', 'Files@retrieveBase64')->name('file-b64')->middleware('can:viewFile');
+//        Route::get('/{disk}/file/{file}', 'Files@retrieve')->name('file')->middleware('can:viewFile');
+//        Route::get('/{disk}/file_b64/{file}', 'Files@retrieveBase64')->name('file-b64')->middleware('can:viewFile');
+        Route::get('/{disk}/file/{file:access_hash}', 'Files@retrieve')->name('file')->middleware('can:viewFile'); //TODO ÉLETBE LÉP HA KINT AZ ÚJ MYPATENT
+        Route::get('/{disk}/file_b64/{file:access_hash}', 'Files@retrieveBase64')->name('file-b64')->middleware('can:viewFile');
 
         Route::post('set_timezone', 'TimeZones@set')->name('set-timezone');
     }

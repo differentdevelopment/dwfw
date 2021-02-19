@@ -5,7 +5,9 @@ namespace Different\Dwfw\app\Models;
 use App\Models\User;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Backpack\Settings\app\Models\Setting;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Request;
 
 /**
  * Class Log
@@ -72,6 +74,19 @@ class Log extends BaseModel
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    public static function getCountForEventsByTreshold(array $log_events, $treshold)
+    {
+        return self::query()
+            ->where(function ($query) use ($log_events) {
+                foreach ($log_events as $log_event) {
+                    $query->orWhere('event', $log_event);
+                }
+            })
+            ->whereIpAddress(Request::ip())
+            ->where('created_at', '>=', Carbon::now()->subMinutes($treshold)->toDateTimeString())
+            ->count();
+    }
+
 
     /*
     |--------------------------------------------------------------------------

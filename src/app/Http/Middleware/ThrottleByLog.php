@@ -25,12 +25,4 @@ class ThrottleByLog
         return $next($request);
     }
 
-    /**
-     * @param Request $request
-     * @param Response $response
-     */
-    public function terminate(Request $request, Response $response)
-    {
-
-    }
 }

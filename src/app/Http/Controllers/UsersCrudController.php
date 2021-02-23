@@ -227,8 +227,7 @@ class UsersCrudController extends BaseCrudController
             [
                 'name' => 'profile_image',
                 'label' => __('dwfw::users.profile_image'),
-                'type' => 'upload',
-                'attribute' => 'original_name',
+                'type' => 'image',
                 'upload' => true,
                 'wrapper' => [
                     'class' => 'form-group col-12 col-sm-6',

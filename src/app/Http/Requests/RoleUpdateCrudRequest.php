@@ -25,7 +25,7 @@ class RoleUpdateCrudRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name' => 'required|string|max:255',
+            'name' => 'sometimes|string|max:255',
         ];
 
         return $rules;

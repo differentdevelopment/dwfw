@@ -14,9 +14,9 @@ class RolesCrudController extends CrudController
 {
 
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+//    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+//    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
 
     public function setup()
     {
@@ -37,6 +37,8 @@ class RolesCrudController extends CrudController
         if (config('backpack.permissionmanager.allow_role_delete') == false) {
             $this->crud->denyAccess('delete');
         }
+
+        $this->crud->query->where('name', '!=', 'super admin');
     }
 
     public function setupListOperation()
@@ -45,7 +47,7 @@ class RolesCrudController extends CrudController
          * Show a column for the name of the role.
          */
         $this->crud->addColumn([
-            'name' => 'name',
+            'name' => 'display_name',
             'label' => trans('backpack::permissionmanager.name'),
             'type' => 'text',
         ]);
@@ -119,9 +121,12 @@ class RolesCrudController extends CrudController
     private function addFields()
     {
         $this->crud->addField([
-            'name' => 'name',
+            'name' => 'display_name',
             'label' => trans('backpack::permissionmanager.name'),
             'type' => 'text',
+            'attributes' => [
+                'readonly' => 'readonly',
+            ]
         ]);
 
         if (config('backpack.permissionmanager.multiple_guards')) {
@@ -138,11 +143,11 @@ class RolesCrudController extends CrudController
             'value' => '<a target="blank" href="' . backpack_url('permission') . '"><i class="fas fa-info-circle"></i> ' . __('backpack::permissionmanager.permission_descriptions') . '</a>',
         ]);
         $this->crud->addField([
-            'label' => ucfirst(trans('backpack::permissionmanager.permission_plural')),
+            'label' => ucfirst(trans('backpack::permissionmanager.permission_singular')),
             'type' => 'checklist',
             'name' => 'permissions',
             'entity' => 'permissions',
-            'attribute' => 'name',
+            'attribute' => 'display_name', // foreign key attribute that is shown to user
             'model' => $this->permission_model,
             'pivot' => true,
         ]);

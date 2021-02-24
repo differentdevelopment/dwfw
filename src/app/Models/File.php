@@ -51,6 +51,16 @@ class File extends BaseModel
         'resize_y' => 1500,
     ];
 
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'access_hash';
+    }
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS

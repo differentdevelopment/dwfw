@@ -6,7 +6,9 @@
     <li class="nav-item nav-dropdown">
         <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon fa fa-users-cog"></i> Admin zone</a>
         <ul class="nav-dropdown-items">
+            @can('partners.list')
             <li class="nav-item"><a class="nav-link" href="{{ backpack_url('partners') }}"><i class="nav-icon fa fa-user-tie"></i> @lang('dwfw::partners.partners')</a></li>
+            @endcan
             @can('manage users')
                 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('users') }}"><i class="nav-icon fa fa-user"></i> @lang('dwfw::users.users')</a></li>
             @endcan

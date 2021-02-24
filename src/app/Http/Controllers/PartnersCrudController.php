@@ -2,6 +2,7 @@
 
 namespace Different\Dwfw\app\Http\Controllers;
 
+use Different\Dwfw\app\Http\Controllers\Traits\CheckCrudPermissions;
 use Different\Dwfw\app\Http\Requests\PartnerRequest;
 use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
@@ -26,6 +27,7 @@ class PartnersCrudController extends BaseCrudController
     use DeleteOperation;
     use ShowOperation;
     use SoftDeletes;
+    use CheckCrudPermissions;
 
     public function setup()
     {
@@ -36,6 +38,8 @@ class PartnersCrudController extends BaseCrudController
         if (!$this->crud->getRequest()->order) {
             $this->crud->orderBy('name', 'asc');
         }
+
+        $this->checkCrudPermissionsByPermission('list');
 
         $this->setupColumnsFieldsFromMethod();
         $this->crud->setValidation(PartnerRequest::class);

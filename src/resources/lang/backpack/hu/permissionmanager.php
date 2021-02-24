@@ -31,19 +31,26 @@ return [
 
     //permissions
     'login backend' => 'Belépés Admin felületre',
+    'login backend description' => 'Belépés engedélyezése az Admin felületre',
+
+    'manage users description' => 'Felhasználók létrehozása, szerkesztése, törlése',
     'manage users' => 'Felhasználók kezelése',
+
+    'manage bans description' => 'IP címek felvétele tiltottként, illetve tiltott IP címek feloldása',
     'manage bans' => 'Kitiltások kezelése',
+
+    'view logs description' => 'Az adatbázisban tárolt logok szűrése és megtekintése',
     'view logs' => 'Logok megtekintése',
+
+    'manage settings description' => 'Beállítások szerkesztése',
     'manage settings' => 'Beállítások kezelése',
+
+    'manage roles description' => 'Szerepek létrehozása, törlése, szerkesztése',
     'manage roles' => 'Szerepek kezelése',
+
+    'manage permissions description' => 'Jogosultságok megtekintése',
     'manage permissions' => 'Jogosultságok megtekintése',
 
-    //permission_descriptions
-    'login backend description' => 'Belépés engedélyezése az Admin felületre',
-    'manage users description' => 'Felhasználók létrehozása, szerkesztése, törlése',
-    'manage bans description' => 'IP címek felvétele tiltottként, illetve tiltott IP címek feloldása',
-    'view logs description' => 'Az adatbázisban tárolt logok szűrése és megtekintése',
-    'manage settings description' => 'Beállítások szerkesztése',
-    'manage roles description' => 'Szerepek létrehozása, törlése, szerkesztése',
-    'manage permissions description' => 'Jogosultságok megtekintése',
+    'partners.list' => 'Partnerek kezelése',
+    'partners.list description' => 'ha nincs, akkor a menüpont meg sem jelenik',
 ];

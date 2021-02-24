@@ -25,8 +25,10 @@ class AddEventIndexToLogsTable extends Migration
      */
     public function down()
     {
-        Schema::table('logs', function (Blueprint $table) {
-            $table->dropIndex('event');
-        });
+        if (!App::environment('testing')) {
+            Schema::table('logs', function (Blueprint $table) {
+                $table->dropIndex('event');
+            });
+        }
     }
 }

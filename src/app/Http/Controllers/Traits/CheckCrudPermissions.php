@@ -27,4 +27,11 @@ trait CheckCrudPermissions
             $this->crud->denyAccess(['list', 'create', 'update', 'delete', 'show']);
         }
     }
+
+    public function checkAccount($relation_name = 'accounts')
+    {
+        $this->crud->addClause('whereHas', $relation_name, function ($query) {
+            $query->where('accounts.id', session('account_id'));
+        });
+    }
 }

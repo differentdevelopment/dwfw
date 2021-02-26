@@ -9,10 +9,13 @@ use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+use Different\Dwfw\app\Http\Controllers\Traits\CheckCrudPermissions;
 use Different\Dwfw\app\Http\Controllers\Traits\ColumnFaker;
 use Different\Dwfw\app\Http\Controllers\Traits\FileUpload;
+use Different\Dwfw\app\Http\Requests\AccountChangeRequest;
 use Different\Dwfw\app\Http\Requests\UserStoreRequest;
 use Different\Dwfw\app\Http\Requests\UserUpdateRequest;
+use Different\Dwfw\app\Models\Account;
 use Different\Dwfw\app\Models\TimeZone;
 use Different\Dwfw\app\Traits\LoggableAdmin;
 use Illuminate\Support\Facades\Hash;
@@ -34,6 +37,7 @@ class UsersCrudController extends BaseCrudController
     }
     use LoggableAdmin;
     use ListOperation;
+    use CheckCrudPermissions;
 
     public function __construct()
     {
@@ -43,14 +47,17 @@ class UsersCrudController extends BaseCrudController
 
     public function setup()
     {
-        //        $this->crud->setModel(config('backpack.permissionmanager.models.user'));
+
         $this->crud->setRoute(backpack_url('users'));
         $this->crud->setEntityNameStrings(trans('backpack::permissionmanager.user'), trans('backpack::permissionmanager.users'));
         $this->crud->setModel(User::class);
         $this->crud->addButton('line', 'verify', 'view', 'dwfw::crud.buttons.users.verify', 'beginning');
-//        $this->crud->setEditView('backpack::crud.edit_with_permissions');
+
         $this->setupColumnsFieldsFromMethod();
         $this->setupFiltersFromMethod();
+        if(!config('dwfw.user_list_global')) {
+            $this->checkAccount();
+        }
     }
 
     public function show($id)
@@ -128,6 +135,11 @@ class UsersCrudController extends BaseCrudController
                 'name' => 'email',
                 'label' => trans('backpack::permissionmanager.email'),
                 'type' => 'email',
+            ],
+            [
+                'name' => 'accounts',
+                'label' => __('dwfw::accounts.accounts'),
+                'type' => 'select2_multiple',
             ],
             [
                 'name' => 'password',
@@ -311,6 +323,19 @@ class UsersCrudController extends BaseCrudController
     | CUSTOM NON-BACKPACK METHODS
     |--------------------------------------------------------------------------
     */
+
+    public function changeAccount(AccountChangeRequest $request)
+    {
+        $selected_id = $request->validated()['account_id'];
+        $user = auth()->user();
+        if (
+            ($user->hasPermissionTo('change account') || $user->hasRole('super admin') || in_array($selected_id, session('account_ids'))) &&
+            (-1 == $selected_id || null != Account::query()->find($selected_id))
+        ) {
+            session(['account_id' => $selected_id]);
+        }
+        return back();
+    }
 
     /*
     |--------------------------------------------------------------------------

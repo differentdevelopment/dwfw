@@ -1,6 +1,7 @@
 <?php
 
 //use Different\Dwfw\app\Http\Controllers\LogsCrudController;
+use Different\Dwfw\app\Http\Controllers\AccountsCrudController;
 use Different\Dwfw\app\Http\Controllers\LogsCrudController;
 use Different\Dwfw\app\Http\Controllers\PartnersCrudController;
 use Different\Dwfw\app\Http\Controllers\SpammersCrudController;
@@ -33,6 +34,9 @@ Route::group([
     Route::get('logs/ajax-user-options', [LogsCrudController::class, 'userOptions'])->name('ajax-user-options');
     Route::crud('/logs', LogsCrudController::class);
     Route::crud('/spammers', SpammersCrudController::class);
+    Route::crud('/accounts', AccountsCrudController::class);
+
+    Route::post('/users/change-account', [UsersCrudController::class, 'changeAccount'])->name('change_account');
 
     // USERS
     Route::crud('/users', UsersCrudController::class);

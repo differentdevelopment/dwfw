@@ -49,10 +49,10 @@ class Install extends Command
             '--provider' => 'Spatie\Permission\PermissionServiceProvider',
             '--tag' => 'config',
         ]);
-        $this->line(' Publishing for PermissionManager');
-        $this->executeArtisanProcess('vendor:publish', [
-            '--provider' => 'Backpack\PermissionManager\PermissionManagerServiceProvider',
-        ]);
+//        $this->line(' Publishing for PermissionManager');
+//        $this->executeArtisanProcess('vendor:publish', [
+//            '--provider' => 'Backpack\PermissionManager\PermissionManagerServiceProvider',
+//        ]);
         $this->line(' Publishing DWFW');
         $this->executeArtisanProcess('vendor:publish', [
             '--provider' => 'Different\Dwfw\DwfwServiceProvider',
@@ -65,7 +65,14 @@ class Install extends Command
             '--class' => 'Different\\Dwfw\\database\\seeds\\DwfwSeeder',
         ]);
 
-        $this->progressBar->finish();
         $this->info(' DWFW installation finished.');
+
+        $this->line(' Publishing Account related files');
+        $this->executeArtisanProcess('vendor:publish', [
+            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
+            '--tag' => 'account',
+            '--force' => '--force',
+        ]);
+        $this->progressBar->finish();
     }
 }

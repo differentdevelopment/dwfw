@@ -146,6 +146,7 @@ return [
 //        'packages/ckeditor/ckeditor.js',
 //        'packages/ckeditor/adapters/jquery.js',
 //        'packages/places.js/dist/cdn/places.min.js',
+//        'scripts/all.js',
 
     ],
 

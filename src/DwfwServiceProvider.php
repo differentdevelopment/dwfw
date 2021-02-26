@@ -9,6 +9,7 @@ use Different\Dwfw\app\Console\Commands\Install;
 use Different\Dwfw\app\Console\Commands\InstallPassport;
 use Different\Dwfw\app\Console\Commands\Upgrade;
 use Different\Dwfw\app\Http\Middleware\ConvertIdToTimeZone;
+use Different\Dwfw\app\Listeners\SetUserSession;
 use Different\Dwfw\app\Models\Partner;
 use Different\Dwfw\app\Observers\PartnerObserver;
 use Different\Dwfw\app\Observers\SettingObserver;
@@ -36,6 +37,9 @@ class DwfwServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->singleton(SetUserSession::class, function () {
+            return new SetUserSession();
+        });
     }
 
     /**
@@ -97,7 +101,11 @@ class DwfwServiceProvider extends ServiceProvider
 
     private function publishFiles()
     {
-        //BASE GROUP - PUBLISHED BY DWFW:INSTALL
+        /*
+        |--------------------------------------------------------------------------
+        | BASE GROUP - PUBLISHED BY DWFW:INSTALL
+        |--------------------------------------------------------------------------
+        */
 
         // Models
         $this->publishes([__DIR__ . '/app/Models/User.php' => app_path('Models/User.php')], ['base', 'models.user']);
@@ -150,7 +158,25 @@ class DwfwServiceProvider extends ServiceProvider
         //index.php
         $this->publishes([__DIR__ . '/public/index.php' => public_path() . '/index.php'], ['base', 'index']);
 
-        //PASSPORT GROUP PUBLISHED BY DWFW:INSTALL-PASSPORT
+        /*
+        |--------------------------------------------------------------------------
+        | ACCOUNT HANDLING
+        |
+        | Publish command: php artisan vendor:publish --provider=Different\Dwfw\DwfwServiceProvider --tag=accounts --force
+        |--------------------------------------------------------------------------
+        */
+
+        //backpack views & components
+        $this->publishes([__DIR__ . '/resources/views/components/account-selector.blade.php' => resource_path() . '/views/components/account-selector.blade.php'], ['accounts', 'backpack.account.views']);
+        $this->publishes([__DIR__ . '/resources/views/topbar_right_content.blade.php' => resource_path() . '/views/vendor/backpack/base/inc/topbar_right_content.blade.php'], ['accounts', 'backpack.account.views']);
+        $this->publishes([__DIR__ . '/app/View/Components/AccountSelector.php' => app_path() . '/View/Components/AccountSelector.php'], ['accounts', 'backpack.account.components']);
+        $this->publishes([__DIR__ . '/public/scripts/all.js' => public_path() . '/scripts/all.js'], ['accounts', 'backpack.account.scripts']);
+
+        /*
+        |--------------------------------------------------------------------------
+        | PASSPORT GROUP PUBLISHED BY DWFW:INSTALL-PASSPORT
+        |--------------------------------------------------------------------------
+        */
 
         //Auth Controller
         $this->publishes([__DIR__ . '/app/Http/Controllers/Api/V1/AuthController.php' => app_path() . '/Http/Controllers/Api/V1/AuthController.php'], ['passport', 'auth.controller']);

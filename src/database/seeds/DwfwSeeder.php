@@ -4,6 +4,7 @@ namespace Different\Dwfw\database\seeds;
 
 use App\Models\User;
 use Backpack\Settings\app\Models\Setting;
+use Different\Dwfw\app\Models\Account;
 use Different\Dwfw\app\Models\Partner;
 use Different\Dwfw\app\Models\TimeZone;
 use Illuminate\Database\Seeder;
@@ -21,6 +22,10 @@ class DwfwSeeder extends Seeder
         'manage roles',
         'manage permissions',
     ];
+
+//    const ACCOUNT_RELATED_PERMISSIONS = [
+//        'change account'
+//    ];
 
     public function run()
     {
@@ -56,6 +61,18 @@ class DwfwSeeder extends Seeder
             $role_admin->givePermissionTo($permission);
         }
 
+//        if(config('dwfw.has_accounts')){
+//            foreach(self::ACCOUNT_RELATED_PERMISSIONS as $permission)
+//            {
+//                Permission::firstOrCreate([
+//                    'name' => $permission,
+//                    'guard_name' => 'web',
+//                ], []);
+//                $role_admin->givePermissionTo($permission);
+//            }
+//        }
+
+
         // add admin role to base user
         $user->assignRole($role_super_admin->name);
 
@@ -72,18 +89,6 @@ class DwfwSeeder extends Seeder
         // update users with default timezone
         User::query()->update(['timezone_id' => TimeZone::DEFAULT_TIMEZONE_CODE]);
 
-        // SETTINGS - Unusued but left here as example
-//        Setting::query()->firstOrCreate([
-//            'key' => 'privacy_policy',
-//        ], [
-//            'name' => 'Adatvédelmi nyilatkozat',
-//            'description' => 'Adatvédelmi nyilatkozat szövege, amit a regisztrációnál kell elfogadni.',
-//            'value' => '<p>Normally, both your asses would be dead as fucking fried chicken, but you happen to pull this shit while I&#39;m in a transitional period so I don&#39;t wanna kill you, I wanna help you. But I can&#39;t give you this case, it don&#39;t belong to me. Besides, I&#39;ve already been through too much shit this morning over this case to hand it over to your dumb ass.</p>',
-//            'field' => '{"name":"value","label":"Value","type":"wysiwyg"}',
-//            'active' => 1,
-//            'created_at' => '2020-03-25 08:40:07',
-//            'updated_at' => '2020-03-25 08:40:07',
-//        ]);
 
         // PARTNERS
         $partner = Partner::query()->firstOrCreate([
@@ -93,6 +98,11 @@ class DwfwSeeder extends Seeder
             'contact_phone' => '+362013455467',
             'contact_email' => 'php@different.hu',
         ]);
+
+        $account = Account::query()->firstOrCreate([
+            'name' => 'Different',
+        ]);
+        $account->users()->syncWithoutDetaching($user->id);
 
         $user->partner_id = $partner->id;
         $user->save();

@@ -19,10 +19,6 @@ class CreateAccountUserTable extends Migration
             $table->foreignId('account_id')->constrained();
             $table->foreignId('user_id')->constrained();
         });
-
-        foreach(User::all() as $user) {
-            $user->partners()->sync($user->partner_id);
-        }
     }
 
     /**

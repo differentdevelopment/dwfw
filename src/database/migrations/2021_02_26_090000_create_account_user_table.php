@@ -28,15 +28,6 @@ class CreateAccountUserTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->unsignedInteger('account_id')->constrained()->onDelete('set null');
-        });
-
-        foreach(User::all() as $user) {
-            $user->partner_id = $user->accounts()->first()->id;
-            $user->save();
-        }
-
-        Schema::dropIfExists('partner_user');
+        Schema::dropIfExists('account_user');
     }
 }

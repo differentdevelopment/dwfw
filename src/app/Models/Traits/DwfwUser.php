@@ -3,6 +3,7 @@
 namespace Different\Dwfw\app\Models\Traits;
 
 use Carbon\Carbon;
+use Different\Dwfw\app\Models\Account;
 use Different\Dwfw\app\Models\Partner;
 use App\Models\UserToken;
 use Creativeorange\Gravatar\Facades\Gravatar;
@@ -60,6 +61,11 @@ trait DwfwUser
     public function file_profile_image()
     {
         return $this->belongsTo(File::class, 'profile_image_id');
+    }
+
+    public function accounts()
+    {
+        return $this->belongsToMany(Account::class);
     }
     /*
     |--------------------------------------------------------------------------

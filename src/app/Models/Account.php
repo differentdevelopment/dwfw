@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * Class Partner
@@ -23,6 +24,7 @@ class Account extends BaseModel
     use CrudTrait;
     use HasFactory;
     use SoftDeletes;
+    use HasRoles;
 
     /*
     |--------------------------------------------------------------------------

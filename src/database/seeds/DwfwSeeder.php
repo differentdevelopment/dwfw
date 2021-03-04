@@ -23,9 +23,9 @@ class DwfwSeeder extends Seeder
         'manage permissions',
     ];
 
-//    const ACCOUNT_RELATED_PERMISSIONS = [
-//        'change account'
-//    ];
+    const ACCOUNT_RELATED_PERMISSIONS = [
+        'change account'
+    ];
 
     public function run()
     {
@@ -61,16 +61,16 @@ class DwfwSeeder extends Seeder
             $role_admin->givePermissionTo($permission);
         }
 
-//        if(config('dwfw.has_accounts')){
-//            foreach(self::ACCOUNT_RELATED_PERMISSIONS as $permission)
-//            {
-//                Permission::firstOrCreate([
-//                    'name' => $permission,
-//                    'guard_name' => 'web',
-//                ], []);
-//                $role_admin->givePermissionTo($permission);
-//            }
-//        }
+        if(config('dwfw.has_accounts')){
+            foreach(self::ACCOUNT_RELATED_PERMISSIONS as $permission)
+            {
+                Permission::firstOrCreate([
+                    'name' => $permission,
+                    'guard_name' => 'web',
+                ], []);
+                $role_admin->givePermissionTo($permission);
+            }
+        }
 
 
         // add admin role to base user

@@ -33,7 +33,7 @@ class AccountsCrudController extends BaseCrudController
 
     public function setup()
     {
-        $this->crud->setModel(Account::class);
+        $this->crud->setModel(config('dwfw.account_model', Account::class));
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/accounts');
         $this->crud->setEntityNameStrings(__('dwfw::accounts.account'), __('dwfw::accounts.accounts'));
 

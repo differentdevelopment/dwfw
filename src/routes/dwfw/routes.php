@@ -34,8 +34,11 @@ Route::group([
     Route::get('logs/ajax-user-options', [LogsCrudController::class, 'userOptions'])->name('ajax-user-options');
     Route::crud('/logs', LogsCrudController::class);
     Route::crud('/spammers', SpammersCrudController::class);
-    Route::crud('/accounts', AccountsCrudController::class);
-
+    if(class_exists('App\Http\Controllers\Admin\AccountsCrudController')) {
+        Route::crud('/accounts', 'App\Http\Controllers\Admin\AccountsCrudController');
+    } else {
+        Route::crud('/accounts', AccountsCrudController::class);
+    }
     Route::post('/users/change-account', [UsersCrudController::class, 'changeAccount'])->name('change_account');
 
     // USERS

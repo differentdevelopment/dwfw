@@ -12,7 +12,7 @@ class Upgrade extends Command
 
     use PrettyCommandOutput;
 
-    const VERSION = '0.14.4';
+    const VERSION = '0.14.5';
     protected string $finish_message;
     /**
      * Array of methods used for upgrading to the given version
@@ -29,6 +29,7 @@ class Upgrade extends Command
         '0.14.2' => 'upgrade_to_0_14_2',
         '0.14.3' => 'upgrade_to_0_14_3',
         '0.14.4' => 'upgrade_to_0_14_4',
+        '0.14.5' => 'upgrade_to_0_14_5',
     ];
     protected $progressBar;
     protected $signature = 'dwfw:upgrade
@@ -278,6 +279,18 @@ class Upgrade extends Command
         $this->executeArtisanProcess('vendor:publish', [
             '--provider' => 'Different\Dwfw\DwfwServiceProvider',
             '--tag' => 'views.backpack.crud.fields.checklist_dependency',
+            '--force' => '--force',
+        ]);
+    }
+
+    private function upgrade_to_0_14_5()
+    {
+        $this->start_progress_bar('0.14.5', 2);
+        $this->line(' Publishing Checklist Dependency field view file');
+        $this->warn(' BaseModel-be vegyünk fel egy üres booted methodot, ha régi rendszerben használjuk, mert különben hiányozni fog neki az account_id!');
+        $this->executeArtisanProcess('vendor:publish', [
+            '--provider' => 'Different\Dwfw\app\Models\Publish\BaseModel',
+            '--tag' => 'account',
             '--force' => '--force',
         ]);
     }

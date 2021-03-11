@@ -121,6 +121,9 @@ class Log extends BaseModel
 
     public function getLogNameAttribute()
     {
+        if (!class_exists($this->entity_type)) {
+            return $this->entity_type;
+        }
         if (method_exists($this->entity_type, 'logName') && $this->entity) {
             return $this->entity->logName();
         } else {
@@ -130,6 +133,11 @@ class Log extends BaseModel
                 return __('dwfw::logs.deleted_entry');
             }
         }
+    }
+
+    public function getLogIdAttribute()
+    {
+        return $this->entity_id;
     }
     /*
     |--------------------------------------------------------------------------

@@ -67,12 +67,19 @@ class Install extends Command
 
         $this->info(' DWFW installation finished.');
 
-        $this->line(' Publishing Account related files');
-        $this->executeArtisanProcess('vendor:publish', [
-            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
-            '--tag' => 'account',
-            '--force' => '--force',
-        ]);
+        if ($this->confirm('Account needed?', false)) {
+            $this->line(' Publishing Account related files');
+            $this->executeArtisanProcess('vendor:publish', [
+                '--provider' => 'Different\Dwfw\DwfwServiceProvider',
+                '--tag' => 'account',
+                '--force' => '--force',
+            ]);
+            $this->executeArtisanProcess('vendor:publish', [
+                '--provider' => 'Different\Dwfw\app\Models\Publish\BaseModel',
+                '--tag' => 'account',
+                '--force' => '--force',
+            ]);
+        }
         $this->progressBar->finish();
     }
 }

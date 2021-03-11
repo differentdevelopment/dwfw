@@ -17,6 +17,7 @@ use Different\Dwfw\app\Http\Requests\UserStoreRequest;
 use Different\Dwfw\app\Http\Requests\UserUpdateRequest;
 use Different\Dwfw\app\Models\Account;
 use Different\Dwfw\app\Models\TimeZone;
+use Different\Dwfw\app\Scopes\AccountScope;
 use Different\Dwfw\app\Traits\LoggableAdmin;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Middlewares\PermissionMiddleware;
@@ -55,8 +56,8 @@ class UsersCrudController extends BaseCrudController
 
         $this->setupColumnsFieldsFromMethod();
         $this->setupFiltersFromMethod();
-        if(!config('dwfw.user_list_global')) {
-            $this->checkAccount();
+        if (config('dwfw.user_list_global', true)) {
+            User::withoutGlobalScope(AccountScope::class)->get();
         }
     }
 

@@ -20,6 +20,11 @@ class Permission extends OriginalPermission
 
     protected $fillable = ['name', 'guard_name', 'updated_at', 'created_at'];
 
+    protected static function booted()
+    {
+        // ez oldja meg, hogy a BaseModell global scope ne töltődjön be erre a modellre, ha később account függő lesz a tábla, akkor ezt az egész booted ki kell törölni innen
+    }
+
     public function getDisplayNameAttribute()
     {
         return __('backpack::permissionmanager.' . $this->name);

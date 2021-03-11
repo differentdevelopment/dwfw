@@ -45,6 +45,13 @@ class TimeZone extends BaseModel
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    protected static function booted()
+    {
+        // ez oldja meg, hogy a BaseModell global scope ne töltődjön be erre a modellre, ha később account függő lesz a tábla, akkor ezt az egész booted ki kell törölni innen
+    }
+
+
     /**
      * returns first Timezone object with $diff && $continent
      * @param string $timezone_diff

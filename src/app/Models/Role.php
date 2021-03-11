@@ -28,6 +28,12 @@ class Role extends Model implements RoleContract
         parent::__construct($attributes);
     }
 
+    protected static function booted()
+    {
+        // ez oldja meg, hogy a BaseModell global scope ne töltődjön be erre a modellre, ha később account függő lesz a tábla, akkor ezt az egész booted ki kell törölni innen
+    }
+
+
     public function getTable()
     {
         return config('permission.table_names.roles', parent::getTable());

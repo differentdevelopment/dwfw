@@ -2,10 +2,8 @@
 
 namespace Different\Dwfw\app\Models;
 
-use Different\Dwfw\app\Models\Partner;
 use Carbon\Carbon;
 use Different\Dwfw\app\Http\Controllers\Files;
-use Illuminate\Database\Eloquent\Model;
 use Intervention\Image\Facades\Image;
 
 /**
@@ -66,19 +64,13 @@ class File extends BaseModel
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-
-    protected static function booted()
-    {
-        // ez oldja meg, hogy a BaseModell global scope ne töltődjön be erre a modellre, ha később account függő lesz a tábla, akkor ezt az egész booted ki kell törölni innen
-    }
-
     /**
      * @param string|null $storage_path
      */
     public function orientate(?string $storage_path = 'app/' . Files::STORAGE_DIR): void
     {
         $image_path = $this->getImagePath($storage_path);
-        ini_set('memory_limit','256M');
+        ini_set('memory_limit', '256M');
         Image::make($image_path)
             ->orientate()
             ->save($image_path);
@@ -93,7 +85,7 @@ class File extends BaseModel
     {
         $attributes = array_merge($this->default_attributes, $attributes);
         $image_path = $this->getImagePath($storage_path);
-        ini_set('memory_limit','256M');
+        ini_set('memory_limit', '256M');
         Image::make($image_path)
             ->resize($attributes['resize_x'], $attributes['resize_y'], function ($constraint) {
                 $constraint->aspectRatio();

@@ -8,7 +8,6 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -53,11 +52,6 @@ class Account extends BaseModel
     |--------------------------------------------------------------------------
     */
 
-    protected static function booted()
-    {
-        // ez oldja meg, hogy a BaseModell global scope ne töltődjön be erre a modellre, ha később account függő lesz a tábla, akkor ezt az egész booted ki kell törölni innen
-    }
-
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -86,4 +80,3 @@ class Account extends BaseModel
     |--------------------------------------------------------------------------
     */
 }
-

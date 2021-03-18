@@ -2,12 +2,12 @@
 
 namespace Different\Dwfw\app\Models\Traits;
 
-use Carbon\Carbon;
-use Different\Dwfw\app\Models\Account;
-use Different\Dwfw\app\Models\Partner;
 use App\Models\UserToken;
+use Carbon\Carbon;
 use Creativeorange\Gravatar\Facades\Gravatar;
+use Different\Dwfw\app\Models\Account;
 use Different\Dwfw\app\Models\File;
+use Different\Dwfw\app\Models\Partner;
 use Different\Dwfw\app\Models\TimeZone;
 
 trait DwfwUser
@@ -84,7 +84,7 @@ trait DwfwUser
             return '';
         }
         //add $profile_image_disk to your Model if you are about to use other disk than files for file_profile_image
-        return route('file', [$this->profile_image_disk ? $this->profile_image_disk : 'files' , $this->file_profile_image]);
+        return route('file', [$this->profile_image_disk ? $this->profile_image_disk : 'files', $this->file_profile_image]);
     }
 
     /*

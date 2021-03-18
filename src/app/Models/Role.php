@@ -28,12 +28,6 @@ class Role extends Model implements RoleContract
         parent::__construct($attributes);
     }
 
-    protected static function booted()
-    {
-        // ez oldja meg, hogy a BaseModell global scope ne töltődjön be erre a modellre, ha később account függő lesz a tábla, akkor ezt az egész booted ki kell törölni innen
-    }
-
-
     public function getTable()
     {
         return config('permission.table_names.roles', parent::getTable());
@@ -80,8 +74,7 @@ class Role extends Model implements RoleContract
     public function getDisplayNameAttribute()
     {
         $translated = __('backpack::permissionmanager.' . $this->name);
-        if('backpack::permissionmanager.' . $this->name == $translated)
-        {
+        if ('backpack::permissionmanager.' . $this->name == $translated) {
             return $this->name;
         } else {
             return $translated;
@@ -104,7 +97,7 @@ class Role extends Model implements RoleContract
 
         $role = static::where('name', $name)->where('guard_name', $guardName)->first();
 
-        if (! $role) {
+        if (!$role) {
             throw RoleDoesNotExist::named($name);
         }
 
@@ -117,7 +110,7 @@ class Role extends Model implements RoleContract
 
         $role = static::where('id', $id)->where('guard_name', $guardName)->first();
 
-        if (! $role) {
+        if (!$role) {
             throw RoleDoesNotExist::withId($id);
         }
 
@@ -138,7 +131,7 @@ class Role extends Model implements RoleContract
 
         $role = static::where('name', $name)->where('guard_name', $guardName)->first();
 
-        if (! $role) {
+        if (!$role) {
             return static::query()->create(['name' => $name, 'guard_name' => $guardName]);
         }
 
@@ -170,7 +163,7 @@ class Role extends Model implements RoleContract
             $permission = $permissionClass->findById($permission, $this->getDefaultGuardName());
         }
 
-        if (! $this->getGuardNames()->contains($permission->guard_name)) {
+        if (!$this->getGuardNames()->contains($permission->guard_name)) {
             throw GuardDoesNotMatch::create($permission->guard_name, $this->getGuardNames());
         }
 

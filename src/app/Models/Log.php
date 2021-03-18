@@ -6,7 +6,6 @@ use App\Models\User;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Backpack\Settings\app\Models\Setting;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Request;
 
 /**
@@ -74,13 +73,6 @@ class Log extends BaseModel
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-
-    protected static function booted()
-    {
-        // ez oldja meg, hogy a BaseModell global scope ne töltődjön be erre a modellre, ha később account függő lesz a tábla, akkor ezt az egész booted ki kell törölni innen
-    }
-
-
     public static function getCountForEventsByTreshold(array $log_events, $treshold)
     {
         return self::query()

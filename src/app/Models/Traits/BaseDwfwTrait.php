@@ -7,15 +7,16 @@ use Different\Dwfw\app\Models\TimeZone;
 
 trait BaseDwfwTrait
 {
-	protected $searchable = [];
-	public function scopeSearch($query, $term)
+    protected $searchable = [];
+
+    public function scopeSearch($query, $term)
     {
-		foreach ($this->searchable as $column) {
-			$query->orWhere($column, 'like', '%' . $term . '%');
-		}
-		return $query;
-	}
-	
+        foreach ($this->searchable as $column) {
+            $query->orWhere($column, 'like', '%' . $term . '%');
+        }
+        return $query;
+    }
+
     /**
      * @param array $data_array incoming array with lang keys
      * @param string|null $namespace namespace for the given lang key - namespace::file_name.key

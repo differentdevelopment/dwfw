@@ -4,8 +4,8 @@ namespace Different\Dwfw\app\Http\Controllers;
 
 use Alert;
 use App\Models\User;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-use Backpack\CRUD\app\Http\Controllers\Operations\FetchOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
@@ -39,7 +39,6 @@ class UsersCrudController extends BaseCrudController
     use LoggableAdmin;
     use ListOperation;
     use CheckCrudPermissions;
-    use FetchOperation;
 
     public function __construct()
     {
@@ -59,18 +58,6 @@ class UsersCrudController extends BaseCrudController
         if (config('dwfw.user_list_global', true)) {
             User::withoutGlobalScope(AccountScope::class)->get();
         }
-    }
-
-    public function fetchUser()
-    {
-        return $this->fetch([
-            'model' => User::class,
-            'searchable_attributes' => ['name', 'email'],
-            'paginate' => 10,
-            'query' => function ($model) {
-                return $model->active();
-            },
-        ]);
     }
 
     public function show($id)
@@ -100,20 +87,20 @@ class UsersCrudController extends BaseCrudController
                 'type' => 'email',
             ],
             [ // n-n relationship (with pivot table)
-                'label' => trans('backpack::permissionmanager.roles'), // Table column heading
-                'type' => 'select_multiple',
-                'name' => 'roles', // the method that defines the relationship in your Model
-                'entity' => 'roles', // the method that defines the relationship in your Model
-                'attribute' => 'display_name', // foreign key attribute that is shown to user
-                'model' => config('permission.models.role'), // foreign key model
+              'label' => trans('backpack::permissionmanager.roles'), // Table column heading
+              'type' => 'select_multiple',
+              'name' => 'roles', // the method that defines the relationship in your Model
+              'entity' => 'roles', // the method that defines the relationship in your Model
+              'attribute' => 'display_name', // foreign key attribute that is shown to user
+              'model' => config('permission.models.role'), // foreign key model
             ],
             [ // n-n relationship (with pivot table)
-                'label' => trans('backpack::permissionmanager.extra_permissions'), // Table column heading
-                'type' => 'select_multiple',
-                'name' => 'permissions', // the method that defines the relationship in your Model
-                'entity' => 'permissions', // the method that defines the relationship in your Model
-                'attribute' => 'display_name', // foreign key attribute that is shown to user
-                'model' => config('permission.models.permission'), // foreign key model
+              'label' => trans('backpack::permissionmanager.extra_permissions'), // Table column heading
+              'type' => 'select_multiple',
+              'name' => 'permissions', // the method that defines the relationship in your Model
+              'entity' => 'permissions', // the method that defines the relationship in your Model
+              'attribute' => 'display_name', // foreign key attribute that is shown to user
+              'model' => config('permission.models.permission'), // foreign key model
             ],
             [
                 'name' => 'partner',
@@ -123,7 +110,7 @@ class UsersCrudController extends BaseCrudController
                 'searchLogic' => function ($query, $column, $searchTerm) {
                     $query->orWhereHas('partner', function ($q) use ($column, $searchTerm) {
                         $q->where('name', 'like', '%' . $searchTerm . '%')
-                            ->orWhere('contact_name', 'like', '%' . $searchTerm . '%');
+                          ->orWhere('contact_name', 'like', '%' . $searchTerm . '%');
                     });
                 },
             ],
@@ -170,8 +157,8 @@ class UsersCrudController extends BaseCrudController
                 'field_unique_name' => 'user_role_permission',
                 'type' => 'checklist_dependency',
                 'name' => ['roles', 'permissions'],
-                'primary_query' => function ($query) {
-                    if (!backpack_user()->hasRole('super admin')) {
+                'primary_query' => function($query){
+                    if(!backpack_user()->hasRole('super admin')) {
                         $query->where('name', '<>', 'super admin');
                     }
                 },
@@ -199,9 +186,9 @@ class UsersCrudController extends BaseCrudController
                 ],
             ],
             [
-                'name' => 'separator',
-                'type' => 'custom_html',
-                'value' => '<a target="blank" href="' . backpack_url('permission') . '"><i class="fas fa-info-circle"></i> ' . __('backpack::permissionmanager.permission_descriptions') . '</a>'
+                'name'  => 'separator',
+                'type'  => 'custom_html',
+                'value' => '<a target="blank" href="' . backpack_url('permission'). '"><i class="fas fa-info-circle"></i> ' .__('backpack::permissionmanager.permission_descriptions').'</a>'
             ],
             [
                 'name' => 'partner_id',
@@ -217,37 +204,37 @@ class UsersCrudController extends BaseCrudController
                 ],
             ],
 
-            [
-                'name' => 'email_verified_at',
-                'label' => __('dwfw::users.verified_at'),
-                'type' => 'date',
-                'wrapper' => [
-                    'class' => 'form-group col-12 col-sm-6',
+                [
+                    'name' => 'email_verified_at',
+                    'label' => __('dwfw::users.verified_at'),
+                    'type' => 'date',
+                    'wrapper' => [
+                        'class' => 'form-group col-12 col-sm-6',
+                    ],
                 ],
-            ],
-            [
-                'name' => 'timezone_id',
-                'label' => __('dwfw::timezones.timezone'),
-                'type' => 'select',
-                'entity' => 'timezone',
-                'attribute' => 'name_with_diff',
-                'model' => 'Different\Dwfw\app\Models\TimeZone',
-                'options' => (function ($query) {
-                    return $query->orderBy('name', 'ASC')->get();
-                }),
-                'default' => TimeZone::DEFAULT_TIMEZONE_CODE,
-                'wrapper' => [
-                    'class' => 'form-group col-12 col-sm-6',
+                [
+                    'name' => 'timezone_id',
+                    'label' => __('dwfw::timezones.timezone'),
+                    'type' => 'select',
+                    'entity' => 'timezone',
+                    'attribute' => 'name_with_diff',
+                    'model' => 'Different\Dwfw\app\Models\TimeZone',
+                    'options' => (function ($query) {
+                        return $query->orderBy('name', 'ASC')->get();
+                    }),
+                    'default' => TimeZone::DEFAULT_TIMEZONE_CODE,
+                    'wrapper' => [
+                        'class' => 'form-group col-12 col-sm-6',
+                    ],
                 ],
-            ],
-            [
-                'name' => 'last_device',
-                'label' => __('dwfw::users.last_device'),
-                'type' => 'text',
-                'wrapper' => [
-                    'class' => 'form-group col-12 col-sm-6',
+                [
+                    'name' => 'last_device',
+                    'label' => __('dwfw::users.last_device'),
+                    'type' => 'text',
+                    'wrapper' => [
+                        'class' => 'form-group col-12 col-sm-6',
+                    ],
                 ],
-            ],
 
             [
                 'name' => 'profile_image',

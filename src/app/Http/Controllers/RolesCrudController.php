@@ -3,19 +3,22 @@
 namespace Different\Dwfw\app\Http\Controllers;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+use Cache;
 use Different\Dwfw\app\Http\Requests\RoleStoreCrudRequest as StoreRequest;
 use Different\Dwfw\app\Http\Requests\RoleUpdateCrudRequest as UpdateRequest;
 use Different\Dwfw\app\Models\Permission;
 use Different\Dwfw\app\Models\Role;
 
-// VALIDATION
-
 class RolesCrudController extends CrudController
 {
 
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use ListOperation;
+
 //    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use UpdateOperation;
+
 //    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
 
     public function setup()
@@ -68,7 +71,7 @@ class RolesCrudController extends CrudController
             'name' => 'users_count',
             'wrapper' => [
                 'href' => function ($crud, $column, $entry, $related_key) {
-                    return backpack_url('user?role=' . $entry->getKey());
+                    return backpack_url('users?role=["' . $entry->getKey() . '"]');
                 },
             ],
             'suffix' => ' users',
@@ -106,7 +109,7 @@ class RolesCrudController extends CrudController
         $this->crud->setValidation(StoreRequest::class);
 
         //otherwise, changes won't have effect
-        \Cache::forget('spatie.permission.cache');
+        Cache::forget('spatie.permission.cache');
     }
 
     public function setupUpdateOperation()
@@ -115,7 +118,7 @@ class RolesCrudController extends CrudController
         $this->crud->setValidation(UpdateRequest::class);
 
         //otherwise, changes won't have effect
-        \Cache::forget('spatie.permission.cache');
+        Cache::forget('spatie.permission.cache');
     }
 
     private function addFields()

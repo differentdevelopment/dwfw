@@ -4,7 +4,6 @@ namespace Different\Dwfw\app\Http\Controllers;
 
 use Alert;
 use App\Models\User;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
@@ -16,9 +15,11 @@ use Different\Dwfw\app\Http\Requests\AccountChangeRequest;
 use Different\Dwfw\app\Http\Requests\UserStoreRequest;
 use Different\Dwfw\app\Http\Requests\UserUpdateRequest;
 use Different\Dwfw\app\Models\Account;
+use Different\Dwfw\app\Models\Role;
 use Different\Dwfw\app\Models\TimeZone;
 use Different\Dwfw\app\Scopes\AccountScope;
 use Different\Dwfw\app\Traits\LoggableAdmin;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Middlewares\PermissionMiddleware;
 
@@ -87,20 +88,20 @@ class UsersCrudController extends BaseCrudController
                 'type' => 'email',
             ],
             [ // n-n relationship (with pivot table)
-              'label' => trans('backpack::permissionmanager.roles'), // Table column heading
-              'type' => 'select_multiple',
-              'name' => 'roles', // the method that defines the relationship in your Model
-              'entity' => 'roles', // the method that defines the relationship in your Model
-              'attribute' => 'display_name', // foreign key attribute that is shown to user
-              'model' => config('permission.models.role'), // foreign key model
+                'label' => trans('backpack::permissionmanager.roles'), // Table column heading
+                'type' => 'select_multiple',
+                'name' => 'roles', // the method that defines the relationship in your Model
+                'entity' => 'roles', // the method that defines the relationship in your Model
+                'attribute' => 'display_name', // foreign key attribute that is shown to user
+                'model' => config('permission.models.role'), // foreign key model
             ],
             [ // n-n relationship (with pivot table)
-              'label' => trans('backpack::permissionmanager.extra_permissions'), // Table column heading
-              'type' => 'select_multiple',
-              'name' => 'permissions', // the method that defines the relationship in your Model
-              'entity' => 'permissions', // the method that defines the relationship in your Model
-              'attribute' => 'display_name', // foreign key attribute that is shown to user
-              'model' => config('permission.models.permission'), // foreign key model
+                'label' => trans('backpack::permissionmanager.extra_permissions'), // Table column heading
+                'type' => 'select_multiple',
+                'name' => 'permissions', // the method that defines the relationship in your Model
+                'entity' => 'permissions', // the method that defines the relationship in your Model
+                'attribute' => 'display_name', // foreign key attribute that is shown to user
+                'model' => config('permission.models.permission'), // foreign key model
             ],
             [
                 'name' => 'partner',
@@ -110,7 +111,7 @@ class UsersCrudController extends BaseCrudController
                 'searchLogic' => function ($query, $column, $searchTerm) {
                     $query->orWhereHas('partner', function ($q) use ($column, $searchTerm) {
                         $q->where('name', 'like', '%' . $searchTerm . '%')
-                          ->orWhere('contact_name', 'like', '%' . $searchTerm . '%');
+                            ->orWhere('contact_name', 'like', '%' . $searchTerm . '%');
                     });
                 },
             ],
@@ -157,8 +158,8 @@ class UsersCrudController extends BaseCrudController
                 'field_unique_name' => 'user_role_permission',
                 'type' => 'checklist_dependency',
                 'name' => ['roles', 'permissions'],
-                'primary_query' => function($query){
-                    if(!backpack_user()->hasRole('super admin')) {
+                'primary_query' => function ($query) {
+                    if (!backpack_user()->hasRole('super admin')) {
                         $query->where('name', '<>', 'super admin');
                     }
                 },
@@ -186,9 +187,9 @@ class UsersCrudController extends BaseCrudController
                 ],
             ],
             [
-                'name'  => 'separator',
-                'type'  => 'custom_html',
-                'value' => '<a target="blank" href="' . backpack_url('permission'). '"><i class="fas fa-info-circle"></i> ' .__('backpack::permissionmanager.permission_descriptions').'</a>'
+                'name' => 'separator',
+                'type' => 'custom_html',
+                'value' => '<a target="blank" href="' . backpack_url('permission') . '"><i class="fas fa-info-circle"></i> ' . __('backpack::permissionmanager.permission_descriptions') . '</a>'
             ],
             [
                 'name' => 'partner_id',
@@ -204,37 +205,37 @@ class UsersCrudController extends BaseCrudController
                 ],
             ],
 
-                [
-                    'name' => 'email_verified_at',
-                    'label' => __('dwfw::users.verified_at'),
-                    'type' => 'date',
-                    'wrapper' => [
-                        'class' => 'form-group col-12 col-sm-6',
-                    ],
+            [
+                'name' => 'email_verified_at',
+                'label' => __('dwfw::users.verified_at'),
+                'type' => 'date',
+                'wrapper' => [
+                    'class' => 'form-group col-12 col-sm-6',
                 ],
-                [
-                    'name' => 'timezone_id',
-                    'label' => __('dwfw::timezones.timezone'),
-                    'type' => 'select',
-                    'entity' => 'timezone',
-                    'attribute' => 'name_with_diff',
-                    'model' => 'Different\Dwfw\app\Models\TimeZone',
-                    'options' => (function ($query) {
-                        return $query->orderBy('name', 'ASC')->get();
-                    }),
-                    'default' => TimeZone::DEFAULT_TIMEZONE_CODE,
-                    'wrapper' => [
-                        'class' => 'form-group col-12 col-sm-6',
-                    ],
+            ],
+            [
+                'name' => 'timezone_id',
+                'label' => __('dwfw::timezones.timezone'),
+                'type' => 'select',
+                'entity' => 'timezone',
+                'attribute' => 'name_with_diff',
+                'model' => 'Different\Dwfw\app\Models\TimeZone',
+                'options' => (function ($query) {
+                    return $query->orderBy('name', 'ASC')->get();
+                }),
+                'default' => TimeZone::DEFAULT_TIMEZONE_CODE,
+                'wrapper' => [
+                    'class' => 'form-group col-12 col-sm-6',
                 ],
-                [
-                    'name' => 'last_device',
-                    'label' => __('dwfw::users.last_device'),
-                    'type' => 'text',
-                    'wrapper' => [
-                        'class' => 'form-group col-12 col-sm-6',
-                    ],
+            ],
+            [
+                'name' => 'last_device',
+                'label' => __('dwfw::users.last_device'),
+                'type' => 'text',
+                'wrapper' => [
+                    'class' => 'form-group col-12 col-sm-6',
                 ],
+            ],
 
             [
                 'name' => 'profile_image',
@@ -294,6 +295,22 @@ class UsersCrudController extends BaseCrudController
                 function ($value) {
                     $this->crud->addClause('where', 'email', 'like', '%' . $value . '%');
                 },
+            ],
+            [
+                [
+                    'name' => 'role',
+                    'type' => 'select2_multiple',
+                    'label' => __('dwfw::users.roles'),
+                ],
+                function () {
+                    return Role::all()->pluck('display_name', 'id')->toArray();
+                },
+                function ($values) {
+                    $values = explode(',', preg_replace('/[^\d|,]/', '', $values));
+                    $this->crud->query->whereHas('roles', function (Builder $query) use ($values) {
+                        $query->wherein('id', $values);
+                    });
+                }
             ],
         ];
     }

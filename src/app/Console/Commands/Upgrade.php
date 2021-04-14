@@ -287,7 +287,7 @@ class Upgrade extends Command
     {
         $this->start_progress_bar('0.14.5', 2);
         $this->line(' Publishing Checklist Dependency field view file');
-        $this->warn(' BaseModel-be vegyünk fel egy üres booted methodot, ha régi rendszerben használjuk, mert különben hiányozni fog neki az account_id!');
+//        $this->warn(' BaseModel-be vegyünk fel egy üres booted methodot, ha régi rendszerben használjuk, mert különben hiányozni fog neki az account_id!');
         $this->executeArtisanProcess('vendor:publish', [
             '--provider' => 'Different\Dwfw\app\Models\Publish\BaseModel',
             '--tag' => 'account',

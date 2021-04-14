@@ -236,8 +236,13 @@ class LogsCrudController extends BaseCrudController
                     false,
                     function ($value) {
                         $dates = json_decode($value);
-                        $this->crud->addClause('where', 'created_at', '>=', $dates->from);
-                        $this->crud->addClause('where', 'created_at', '<=', $dates->to);
+                        $dates = array_map(function ($element) {
+                            $element = trim($element);
+//                            $element .= '.000';
+                            return substr($element, 0, 19);
+                        }, (array)$dates);
+                        $this->crud->addClause('where', 'created_at', '>=', $dates['from']);
+                        $this->crud->addClause('where', 'created_at', '<=', $dates['to']);
                     },
                 ],
                 [

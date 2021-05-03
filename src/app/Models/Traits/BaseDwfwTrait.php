@@ -11,9 +11,11 @@ trait BaseDwfwTrait
 
     public function scopeSearch($query, $term)
     {
-        foreach ($this->searchable as $column) {
-            $query->orWhere($column, 'like', '%' . $term . '%');
-        }
+        $query->where(function ($query) use ($term) {
+            foreach ($this->searchable as $column) {
+                $query->orWhere($column, 'like', '%' . $term . '%');
+            }
+        });
         return $query;
     }
 

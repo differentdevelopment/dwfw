@@ -29,9 +29,9 @@ Route::group(
 Route::group([
     'prefix' => config('backpack.base.route_prefix', 'admin'),
     'middleware' => ['web', config('backpack.base.middleware_key', 'admin'), 'timezone',],
-    'as' => 'admin.',
+    'as' => 'admin',
 ], function () { // custom admin routes
-    Route::get('logs/ajax-user-options', [LogsCrudController::class, 'userOptions'])->name('ajax-user-options');
+    Route::get('logs/ajax-user-options', [LogsCrudController::class, 'userOptions'])->name('.ajax-user-options');
     Route::crud('/logs', LogsCrudController::class);
     Route::crud('/spammers', SpammersCrudController::class);
     if(class_exists('App\Http\Controllers\Admin\AccountsCrudController')) {
@@ -39,17 +39,17 @@ Route::group([
     } else {
         Route::crud('/accounts', AccountsCrudController::class);
     }
-    Route::post('/users/change-account', [UsersCrudController::class, 'changeAccount'])->name('change_account');
+    Route::post('/users/change-account', [UsersCrudController::class, 'changeAccount'])->name('.change_account');
 
     // USERS
     Route::crud('/users', UsersCrudController::class);
-    Route::get('/users/{user}/verify', [UsersCrudController::class ,'verifyUser'])->name('verify');
+    Route::get('/users/{user}/verify', [UsersCrudController::class ,'verifyUser'])->name('.verify');
     Route::get('/user', [UsersCrudController::class, 'abortUserGrid']);
 
     // PARTNERS
     Route::group([
         'prefix' => 'partners',
-        'as' => 'partners',
+        'as' => '.partners',
     ], function () {
         Route::get('ajax_partner_list', [PartnersCrudController::class, 'ajaxList'])->name('.ajax-partner-list');
         Route::crud('', PartnersCrudController::class);

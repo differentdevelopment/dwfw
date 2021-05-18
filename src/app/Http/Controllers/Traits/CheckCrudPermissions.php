@@ -7,16 +7,16 @@ use Illuminate\Support\Str;
 
 trait CheckCrudPermissions
 {
-//    public function checkCrudPermissions()
-//    {
-//        abort_if('\App\Models\Entity' == $this->crud->model, 500, 'checkCrudPermissions() should be after setting crud model!');
-//
-//        $backpack_user = backpack_user();
-//        $entity_name = Str::plural(Str::lower(class_basename($this->crud->model::class)));
-//        foreach (Permission::query()->where('name', 'like', $entity_name . '.%')->get() as $permission) {
-//            if (!$backpack_user->can($permission->name)) $this->crud->denyAccess(Str::replaceFirst($entity_name . '.', '', $permission->name));
-//        }
-//    }
+    public function checkCrudPermissions()
+    {
+        abort_if('\App\Models\Entity' == $this->crud->model, 500, 'checkCrudPermissions() should be after setting crud model!');
+
+        $backpack_user = backpack_user();
+        $entity_name = Str::plural(Str::lower(class_basename($this->crud->model::class)));
+        foreach (Permission::query()->where('name', 'like', $entity_name . '.%')->get() as $permission) {
+            if (!$backpack_user->can($permission->name)) $this->crud->denyAccess(Str::replaceFirst($entity_name . '.', '', $permission->name));
+        }
+    }
 
     public function checkCrudPermissionsByPermission($permission)
     {

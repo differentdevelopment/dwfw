@@ -5,6 +5,7 @@ namespace Different\Dwfw\app\Http\Controllers;
 use Alert;
 use App\Models\User;
 use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\FetchOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
@@ -40,6 +41,7 @@ class UsersCrudController extends BaseCrudController
     use LoggableAdmin;
     use ListOperation;
     use CheckCrudPermissions;
+    use FetchOperation;
 
     public function __construct()
     {
@@ -74,6 +76,38 @@ class UsersCrudController extends BaseCrudController
         }
     }
 
+    public function fetchUser()
+    {
+        return $this->fetch([
+            'model' => User::class,
+            'searchable_attributes' => ['name', 'email'],
+            'paginate' => 10,
+        ]);
+    }
+
+    public function store()
+    {
+        $this->handleFileUpload('profile_image', null, 'users');
+        $this->crud->setValidation(UserStoreRequest::class);
+        $this->crud->setRequest($this->crud->validateRequest());
+        $this->crud->setRequest($this->handlePasswordInput($this->crud->getRequest()));
+        $this->crud->unsetValidation(); // validation has already been run
+
+        return $this->traitStore();
+    }
+
+    public function update()
+    {
+        $this->handleFileUpload('profile_image', null, 'users');
+        $this->crud->setValidation(UserUpdateRequest::class);
+        $this->crud->setRequest($this->crud->validateRequest());
+        $this->crud->setRequest($this->handlePasswordInput($this->crud->getRequest()));
+        $this->crud->unsetValidation(); // validation has already been run
+
+        return $this->traitUpdate();
+    }
+
+    //<editor-fold desc="coluns/fields/filter" defaultstate="collapsed">
     public function getColumns()
     {
         return [
@@ -249,28 +283,6 @@ class UsersCrudController extends BaseCrudController
         ];
     }
 
-    public function store()
-    {
-        $this->handleFileUpload('profile_image', null, 'users');
-        $this->crud->setValidation(UserStoreRequest::class);
-        $this->crud->setRequest($this->crud->validateRequest());
-        $this->crud->setRequest($this->handlePasswordInput($this->crud->getRequest()));
-        $this->crud->unsetValidation(); // validation has already been run
-
-        return $this->traitStore();
-    }
-
-    public function update()
-    {
-        $this->handleFileUpload('profile_image', null, 'users');
-        $this->crud->setValidation(UserUpdateRequest::class);
-        $this->crud->setRequest($this->crud->validateRequest());
-        $this->crud->setRequest($this->handlePasswordInput($this->crud->getRequest()));
-        $this->crud->unsetValidation(); // validation has already been run
-
-        return $this->traitUpdate();
-    }
-
     protected function getFilters()
     {
         return [
@@ -314,7 +326,13 @@ class UsersCrudController extends BaseCrudController
             ],
         ];
     }
+    //</editor-fold>
 
+    /*
+    |--------------------------------------------------------------------------
+    | CUSTOM NON-BACKPACK METHODS
+    |--------------------------------------------------------------------------
+    */
     /**
      * Handle password input fields.
      */
@@ -335,12 +353,6 @@ class UsersCrudController extends BaseCrudController
         return $request;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | CUSTOM NON-BACKPACK METHODS
-    |--------------------------------------------------------------------------
-    */
-
     public function changeAccount(AccountChangeRequest $request)
     {
         $selected_id = $request->validated()['account_id'];
@@ -359,7 +371,6 @@ class UsersCrudController extends BaseCrudController
     | VERIFY USER
     |--------------------------------------------------------------------------
     */
-
     public function verifyUser(User $user)
     {
         $user->verify();

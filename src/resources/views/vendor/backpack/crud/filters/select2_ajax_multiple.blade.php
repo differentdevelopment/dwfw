@@ -6,7 +6,19 @@
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $filter->label }} <span class="caret"></span></a>
     <div class="dropdown-menu p-0">
         <div class="form-group backpack-filter mb-0">
-            <select id="filter_{{ $filter->key }}" name="filter_{{ $filter->key }}" data-filter-key="{{ $filter->key }}" data-filter-name="{{ $filter->name }}" class="form-control input-sm select2" data-filter-type="select2_multiple" placeholder="{{ $filter->placeholder }}" multiple>
+            <select
+                id="filter_{{ $filter->key }}"
+                name="filter_{{ $filter->key }}"
+                class="form-control input-sm select2"
+                placeholder="{{ $filter->placeholder }}"
+                data-filter-key="{{ $filter->key }}"
+                data-filter-type="select2_multiple"
+                data-filter-name="{{ $filter->name }}"
+                data-select-key="{{ $filter->options['select_key'] ?? 'id' }}"
+                data-select-attribute="{{ $filter->options['select_attribute'] ?? 'name' }}"
+                data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
+                multiple
+            >
                 @if (is_array(json_decode(Request::get($filter->name))) && count(json_decode(Request::get($filter->name))))
                     @foreach(json_decode(Request::get($filter->name)) as $key => $value)
                         <option value="{{ $value }}" selected="selected"> {{ json_decode(Request::get($filter->name . '_text'))[$key] ?? 'Previous selection' }} </option>
@@ -25,29 +37,34 @@
 
 @push('crud_list_styles')
     <!-- include select2 css-->
-    <link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('packages/select2-bootstrap-theme/dist/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
     <style>
         .form-inline .select2-container {
             display: inline-block;
         }
+
         .select2-drop-active {
-            border:none;
+            border: none;
         }
+
         .select2-container .select2-choices .select2-search-field input, .select2-container .select2-choice, .select2-container .select2-choices {
             border: none;
         }
+
         .select2-container-active .select2-choice {
             border: none;
             box-shadow: none;
         }
+
         .select2-container--bootstrap .select2-dropdown {
             margin-top: -2px;
             margin-left: -1px;
         }
+
         .select2-container--bootstrap {
-            position: relative!important;
-            top: 0px!important;
+            position: relative !important;
+            top: 0px !important;
         }
     </style>
 @endpush
@@ -61,7 +78,7 @@
     @endif
 
     <script>
-        jQuery(document).ready(function($) {
+        jQuery(document).ready(function ($) {
             // trigger select2 for each untriggered select2 box
             $('#filter_{{ $filter->key }}').each(function () {
 
@@ -74,6 +91,8 @@
 
                 var filterName = $(this).attr('data-filter-name');
                 var filter_key = $(this).attr('data-filter-key');
+                var selectAttribute = $(this).attr('data-select-attribute');
+                var selectKey = $(this).attr('data-select-key');
 
                 $(this).select2({
                     theme: "bootstrap",
@@ -86,14 +105,25 @@
                     ajax: {
                         url: '{{ $filter->values }}',
                         dataType: 'json',
-                        type: 'GET',
+                        type: '{{ $filter->options['method'] ?? 'GET' }}',
                         quietMillis: 50,
                         // data: function (term) {
                         //     return {
                         //         term: term
                         //     };
                         // },
-                        processResults: function (data) {
+                        processResults: (data) => {
+                            if (data.data != undefined) {
+                                return {
+                                    results: $.map(data.data, function (item) {
+                                        return {
+                                            text: item[selectAttribute],
+                                            id: item[selectKey]
+                                        }
+                                    })
+                                };
+                            }
+
                             return {
                                 results: $.map(data, function (item, i) {
                                     return {
@@ -107,12 +137,12 @@
                 });
 
 
-                $(this).change(function() {
+                $(this).change(function () {
                     var value = '';
 
 
                     var data_names = [];
-                    $.each($(this).select2('data'), function( index, value ) {
+                    $.each($(this).select2('data'), function (index, value) {
                         data_names.push(value.text)
                     });
                     var val_text = JSON.stringify(data_names);
@@ -120,7 +150,9 @@
                     // var val_text = $(this).select2('data')[0]?$(this).select2('data')[0].text:null;
                     if ($(this).val() !== null) {
                         // clean array from undefined, null, "".
-                        var values = $(this).val().filter(function(e){ return e === 0 || e });
+                        var values = $(this).val().filter(function (e) {
+                            return e === 0 || e
+                        });
                         // stringify only if values is not empty. otherwise it will be '[]'.
                         value = values.length !== 0 ? JSON.stringify(values) : '';
                     }
@@ -143,24 +175,22 @@
 
                     // mark this filter as active in the navbar-filters
                     if (URI(new_url).hasQuery(filterName, true)) {
-                        $("li[filter-key="+filter_key+"]").removeClass('active').addClass('active');
-                    }
-                    else
-                    {
-                        $("li[filter-key="+filter_key+"]").removeClass("active");
-                        $("li[filter-key="+filter_key+"]").find('.dropdown-menu').removeClass("show");
+                        $("li[filter-key=" + filter_key + "]").removeClass('active').addClass('active');
+                    } else {
+                        $("li[filter-key=" + filter_key + "]").removeClass("active");
+                        $("li[filter-key=" + filter_key + "]").find('.dropdown-menu').removeClass("show");
                     }
                 });
 
                 // when the dropdown is opened, autofocus on the select2
-                $('li[filter-key='+filter_key+']').on('shown.bs.dropdown', function () {
-                    $('#filter_'+filter_key).select2('open');
+                $('li[filter-key=' + filter_key + ']').on('shown.bs.dropdown', function () {
+                    $('#filter_' + filter_key).select2('open');
                 });
 
                 // clear filter event (used here and by the Remove all filters button)
-                $('li[filter-key='+filter_key+']').on('filter:clear', function(e) {
-                    $('li[filter-key='+filter_key+']').removeClass('active');
-                    $('#filter_'+filter_key).val(null).trigger('change');
+                $('li[filter-key=' + filter_key + ']').on('filter:clear', function (e) {
+                    $('li[filter-key=' + filter_key + ']').removeClass('active');
+                    $('#filter_' + filter_key).val(null).trigger('change');
                 });
             });
         });

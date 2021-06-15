@@ -52,7 +52,7 @@ class UsersCrudController extends BaseCrudController
     public function setup()
     {
         $this->crud->setRoute(backpack_url('users'));
-        $this->crud->setEntityNameStrings(trans('backpack::permissionmanager.user'), trans('backpack::permissionmanager.users'));
+        $this->crud->setEntityNameStrings(__('backpack::permissionmanager.user'), __('backpack::permissionmanager.users'));
         $this->crud->setModel(User::class);
         $this->crud->addButton('line', 'verify', 'view', 'dwfw::crud.buttons.users.verify', 'beginning');
 
@@ -113,16 +113,16 @@ class UsersCrudController extends BaseCrudController
         return [
             [
                 'name' => 'name',
-                'label' => trans('backpack::permissionmanager.name'),
+                'label' => __('backpack::permissionmanager.name'),
                 'type' => 'text',
             ],
             [
                 'name' => 'email',
-                'label' => trans('backpack::permissionmanager.email'),
+                'label' => __('backpack::permissionmanager.email'),
                 'type' => 'email',
             ],
             [ // n-n relationship (with pivot table)
-                'label' => trans('backpack::permissionmanager.roles'), // Table column heading
+                'label' => __('backpack::permissionmanager.roles'), // Table column heading
                 'type' => 'select_multiple',
                 'name' => 'roles', // the method that defines the relationship in your Model
                 'entity' => 'roles', // the method that defines the relationship in your Model
@@ -130,7 +130,7 @@ class UsersCrudController extends BaseCrudController
                 'model' => config('permission.models.role'), // foreign key model
             ],
             [ // n-n relationship (with pivot table)
-                'label' => trans('backpack::permissionmanager.extra_permissions'), // Table column heading
+                'label' => __('backpack::permissionmanager.extra_permissions'), // Table column heading
                 'type' => 'select_multiple',
                 'name' => 'permissions', // the method that defines the relationship in your Model
                 'entity' => 'permissions', // the method that defines the relationship in your Model
@@ -163,12 +163,12 @@ class UsersCrudController extends BaseCrudController
         return [
             [
                 'name' => 'name',
-                'label' => trans('backpack::permissionmanager.name'),
+                'label' => __('backpack::permissionmanager.name'),
                 'type' => 'text',
             ],
             [
                 'name' => 'email',
-                'label' => trans('backpack::permissionmanager.email'),
+                'label' => __('backpack::permissionmanager.email'),
                 'type' => 'email',
             ],
             [
@@ -178,17 +178,17 @@ class UsersCrudController extends BaseCrudController
             ],
             [
                 'name' => 'password',
-                'label' => trans('backpack::permissionmanager.password'),
+                'label' => __('backpack::permissionmanager.password'),
                 'type' => 'password',
             ],
             [
                 'name' => 'password_confirmation',
-                'label' => trans('backpack::permissionmanager.password_confirmation'),
+                'label' => __('backpack::permissionmanager.password_confirmation'),
                 'type' => 'password',
             ],
             [
 //                // two interconnected entities
-                'label' => trans('backpack::permissionmanager.user_role_permission'),
+                'label' => __('backpack::permissionmanager.user_role_permission'),
                 'field_unique_name' => 'user_role_permission',
                 'type' => 'checklist_dependency',
                 'name' => ['roles', 'permissions'],
@@ -199,7 +199,7 @@ class UsersCrudController extends BaseCrudController
                 },
                 'subfields' => [
                     'primary' => [
-                        'label' => trans('backpack::permissionmanager.roles'),
+                        'label' => __('backpack::permissionmanager.roles'),
                         'name' => 'roles', // the method that defines the relationship in your Model
                         'entity' => 'roles', // the method that defines the relationship in your Model
                         'entity_secondary' => 'permissions', // the method that defines the relationship in your Model
@@ -209,7 +209,7 @@ class UsersCrudController extends BaseCrudController
                         'number_columns' => 3, //can be 1,2,3,4,6
                     ],
                     'secondary' => [
-                        'label' => ucfirst(trans('backpack::permissionmanager.permission_singular')),
+                        'label' => ucfirst(__('backpack::permissionmanager.permission_singular')),
                         'name' => 'permissions', // the method that defines the relationship in your Model
                         'entity' => 'permissions', // the method that defines the relationship in your Model
                         'entity_primary' => 'roles', // the method that defines the relationship in your Model
@@ -280,6 +280,12 @@ class UsersCrudController extends BaseCrudController
                     'class' => 'form-group col-12 col-sm-6',
                 ],
             ],
+            [
+                'name' => 'phone',
+                'label' => __('dwfw::users.phone'),
+                'type' => 'text',
+            ],
+
         ];
     }
 

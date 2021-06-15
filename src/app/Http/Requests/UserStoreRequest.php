@@ -25,10 +25,11 @@ class UserStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'email'    => 'required|unique:'.config('permission.table_names.users', 'users').',email',
-            'name'     => 'required',
-            'password' => 'required|confirmed',
-            'roles' => ['nullable', new RestrictRoleGiving(),],
+            'email'     => ['required', 'unique:' . config('permission.table_names.users', 'users') . ',email'],
+            'name'      => ['required'],
+            'password'  => ['required', 'confirmed'],
+            'roles'     => ['nullable', new RestrictRoleGiving()],
+            'phone'     => ['nullable', 'string'],
         ];
     }
 }

@@ -35,10 +35,11 @@ class UserUpdateRequest extends FormRequest
         }
 
         return [
-            'email'    => 'required|unique:'.config('permission.table_names.users', 'users').',email,'.$userId,
-            'name'     => 'required',
-            'password' => 'confirmed',
-            'roles' => ['nullable', new RestrictRoleGiving(),],
+            'email'     => ['required', 'unique:'.config('permission.table_names.users', 'users').',email,'.$userId],
+            'name'      => ['required'],
+            'password'  => ['confirmed'],
+            'roles'     => ['nullable', new RestrictRoleGiving()],
+            'phone'     => ['nullable', 'string'],
         ];
     }
 }

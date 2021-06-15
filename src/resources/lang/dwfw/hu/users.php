@@ -14,4 +14,5 @@ return [
     'name' => 'Név',
     'email' => 'E-mail',
     'roles' => 'Szerepkörök',
+    'phone' => 'Telefonszám',
 ];

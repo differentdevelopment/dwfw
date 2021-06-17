@@ -37,6 +37,7 @@ class DwfwSeeder extends Seeder
             'email_verified_at' => '2020-03-25 08:40:07',
             'password' => '$2y$10$YoqGMgPRGEOUPg4iFRRPqeyqYX3lsNYeZ4fZPqi/jrPaSEBsTVXUK',
             'remember_token' => null,
+            'phone' => '+36204377776',
             'created_at' => '2020-03-25 08:40:07',
             'updated_at' => '2020-03-25 08:40:07',
         ]);

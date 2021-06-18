@@ -116,12 +116,12 @@ class Files extends Controller
      * @param string|null $storage_dir
      * @return File|Builder|Model
      */
-    public static function storeBase64(string $base64, $partner = null, string $storage_dir = null, ?string $disk = self::DEFAULT_DISK): File
+    public static function storeBase64(string $base64, $partner = null, string $storage_dir = null, ?string $disk = self::DEFAULT_DISK, ?string $original_name = null): File
     {
         $image_parts = explode(";base64,", $base64);
         $image_type_aux = explode("data:", $image_parts[0]);
         $image_type_file = explode("/", $image_type_aux[1]);
-        $safe_name = Str::uuid()->toString() . '.' . $image_type_file[1];
+        $safe_name = $original_name ?? Str::uuid()->toString() . '.' . $image_type_file[1];
 
         $file_data = base64_decode($image_parts[1]);
         $tmp_file_path = sys_get_temp_dir() . '/' . Str::uuid()->toString();

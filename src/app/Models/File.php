@@ -4,6 +4,8 @@ namespace Different\Dwfw\app\Models;
 
 use Carbon\Carbon;
 use Different\Dwfw\app\Http\Controllers\Files;
+use Different\Dwfw\database\factories\FileFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Intervention\Image\Facades\Image;
 
 /**
@@ -20,6 +22,7 @@ use Intervention\Image\Facades\Image;
  */
 class File extends BaseModel
 {
+    use HasFactory;
 
     /*
     |--------------------------------------------------------------------------
@@ -44,7 +47,12 @@ class File extends BaseModel
         'updated_at',
     ];
 
-    protected $default_attributes = [
+    protected static function newFactory(): FileFactory
+    {
+        return FileFactory::new();
+    }
+
+    protected array $default_attributes = [
         'resize_x' => 1500,
         'resize_y' => 1500,
     ];
@@ -54,7 +62,7 @@ class File extends BaseModel
      *
      * @return string
      */
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'access_hash';
     }
@@ -94,7 +102,7 @@ class File extends BaseModel
             ->save($image_path);
     }
 
-    public function identifiableAttribute()
+    public function identifiableAttribute(): string
     {
         return 'original_name';
     }

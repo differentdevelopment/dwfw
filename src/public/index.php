@@ -58,13 +58,3 @@ $response = $kernel->handle(
 $response->send();
 
 $kernel->terminate($request, $response);
-
-//try
-//{
-//    // Flush the Request Cache
-//    $app->make('cache')->store('request')->flush();
-//}
-//catch(ReflectionException $ex)
-//{
-//    // Do nothing
-//}

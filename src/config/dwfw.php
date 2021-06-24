@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'version' => '0.14.7',
+    'version' => '0.15.0',
     'user_list_global' => true,
 ];

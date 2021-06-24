@@ -53,11 +53,11 @@ class DwfwServiceProvider extends ServiceProvider
             return $user->hasRole('super admin') ? true : null;
         });
 
-        if(method_exists(Controller::class, 'allowFileView')) {
+        if (method_exists(Controller::class, 'allowFileView')) {
             Gate::define('viewFile', 'App\Http\Controllers\Controller@allowFileView');
-        } else{
-            Gate::define('viewFile', function($user = null){
-               return true;
+        } else {
+            Gate::define('viewFile', function ($user = null) {
+                return true;
             });
         }
 
@@ -143,9 +143,6 @@ class DwfwServiceProvider extends ServiceProvider
         $this->publishes([__DIR__ . '/config/checkIp.php' => config_path('checkIp.php')], ['base', 'config.checkIp']);
         $this->publishes([__DIR__ . '/config/permission.php' => config_path('permission.php')], ['base', 'config.permission']);
 
-        //utilites
-        $this->publishes([__DIR__ . DIRECTORY_SEPARATOR .'../tests/utilities/functions.php' => base_path() . '/tests/utilities/functions.php'], ['base', 'tests.utilities']);
-
         //Backpack login view
         $this->publishes([__DIR__ . '/resources/views/vendor/backpack/base/auth/login.blade.php' => resource_path() . '/views/vendor/backpack/base/auth/login.blade.php'], ['base', 'backpack.login']);
 
@@ -155,8 +152,8 @@ class DwfwServiceProvider extends ServiceProvider
         //Spatie Honey
         $this->publishes([__DIR__ . '/app/SpamResponder/SpamRespond.php' => app_path() . '/SpamResponder/SpamRespond.php'], ['base', 'spatie-honey.spam-respond']);
 
-        //index.php
-        $this->publishes([__DIR__ . '/public/index.php' => public_path() . '/index.php'], ['base', 'index']);
+        // Fixed custom routes
+        $this->publishes([__DIR__ . '/routes/backpack/custom.php' => base_path() . '/routes/custom.php'], ['base', 'backpack.custom']);
 
         /*
         |--------------------------------------------------------------------------
@@ -196,11 +193,11 @@ class DwfwServiceProvider extends ServiceProvider
         $this->publishes([__DIR__ . '/routes/dwfw/api.php' => base_path() . '/routes/api.php'], ['passport', 'routes.api']);
 
         //Middlewares
-        $this->publishes([__DIR__ . '/app/Http/Middleware/CorsMiddleware.php' => app_path(). '/Http/Middleware/CorsMiddleware.php'], ['passport', 'middlewares.cors']);
+        $this->publishes([__DIR__ . '/app/Http/Middleware/CorsMiddleware.php' => app_path() . '/Http/Middleware/CorsMiddleware.php'], ['passport', 'middlewares.cors']);
 
         //Notifications
-        $this->publishes([__DIR__ . '/app/Notifications/CustomPasswordResetNotification.php' => app_path(). '/Notifications/CustomPasswordResetNotification.php'], ['passport', 'middlewares.cors']);
-        $this->publishes([__DIR__ . '/app/Notifications/CustomRegistrationConfirmNotification.php' => app_path(). '/Notifications/CustomRegistrationConfirmNotification.php'], ['passport', 'middlewares.cors']);
+        $this->publishes([__DIR__ . '/app/Notifications/CustomPasswordResetNotification.php' => app_path() . '/Notifications/CustomPasswordResetNotification.php'], ['passport', 'middlewares.cors']);
+        $this->publishes([__DIR__ . '/app/Notifications/CustomRegistrationConfirmNotification.php' => app_path() . '/Notifications/CustomRegistrationConfirmNotification.php'], ['passport', 'middlewares.cors']);
 
         //Postman Collection
         $this->publishes([__DIR__ . '/../Dwfw.postman_collection.json' => base_path() . env('APP_NAME') . '.postman_collection.json'], ['passport', 'auth.postman']);

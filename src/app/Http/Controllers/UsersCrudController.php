@@ -369,7 +369,7 @@ class UsersCrudController extends BaseCrudController
         ) {
             session(['account_id' => $selected_id]);
         }
-        return back();
+        return redirect('/');
     }
 
     /*

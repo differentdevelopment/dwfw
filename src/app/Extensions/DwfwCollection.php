@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class DwfwCollection extends Collection
 {
-    public function pluckMultiple($value, $key = null)
+    public function pluckMultiple(string $value, ?string $key = null)
     {
         preg_match_all('/{(.*?)}/', $key, $matches);
         return $this->flatMap(function ($item) use ($matches, $value, $key) {
@@ -15,5 +15,16 @@ class DwfwCollection extends Collection
             }
             return [$key => $item[$value] ?? $value];
         });
+    }
+
+    public function pluckArray(array $values, string $key)
+    {
+        $plucked_array = [];
+        $this->each(function ($plucked) use (&$plucked_array, $values, $key) {
+            foreach($values as $value){
+                $plucked_array[$plucked->$key][$value] = $plucked->$value;
+            }
+        });
+        return $plucked_array;
     }
 }

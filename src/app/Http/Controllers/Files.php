@@ -3,7 +3,6 @@
 namespace Different\Dwfw\app\Http\Controllers;
 
 use Different\Dwfw\app\Models\File;
-use Different\Dwfw\app\Models\Partner;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
@@ -80,6 +79,7 @@ class Files extends Controller
      * @param string $disk
      * @param File $file
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function retrieveBase64(string $disk, File $file)
     {
@@ -111,23 +111,26 @@ class Files extends Controller
 
     /**
      * Stores base64 image in storage as file and creates db entry
-     * @param UploadedFile $file
-     * @param Partner|int $partner
+     * @param string $base64
+     * @param null $partner
      * @param string|null $storage_dir
-     * @return File|Builder|Model
+     * @param string|null $disk
+     * @param string|null $original_name
+     * @param int|null $file_id
+     * @return File
      */
-    public static function storeBase64(string $base64, $partner = null, string $storage_dir = null, ?string $disk = self::DEFAULT_DISK, ?string $original_name = null): File
+    public static function storeBase64(string $base64, $partner = null, string $storage_dir = null, ?string $disk = self::DEFAULT_DISK, ?string $original_name = null, ?int $file_id = null): File
     {
         $image_parts = explode(";base64,", $base64);
         $image_type_aux = explode("data:", $image_parts[0]);
         $image_type_file = explode("/", $image_type_aux[1]);
         $safe_name = $original_name ?? Str::uuid()->toString() . '.' . $image_type_file[1];
 
+        $tmp_file_path = sys_get_temp_dir() . '/' . ($file_id ? Str::beforeLast(Str::replace($storage_dir . '/', '', File::query()->find($file_id)->file_path), '.') : Str::uuid()->toString());
         $file_data = base64_decode($image_parts[1]);
-        $tmp_file_path = sys_get_temp_dir() . '/' . Str::uuid()->toString();
         file_put_contents($tmp_file_path, $file_data);
         $tmp_file = new \Illuminate\Http\File($tmp_file_path);
-        $file = new UploadedFile(
+        $uploaded_file = new UploadedFile(
             $tmp_file->getPathname(),
             $tmp_file->getFilename(),
             $tmp_file->getMimeType(),
@@ -135,7 +138,7 @@ class Files extends Controller
             true
         );
 
-        return Files::insertUploadedFileIntoDb($file, $partner, $storage_dir, $safe_name, $image_type_aux[1], $disk);
+        return Files::insertUploadedFileIntoDb($uploaded_file, $partner, $storage_dir, $safe_name, $image_type_aux[1], $disk, $file_id);
     }
 
     /**
@@ -149,24 +152,30 @@ class Files extends Controller
      * @return File|Builder|Model
      */
     private static function insertUploadedFileIntoDb(
-        UploadedFile $file,
+        UploadedFile $uploaded_file,
         $partner = null,
         string $storage_dir = null,
         string $original_name = null,
         string $mime_type = null,
-        ?string $disk = null
+        ?string $disk = null,
+        ?int $file_id = null,
     ): File
     {
         $partner_id = $partner === null ? null : ($partner instanceof \App\Models\Partner ? $partner->id : $partner);
         $storage_dir = $storage_dir ?? $partner_id;
-        Storage::disk($disk)->put($storage_dir, $file);
-        return File::query()->create([
-            'partner_id' => $partner_id,
-            'original_name' => $original_name,
-            'mime_type' => $mime_type,
-            'file_path' => $storage_dir . '/' . $file->hashName(),
-            'access_hash' => Str::random(40),
-        ]);
+
+        $file = File::query()->findOrNew($file_id);
+        Storage::disk($disk)->delete($file->file_path);
+
+        $file->partner_id = $partner_id;
+        $file->original_name = $original_name;
+        $file->mime_type = $mime_type;
+        $file->file_path = $storage_dir . '/' . $uploaded_file->hashName();
+        $file->access_hash = Str::random(40);
+        $file->save();
+
+        Storage::disk($disk)->put($storage_dir, $uploaded_file);
+        return $file;
     }
 
     public static function delete(File $file, string $storage_dir = null, ?string $disk = self::DEFAULT_DISK)

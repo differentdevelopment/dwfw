@@ -3,6 +3,8 @@
 namespace Different\Dwfw\app\Http\Controllers;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
 use Cache;
@@ -14,12 +16,10 @@ use Different\Dwfw\app\Models\Role;
 class RolesCrudController extends CrudController
 {
 
+    use CreateOperation;
     use ListOperation;
-
-//    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use UpdateOperation;
-
-//    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use DeleteOperation;
 
     public function setup()
     {
@@ -31,13 +31,8 @@ class RolesCrudController extends CrudController
         $this->crud->setRoute(backpack_url('role'));
 
         // deny access according to configuration file
-        if (config('backpack.permissionmanager.allow_role_create') == false) {
+        if (!config('dwfw.custom_role_handling')) {
             $this->crud->denyAccess('create');
-        }
-        if (config('backpack.permissionmanager.allow_role_update') == false) {
-            $this->crud->denyAccess('update');
-        }
-        if (config('backpack.permissionmanager.allow_role_delete') == false) {
             $this->crud->denyAccess('delete');
         }
 
@@ -124,12 +119,12 @@ class RolesCrudController extends CrudController
     private function addFields()
     {
         $this->crud->addField([
-            'name' => 'display_name',
+            'name' => !config('dwfw.custom_role_handling') ? 'display_name' : 'name',
             'label' => trans('backpack::permissionmanager.name'),
             'type' => 'text',
-            'attributes' => [
+            'attributes' => !config('dwfw.custom_role_handling') ? [
                 'readonly' => 'readonly',
-            ]
+            ] : [],
         ]);
 
         if (config('backpack.permissionmanager.multiple_guards')) {

@@ -77,12 +77,13 @@ abstract class BaseCrudController extends CrudController
         );
     }
 
-   protected function setTabs(array $tabs = []): void
+    protected function setTabs(array $tabs = [], bool $show_on_list = false): void
     {
         if (!count($tabs)) return;
         throw_if(isset($this->data['tabs']), \Exception::class, 'The cruds tabs attribute is occupied, check Different\Dwfw\app\Http\Controllers\BaseCrudController::setTabs method!');
 
         View::share('tabs', $tabs);
+        if ($show_on_list) $this->crud->setListView('dwfw::partials.tabbed.list');
         $this->crud->setShowView('dwfw::partials.tabbed.show');
         $this->crud->setCreateView('dwfw::partials.tabbed.create');
         $this->crud->setEditView('dwfw::partials.tabbed.edit');

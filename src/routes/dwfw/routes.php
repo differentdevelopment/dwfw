@@ -6,6 +6,7 @@ use Different\Dwfw\app\Http\Controllers\LogsCrudController;
 use Different\Dwfw\app\Http\Controllers\PartnersCrudController;
 use Different\Dwfw\app\Http\Controllers\SpammersCrudController;
 use Different\Dwfw\app\Http\Controllers\UsersCrudController;
+use Different\Dwfw\app\Http\Middleware\DisableDebugbarMiddleware;
 use Illuminate\Support\Facades\Route;
 
 //use Illuminate\Support\Facades\Auth; //TODO EZ A KÉT SOR ERRORT OKOZOTT MINDEN RENDSZERÜNKBEN
@@ -19,8 +20,17 @@ Route::group(
     function () {
 //        Route::get('/{disk}/file/{file}', 'Files@retrieve')->name('file')->middleware('can:viewFile');
 //        Route::get('/{disk}/file_b64/{file}', 'Files@retrieveBase64')->name('file-b64')->middleware('can:viewFile');
-        Route::get('/{disk}/file/{file}', 'Files@retrieve')->name('file')->middleware('can:viewFile');
-        Route::get('/{disk}/file_b64/{file}', 'Files@retrieveBase64')->name('file-b64')->middleware('can:viewFile');
+        Route::group(
+            [
+                'middleware' => [
+                    DisableDebugbarMiddleware::class,
+                ],
+            ],
+            function() {
+                Route::get('/{disk}/file/{file}', 'Files@retrieve')->name('file')->middleware('can:viewFile');
+                Route::get('/{disk}/file_b64/{file}', 'Files@retrieveBase64')->name('file-b64')->middleware('can:viewFile');
+            }
+        );
 
         Route::post('set_timezone', 'TimeZones@set')->name('set-timezone');
     }

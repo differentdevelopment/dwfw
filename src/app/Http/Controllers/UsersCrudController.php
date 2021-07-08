@@ -61,6 +61,15 @@ class UsersCrudController extends BaseCrudController
         if (config('dwfw.user_list_global', true)) {
             User::withoutGlobalScope(AccountScope::class)->get();
         }
+
+        if (config('dwfw.simple_account_user_pivot', false))
+            $this->crud
+                ->addField([
+                    'name' => 'accounts',
+                    'label' => __('dwfw::accounts.accounts'),
+                    'type' => 'select2_multiple',
+                ])
+                ->afterField('email');
     }
 
     public function show($id)
@@ -170,11 +179,6 @@ class UsersCrudController extends BaseCrudController
                 'name' => 'email',
                 'label' => __('backpack::permissionmanager.email'),
                 'type' => 'email',
-            ],
-            [
-                'name' => 'accounts',
-                'label' => __('dwfw::accounts.accounts'),
-                'type' => 'select2_multiple',
             ],
             [
                 'name' => 'password',

@@ -25,16 +25,16 @@ trait BaseDwfwTrait
      * @param string|null $file_name file name for given key
      * @return array localized array
      */
-    public static function localizeArray(array $data_array, ?string $namespace = '', ?string $file_name = ''): array
+    public static function localizeArray(array $data_array, ?string $namespace = '', ?string $file_name = '', ?bool $with_index = false): array
     {
         $return = [];
         if ($namespace) {
-            foreach ($data_array as $key) {
-                $return[$key] = __($namespace . '::' . $file_name . '.' . $key);
+            foreach ($data_array as $index => $key) {
+                $return[$with_index ? $index : $key] = __($namespace . '::' . $file_name . '.' . $key);
             }
         } else {
-            foreach ($data_array as $key) {
-                $return[$key] = __('admin.' . $key);
+            foreach ($data_array as $index => $key) {
+                $return[$with_index ? $index : $key] = __('admin.' . $key);
             }
         }
         return $return;

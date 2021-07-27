@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\File as CoreFile;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
@@ -174,6 +175,7 @@ class Files extends Controller
         $file->access_hash = Str::random(40);
         $file->save();
 
+        CoreFile::ensureDirectoryExists(Storage::disk($disk)->path($storage_dir));
         Storage::disk($disk)->put($storage_dir, $uploaded_file);
         return $file;
     }

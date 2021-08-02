@@ -12,6 +12,7 @@
 
 use Different\Dwfw\app\Http\Controllers\PermissionCrudController;
 use Different\Dwfw\app\Http\Controllers\RolesCrudController;
+use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Middlewares\PermissionMiddleware;
 
 Route::group([
@@ -25,6 +26,4 @@ Route::group([
     Route::group(['middleware' => PermissionMiddleware::class . ':manage roles'], function () {
         Route::crud('role', RolesCrudController::class);
     });
-
-    Route::crud('users', \Different\Dwfw\app\Http\Controllers\UsersCrudController::class);
 });

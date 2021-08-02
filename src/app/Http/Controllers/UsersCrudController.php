@@ -13,8 +13,6 @@ use Different\Dwfw\app\Http\Controllers\Traits\CheckCrudPermissions;
 use Different\Dwfw\app\Http\Controllers\Traits\ColumnFaker;
 use Different\Dwfw\app\Http\Controllers\Traits\FileUpload;
 use Different\Dwfw\app\Http\Requests\AccountChangeRequest;
-use Different\Dwfw\app\Http\Requests\UserStoreRequest;
-use Different\Dwfw\app\Http\Requests\UserUpdateRequest;
 use Different\Dwfw\app\Models\Account;
 use Different\Dwfw\app\Models\Role;
 use Different\Dwfw\app\Models\TimeZone;
@@ -97,7 +95,11 @@ class UsersCrudController extends BaseCrudController
     public function store()
     {
         $this->handleFileUpload('profile_image', null, 'users');
-        $this->crud->setValidation(UserStoreRequest::class);
+        $this->crud->setValidation(
+            class_exists(\App\Http\Requests\UserStoreRequest::class)
+                ? \App\Http\Requests\UserStoreRequest::class
+                : \Different\Dwfw\app\Http\Requests\UserStoreRequest::class
+        );
         $this->crud->setRequest($this->crud->validateRequest());
         $this->crud->setRequest($this->handlePasswordInput($this->crud->getRequest()));
         $this->crud->unsetValidation(); // validation has already been run
@@ -108,7 +110,11 @@ class UsersCrudController extends BaseCrudController
     public function update()
     {
         $this->handleFileUpload('profile_image', null, 'users');
-        $this->crud->setValidation(UserUpdateRequest::class);
+        $this->crud->setValidation(
+            class_exists(\App\Http\Requests\UserUpdateRequest::class)
+                ? \App\Http\Requests\UserUpdateRequest::class
+                : \Different\Dwfw\app\Http\Requests\UserUpdateRequest::class
+        );
         $this->crud->setRequest($this->crud->validateRequest());
         $this->crud->setRequest($this->handlePasswordInput($this->crud->getRequest()));
         $this->crud->unsetValidation(); // validation has already been run

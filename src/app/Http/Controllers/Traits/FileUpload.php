@@ -26,6 +26,7 @@ trait FileUpload
             $this->addColumnIdToRequest($input_name, '');
             $this->crud->getRequest()->request->remove($input_name);
         }
+        $this->crud->getRequest()->request->remove($input_name);
     }
 
     /**

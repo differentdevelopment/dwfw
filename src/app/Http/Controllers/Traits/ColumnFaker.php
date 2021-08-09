@@ -9,17 +9,17 @@ trait ColumnFaker
      * @param string $column The name of the foreign key column, without the "_id" suffix
      * @param null $value
      */
-    protected function addColumnIdToRequest(string $column, $value = null): void
+    protected function addColumnIdToRequest(string $column, $value = null, $suffix = '_id'): void
     {
-        if ($value === null && isset($this->{$column . '_id'})) {
-            $value = $this->{$column . '_id'};
+        if ($value === null && isset($this->{$column . $suffix})) {
+            $value = $this->{$column . $suffix};
         } elseif ($value === '') {
             $value = null;
         } elseif ($value === null) {
             return;
         }
-        $this->crud->addField(['name' => $column . '_id', 'type' => 'hidden']);
-        $this->crud->getRequest()->request->add([$column . '_id' => $value]);
+        $this->crud->addField(['name' => $column . $suffix, 'type' => 'hidden', 'default' => $value]);
+        $this->crud->getRequest()->request->add([$column . $suffix => $value]);
     }
 
 }

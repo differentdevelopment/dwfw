@@ -37,13 +37,13 @@ Route::group([
     Route::crud('/spammers', SpammersCrudController::class);
     Route::crud('/accounts', class_exists('App\Http\Controllers\Admin\AccountsCrudController')
         ? 'App\Http\Controllers\Admin\AccountsCrudController'
-        : Route::crud('/accounts', AccountsCrudController::class)
+        : AccountsCrudController::class
     );
 
     // USERS
     Route::crud('/users', class_exists('App\Http\Controllers\Admin\UsersCrudController')
         ? \App\Http\Controllers\Admin\UsersCrudController::class
-        : Route::crud('/users', AccountsCrudController::class)
+        : AccountsCrudController::class
     );
     Route::post('/users/change-account', [UsersCrudController::class, 'changeAccount'])->name('.change_account');
     Route::get('/users/{user}/verify', [UsersCrudController::class, 'verifyUser'])->name('.verify');

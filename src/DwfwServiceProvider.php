@@ -14,7 +14,9 @@ use Different\Dwfw\app\Models\Partner;
 use Different\Dwfw\app\Observers\PartnerObserver;
 use Different\Dwfw\app\Observers\SettingObserver;
 use Different\Dwfw\app\Observers\UserObserver;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -49,6 +51,8 @@ class DwfwServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Model::preventLazyLoading(!$this->app->isProduction());
+
         Gate::before(function ($user, $ability) {
             return $user->hasRole('super admin') ? true : null;
         });
@@ -90,6 +94,22 @@ class DwfwServiceProvider extends ServiceProvider
 
         // removed unused files from base Laravel install
         $this->cleanup();
+
+        $this->setBladeDirectives();
+    }
+
+    private function setBladeDirectives(): void
+    {
+        Blade::directive('active', function ($expression) {
+            return "<?php echo request()->is('admin/' . $expression . '*') ? 'active' : '' ?>";
+        });
+
+        Blade::if('dwfwcan', function (string|array $permission) {
+            $user = backpack_user();
+            if ($user->hasRole('super admin')) return true;
+
+            return $user->hasAnyPermission($permission);
+        });
     }
 
     public function registerMiddlewareGroup(Router $router)

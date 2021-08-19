@@ -13,6 +13,56 @@ use Spatie\Permission\Models\Role;
 
 class DwfwSeeder extends Seeder
 {
+    protected $setting = [
+        [
+            'key' => 'NOTICE_TIME',
+            'name' => 'NOTICE_TIME',
+            'description' => 'Idő amíg a NOTICE log törtlődik(nap)',
+            'value' => '7',      
+            'Field' => '{"name":"value","label":"Value","type":"number"}',
+            'active' => 1,
+        ],
+        [
+            'key' => 'WARNING_TIME',
+            'name' => 'WARNING_TIME',
+            'description' => 'Idő amíg a WARNING log törtlődik(nap)',
+            'value' => '30',      
+            'Field' => '{"name":"value","label":"Value","type":"number"}',
+            'active' => 1,
+        ],
+        [
+            'key' => 'ERROR_TIME',
+            'name' => 'ERROR_TIME',
+            'description' => 'Idő amíg a ERROR log törtlődik(nap)',
+            'value' => '0',      
+            'Field' => '{"name":"value","label":"Value","type":"number"}',
+            'active' => 1,
+        ],
+        [
+            'key' => 'NOTICE_CATEGORY',
+            'name' => 'NOTICE_CATEGORY',
+            'description' => 'Eventek amik a NOTICE kategóriába tartoznak',
+            'value' => '',      
+            'Field' => '{"name":"Value","label":"Value","type":"repeatable","fields":{"type":"event"}}',
+            'active' => 1,
+        ],
+        [
+            'key' => 'WARNING_CATEGORY',
+            'name' => 'WARNING_CATEGORY',
+            'description' => 'Eventek amik a WARNING kategóriába tartoznak',
+            'value' => '',      
+            'Field' => '{"name":"Value","label":"Value","type":"repeatable","fields":{"type":"event"}}',
+            'active' => 1,
+        ],
+        [
+            'key' => 'ERROR_CATEGORY',
+            'name' => 'ERROR_CATEGORY',
+            'description' => 'Eventek amik az ERROR kategóriába tartoznak',
+            'value' => '',      
+            'Field' => '{"name":"Value","label":"Value","type":"repeatable","fields":{"type":"event"}}',
+            'active' => 1,
+        ],
+    ];
     const PERMISSIONS = [
         'login backend',
         'manage users',
@@ -108,5 +158,11 @@ class DwfwSeeder extends Seeder
         $user->partner_id = $partner->id;
         $user->save();
 
+        
+        //SETTINGS
+        foreach($this->setting as $index => $setting)
+        {
+           $result = Setting::query()->firstOrCreate($setting);
+         }
     }
 }

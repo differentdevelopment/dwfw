@@ -8,6 +8,7 @@ use Backpack\Settings\app\Models\Setting;
 use Different\Dwfw\app\Console\Commands\Install;
 use Different\Dwfw\app\Console\Commands\InstallPassport;
 use Different\Dwfw\app\Console\Commands\Upgrade;
+use Different\Dwfw\app\Console\LogDeleteSchedule;
 use Different\Dwfw\app\Http\Middleware\ConvertIdToTimeZone;
 use Different\Dwfw\app\Listeners\SetUserSession;
 use Different\Dwfw\app\Models\Partner;
@@ -27,6 +28,7 @@ class DwfwServiceProvider extends ServiceProvider
         Install::class,
         Upgrade::class,
         InstallPassport::class,
+        
     ];
     private $middlewares = [
         ConvertIdToTimeZone::class,
@@ -52,7 +54,7 @@ class DwfwServiceProvider extends ServiceProvider
     public function boot()
     {
         Model::preventLazyLoading(!$this->app->isProduction());
-
+        LogDeleteSchedule::class;
         Gate::before(function ($user, $ability) {
             return $user->hasRole('super admin') ? true : null;
         });

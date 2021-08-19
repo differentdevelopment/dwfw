@@ -53,8 +53,7 @@ class DwfwServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Model::preventLazyLoading(!$this->app->isProduction());
-        LogDeleteSchedule::class;
+        Model::preventLazyLoading(!$this->app->isProduction());        
         Gate::before(function ($user, $ability) {
             return $user->hasRole('super admin') ? true : null;
         });

@@ -8,4 +8,5 @@ return [
 //    'profile_has_image' => true,
 //    'custom_role_handling' => false,
 //    'simple_account_user_pivot' => true,
+//    'redirect_to_root_after_account_change' => false,
 ];

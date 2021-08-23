@@ -379,7 +379,7 @@ class UsersCrudController extends BaseCrudController
         ) {
             session(['account_id' => $selected_id]);
         }
-        return redirect('/');
+        return config('dwfw.redirect_to_root_after_account_change', false) ? redirect('/') : redirect()->back();
     }
 
     /*

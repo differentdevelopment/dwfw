@@ -135,12 +135,20 @@ class RolesCrudController extends CrudController
                 'options' => $this->getGuardTypes(),
             ]);
         }
-        $this->crud->addField([
+        /*$this->crud->addField([
             'name' => 'separator',
             'type' => 'custom_html',
             'value' => '<a target="blank" href="' . backpack_url('permission') . '"><i class="fas fa-info-circle"></i> ' . __('backpack::permissionmanager.permission_descriptions') . '</a>',
-        ]);
+        ]);*/
         $this->crud->addField([
+            'name' => 'permissions',
+            'label' => ucfirst(trans('backpack::permissionmanager.permission_singular')),
+            'type' => 'selectAll',            
+            'attribute' => 'display_name',
+            'entity' => 'permissions',   
+            'pivot' => true,       
+        ]);
+        /*$this->crud->addField([
             'label' => ucfirst(trans('backpack::permissionmanager.permission_singular')),
             'type' => 'checklist',
             'name' => 'permissions',
@@ -148,7 +156,7 @@ class RolesCrudController extends CrudController
             'attribute' => 'display_name', // foreign key attribute that is shown to user
             'model' => $this->permission_model,
             'pivot' => true,
-        ]);
+        ]);*/
     }
 
     /*

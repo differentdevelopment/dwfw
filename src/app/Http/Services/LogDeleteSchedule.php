@@ -13,7 +13,7 @@ class LogDeleteSchedule
         $this->delete('WARNING');       
     }
     private function delete($category)
-    {
+    {        
         $categories = json_decode(Setting::get($category.'_CATEGORY'),true); 
         if(empty($categories))
         {
@@ -22,7 +22,7 @@ class LogDeleteSchedule
         $day =Setting::get($category.'_TIME');        
         if ($day == null) {
             return;
-        }           
+        }
         Log::query()->whereIn("event", $categories)->whereDate("created_at", '<=', now()->subDays($day))->delete();
     }
 }

@@ -43,7 +43,7 @@ class DwfwSeeder extends Seeder
             'name' => 'NOTICE_CATEGORY',
             'description' => 'Eventek amik a NOTICE kategóriába tartoznak',
             'value' => '',      
-            'Field' => '{"name":"Value","label":"Value","type":"repeatable","fields":{"type":"event"}}',
+            'Field' => '{"name":"value","label":"value","type":"repeatable","fields":{"type":"event"}}',
             'active' => 1,
         ],
         [
@@ -51,7 +51,7 @@ class DwfwSeeder extends Seeder
             'name' => 'WARNING_CATEGORY',
             'description' => 'Eventek amik a WARNING kategóriába tartoznak',
             'value' => '',      
-            'Field' => '{"name":"Value","label":"Value","type":"repeatable","fields":{"type":"event"}}',
+            'Field' => '{"name":"value","label":"value","type":"repeatable","fields":{"type":"event"}}',
             'active' => 1,
         ],
         [
@@ -59,7 +59,7 @@ class DwfwSeeder extends Seeder
             'name' => 'ERROR_CATEGORY',
             'description' => 'Eventek amik az ERROR kategóriába tartoznak',
             'value' => '',      
-            'Field' => '{"name":"Value","label":"Value","type":"repeatable","fields":{"type":"event"}}',
+            'Field' => '{"name":"value","label":"value","type":"repeatable","fields":{"type":"event"}}',
             'active' => 1,
         ],
     ];

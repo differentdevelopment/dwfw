@@ -43,7 +43,7 @@ Route::group([
     // USERS
     Route::crud('/users', class_exists('App\Http\Controllers\Admin\UsersCrudController')
         ? \App\Http\Controllers\Admin\UsersCrudController::class
-        : AccountsCrudController::class
+        : UsersCrudController::class
     );
     Route::post('/users/change-account', [UsersCrudController::class, 'changeAccount'])->name('.change_account');
     Route::get('/users/{user}/verify', [UsersCrudController::class, 'verifyUser'])->name('.verify');

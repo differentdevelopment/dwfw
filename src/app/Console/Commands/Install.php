@@ -65,8 +65,6 @@ class Install extends Command
             '--class' => 'Different\\Dwfw\\database\\seeds\\DwfwSeeder',
         ]);
 
-        $this->info(' DWFW installation finished.');
-
         if ($this->confirm('Account needed?', false)) {
             $this->line(' Publishing Account related files');
             $this->executeArtisanProcess('vendor:publish', [
@@ -80,6 +78,10 @@ class Install extends Command
                 '--force' => '--force',
             ]);
         }
+
+        $this->info(' DWFW installation finished.');
+        $this->info('');
+
         $this->progressBar->finish();
     }
 }

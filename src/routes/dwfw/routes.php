@@ -6,6 +6,7 @@ use Different\Dwfw\app\Http\Controllers\LogsCrudController;
 use Different\Dwfw\app\Http\Controllers\PartnersCrudController;
 use Different\Dwfw\app\Http\Controllers\SpammersCrudController;
 use Different\Dwfw\app\Http\Controllers\UsersCrudController;
+use Different\Dwfw\app\Http\Controllers\AuthController;
 use Different\Dwfw\app\Http\Middleware\DisableDebugbarMiddleware;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -43,13 +44,12 @@ Route::group([
     // USERS
     Route::crud('/users', class_exists('App\Http\Controllers\Admin\UsersCrudController')
         ? \App\Http\Controllers\Admin\UsersCrudController::class
-//        : AccountsCrudController::class  // <- szerintem ez egy ordas copypaste hiba, így javítom! - Hoagie 2021-09-08
-        : UsersCrudController::class
+        : AccountsCrudController::class
     );
-    Route::post('/users/change-account', [UsersCrudController::class, 'changeAccount'])->name('.change_account');
     Route::get('/users/{user}/verify', [UsersCrudController::class, 'verifyUser'])->name('.verify');
     Route::get('/user', [UsersCrudController::class, 'abortUserGrid']);
-
+    Route::post('/change-account', [AuthController::class, 'changeAccount'])->name('.change_account');
+    
     // PARTNERS
     Route::group([
         'prefix' => 'partners',

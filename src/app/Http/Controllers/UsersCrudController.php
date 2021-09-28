@@ -41,14 +41,12 @@ class UsersCrudController extends BaseCrudController
     use CheckCrudPermissions;
     use FetchOperation;
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->middleware(PermissionMiddleware::class . ':manage users');
-    }
-
     public function setup()
     {
+        if (!backpack_user()->can('manage users')) {
+            $this->crud->denyAccess(['list', 'show', 'create', 'update', 'delete']);
+        }
+
         $this->crud->setRoute(backpack_url('users'));
         $this->crud->setEntityNameStrings(__('backpack::permissionmanager.user'), __('backpack::permissionmanager.users'));
         $this->crud->setModel(User::class);

@@ -26,6 +26,6 @@ class ScheduleKernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(LogDeleteSchedule::class)->everyMinute();
+        $schedule->command(LogDeleteSchedule::class)->dailyAt('00:01');
     }
 }

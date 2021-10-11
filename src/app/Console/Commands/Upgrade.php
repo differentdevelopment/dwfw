@@ -30,6 +30,8 @@ class Upgrade extends Command
         '0.14.3' => 'upgrade_to_0_14_3',
         '0.14.4' => 'upgrade_to_0_14_4',
         '0.14.5' => 'upgrade_to_0_14_5',
+        '0.14.6' => 'upgrade_to_0_14_6',
+        '0.14.7' => 'upgrade_to_0_14_7',
     ];
     protected $progressBar;
     protected $signature = 'dwfw:upgrade

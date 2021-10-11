@@ -11,9 +11,9 @@
 */
 
 Route::group([
-    'namespace'  => 'Backpack\Settings\app\Http\Controllers',
+    'namespace'  => 'Different\Dwfw\app\Http\Controllers',
     'prefix'     => config('backpack.base.route_prefix', 'admin'),
     'middleware' => ['web', backpack_middleware(), \Spatie\Permission\Middlewares\PermissionMiddleware::class . ':manage settings'],
 ], function () {
-    Route::crud('setting', 'SettingCrudController');
+    Route::crud('setting', 'SettingController');
 });

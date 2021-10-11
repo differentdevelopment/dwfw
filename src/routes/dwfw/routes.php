@@ -44,7 +44,7 @@ Route::group([
     // USERS
     Route::crud('/users', class_exists('App\Http\Controllers\Admin\UsersCrudController')
         ? \App\Http\Controllers\Admin\UsersCrudController::class
-        : AccountsCrudController::class
+        : UsersCrudController::class
     );
     Route::get('/users/{user}/verify', [UsersCrudController::class, 'verifyUser'])->name('.verify');
     Route::get('/user', [UsersCrudController::class, 'abortUserGrid']);

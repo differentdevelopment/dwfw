@@ -53,4 +53,10 @@ return [
 
     'partners.list' => 'Partnerek kezelése',
     'partners.list description' => 'ha nincs, akkor a menüpont meg sem jelenik',
+     //Permission groups
+     'admin' => 'Adminisztrátor',
+     'production' => 'Gyártás',
+     'Standard' => 'Általános',
+     'SelectAll' => 'Összes kijelölése',
+     'description' => 'Leírás',
 ];

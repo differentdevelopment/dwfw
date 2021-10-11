@@ -8,6 +8,7 @@ use Backpack\Settings\app\Models\Setting;
 use Different\Dwfw\app\Console\Commands\Install;
 use Different\Dwfw\app\Console\Commands\InstallPassport;
 use Different\Dwfw\app\Console\Commands\Upgrade;
+use Different\Dwfw\app\Console\LogDeleteSchedule;
 use Different\Dwfw\app\Http\Middleware\ConvertIdToTimeZone;
 use Different\Dwfw\app\Listeners\SetUserSession;
 use Different\Dwfw\app\Models\Partner;
@@ -27,6 +28,7 @@ class DwfwServiceProvider extends ServiceProvider
         Install::class,
         Upgrade::class,
         InstallPassport::class,
+        
     ];
     private $middlewares = [
         ConvertIdToTimeZone::class,
@@ -51,8 +53,7 @@ class DwfwServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Model::preventLazyLoading(!$this->app->isProduction());
-
+        Model::preventLazyLoading(!$this->app->isProduction());        
         Gate::before(function ($user, $ability) {
             return $user->hasRole('super admin') ? true : null;
         });
@@ -141,7 +142,8 @@ class DwfwServiceProvider extends ServiceProvider
         $this->publishes([__DIR__ . '/resources/views/sidebar_content.blade.php' => resource_path('views/vendor/backpack/base/inc/sidebar_content.blade.php')], ['base', 'views.backpack.base.sidebar']);
         $this->publishes([__DIR__ . '/resources/views/upload.blade.php' => resource_path('views/vendor/backpack/crud/fields/upload.blade.php')], ['base', 'views.backpack.crud.fields.upload']);
         $this->publishes([__DIR__ . '/resources/views/checklist_dependency.blade.php' => resource_path('views/vendor/backpack/crud/fields/checklist_dependency.blade.php')], ['base', 'views.backpack.crud.fields.checklist_dependency']);
-
+        $this->publishes([__DIR__. '/resources/views/permission_dependency.blade.php' => resource_path('views/vendor/backpack/crud/fields/permission_dependency.blade.php')], ['base', 'views.backpack.crud.fields.permission_dependency']);
+        $this->publishes([__DIR__. '/resources/views/selectAll.blade.php' => resource_path('views/vendor/backpack/crud/fields/selectAll.blade.php')], ['base', 'views.backpack.crud.fields.selectAll']);
         // core configs
         $this->publishes([__DIR__ . '/config/auth.php' => config_path('auth.php')], ['base', 'config.auth']);
         $this->publishes([__DIR__ . '/config/cache.php' => config_path('cache.php')], ['base', 'config.cache']);

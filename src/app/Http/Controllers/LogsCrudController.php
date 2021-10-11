@@ -23,16 +23,23 @@ class LogsCrudController extends BaseCrudController
 
     public function setup()
     {
-        $this->crud->setModel(Log::class);
+        
+        $this->crud->setModel(Log::class);        
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/logs');
         $this->crud->setEntityNameStrings(__('dwfw::logs.log'), __('dwfw::logs.logs'));
-
+             
         if (!$this->crud->getRequest()->order) {
             $this->crud->orderBy('created_at', 'desc');
+           
         }
-
+        
         $this->setupColumnsFieldsFromMethod();
         $this->setupFiltersFromMethod();
+        
+    }
+    public function setupListOperation()
+    {
+        $this->crud->disableResponsiveTable();
     }
 
     protected function isJson($string) {
@@ -42,7 +49,8 @@ class LogsCrudController extends BaseCrudController
 
     protected function setupShowOperation()
     {
-        $this->crud->addColumn([
+
+        /*$this->crud->addColumn([
             'name' => 'data',
             'label' => 'Data',
             'type' => 'closure',
@@ -52,7 +60,12 @@ class LogsCrudController extends BaseCrudController
                 }
                 return '<pre>' . json_encode(utf8_decode($entry->data), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . '</pre>';
             }
-        ])->afterColumn('created_at');
+        ])->afterColumn('created_at');*/
+        
+        foreach($this->getFields() as $index => $farray)
+        {
+           $this->crud->addColumn($farray);
+        }
     }
     //<editor-fold desc="columns/fields" defaultstate="collapsed">
 
@@ -62,7 +75,13 @@ class LogsCrudController extends BaseCrudController
      */
     protected function getColumns()
     {
+        
         return [
+            [
+                'name' => 'created_at',
+                'label' => __('dwfw::logs.created_at'),
+                'type' => 'datetime',
+            ],
             [
                 'name' => 'user_id',
                 'label' => __('dwfw::logs.user_id'),
@@ -105,35 +124,116 @@ class LogsCrudController extends BaseCrudController
                 },
             ],
             [
-                'name' => 'route',
-                'label' => __('dwfw::logs.route'),
+                'name' => 'event',
+                'label' => __('dwfw::logs.event'),
                 'type' => 'text',
-            ],
+            ],  
             [
                 'name' => 'entity_type',
                 'label' => __('dwfw::logs.entity_type'),
                 'type' => 'text',
-            ],
+            ],         
             [
-                'name' => 'log_id',
-                'label' => __('dwfw::logs.entity_id'),
+                'name' => 'ip_address',
+                'label' => __('dwfw::logs.ip_address'),
                 'type' => 'text',
-            ],
-            [
-                'name' => 'event',
-                'label' => __('dwfw::logs.event'),
-                'type' => 'text',
-            ],
-            [
-                'name' => 'status',
-                'label' => __('dwfw::logs.status'),
-            ],
+            ],            
+                       
+        ];
+    }
+
+    protected function getFields()
+    {
+        return [
             [
                 'name' => 'created_at',
                 'label' => __('dwfw::logs.created_at'),
                 'type' => 'datetime',
             ],
             [
+                'name' => 'data',
+                'label' => 'Data',
+                'type' => 'closure',
+                'function' => function ($entry) {
+                    if($this->isJson($entry->data)){
+                        return '<pre>' . json_encode(json_decode(utf8_decode($entry->data)), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . '</pre>';
+                    }
+                    return '<pre>' . json_encode(utf8_decode($entry->data), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . '</pre>';
+                }
+            ],
+            [
+                'name' => 'user_id',
+                'label' => __('dwfw::logs.user_id'),
+                'type' => 'closure',
+                'function' => function ($entry) {
+
+                    try {
+                        if (!function_exists('getUserModelByRoute') || !($model = getUserModelByRoute($entry->route))) {
+                            $model = new User;
+                        }
+                        return $model->findOrFail($entry->user_id)->name;
+                    } catch (\Exception $e) {
+                        return '';
+                    }
+                },
+                'searchLogic' => function ($query, $column, $searchTerm) {
+                    $query->orWhereHas('user', function ($q) use ($column, $searchTerm) {
+                        $q->where('name', 'like', '%' . $searchTerm . '%');
+                    });
+                },
+            ], 
+            [
+                'name' => 'user_email',
+                'label' => __('dwfw::logs.user_email'),
+                'type' => 'closure',
+                'function' => function ($entry) {
+                    try {
+                        if (!function_exists('getUserModelByRoute') || !($model = getUserModelByRoute($entry->route))) {
+                            $model = new User;
+                        }
+                        return $model->findOrFail($entry->user_id)->email;
+                    } catch (\Exception $e) {
+                        return '';
+                    }
+                },
+                'searchLogic' => function ($query, $column, $searchTerm) {
+                    $query->orWhereHas('user', function ($q) use ($column, $searchTerm) {
+                        $q->where('email', 'like', '%' . $searchTerm . '%');
+                    });
+                },
+            ],
+            [
+                'name' => 'event',
+                'label' => __('dwfw::logs.event'),
+                'type' => 'text',
+            ], 
+            [
+                'name' => 'entity_type',
+                'label' => __('dwfw::logs.entity_type'),
+                'type' => 'text',
+            ],    
+            [
+                'name' => 'ip_address',
+                'label' => __('dwfw::logs.ip_address'),
+                'type' => 'text',
+            ],        
+            [
+                'name' => 'route',
+                'label' => __('dwfw::logs.route'),
+                'type' => 'text',
+                'visibleInTable' => false,
+            ],
+            [
+                'name' => 'log_id',
+                'label' => __('dwfw::logs.entity_id'),
+                'type' => 'text',
+            ],  
+            [
+                'name' => 'status',
+                'label' => __('dwfw::logs.status'),
+            ],  
+            [
+                'name' => 'entity_name',
                 'label' => __('dwfw::logs.entity_name'),
                 'type' => 'closure',
                 'function' => function ($entry) {
@@ -147,17 +247,9 @@ class LogsCrudController extends BaseCrudController
                     }
                 },
             ],
-            [
-                'name' => 'ip_address',
-                'label' => __('dwfw::logs.ip_address'),
-                'type' => 'text',
-            ],
-        ];
-    }
 
-    protected function getFields()
-    {
-        return [];
+
+        ];
     }
 
     protected function getFilters()
@@ -218,12 +310,14 @@ class LogsCrudController extends BaseCrudController
                 [
                     [
                         'name' => 'event',
-                        'type' => 'text',
+                        'type' => 'select2',
                         'label' => __('dwfw::logs.event'),
                     ],
-                    false,
+                    function () {
+                        return Log::query()->groupBy('event')->pluck('event', 'event')->toArray(); //Needs to be key => value, even when they're the same
+                    },
                     function ($value) {
-                        $this->crud->addClause('where', 'event', $value);
+                        $this->crud->addClause('where', 'event', '=', $value);
                     },
                 ],
 

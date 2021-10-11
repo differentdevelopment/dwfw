@@ -294,4 +294,24 @@ class Upgrade extends Command
             '--force' => '--force',
         ]);
     }
+    private function upgrade_to_0_14_6()
+    {
+        $this->start_progress_bar('0.14.6', 2);
+        $this->line(' Publishing Permission Dependency field view file');
+        $this->executeArtisanProcess('vendor:publish', [
+            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
+            '--tag' => 'views.backpack.crud.fields.permission_dependency',
+            '--force' => '--force',
+        ]);
+    }
+    private function upgrade_to_0_14_7()
+    {
+        $this->start_progress_bar('0.14.7', 2);
+        $this->line(' Publishing Select All field view file');
+        $this->executeArtisanProcess('vendor:publish', [
+            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
+            '--tag' => 'views.backpack.crud.fields.selectAll',
+            '--force' => '--force',
+        ]);
+    }
 }

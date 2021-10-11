@@ -101,9 +101,7 @@ class DwfwServiceProvider extends ServiceProvider
 
     private function setBladeDirectives(): void
     {
-        Blade::directive('active', function ($expression) {
-            return "<?php echo request()->is('admin/' . $expression . '*') ? 'active' : '' ?>";
-        });
+        Blade::directive('active', fn($expression) => "<?php echo request()->is('admin/' . $expression . '*') ? 'active' : '' ?>");
 
         Blade::if('dwfwcan', function (string|array $permission) {
             $user = backpack_user();
@@ -111,6 +109,8 @@ class DwfwServiceProvider extends ServiceProvider
 
             return $user->hasAnyPermission($permission);
         });
+
+        Blade::if('count', fn(\Countable $dataset) => count($dataset) > 0);
     }
 
     public function registerMiddlewareGroup(Router $router)

@@ -83,5 +83,4 @@ trait HasImage
         return route('file', ['files', $this->{'file_' . $column_name}]);
     }
 
-
 }

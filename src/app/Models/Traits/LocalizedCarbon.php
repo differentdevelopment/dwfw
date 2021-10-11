@@ -22,13 +22,14 @@ trait LocalizedCarbon
         return $this->getLocalizedDate($this->deleted_at);
     }
 
-    public function getLocalizedDate($date)
+    public function getLocalizedDate($date, $format = '')
     {
         if (!$date) return '';
+        if (!$format) $format = config('backpack.base.default_datetime_format');
 
         return Carbon::parse($date)
             ->locale(App::getLocale())
-            ->isoFormat(config('backpack.base.default_datetime_format'));
+            ->isoFormat($format);
     }
 
 }

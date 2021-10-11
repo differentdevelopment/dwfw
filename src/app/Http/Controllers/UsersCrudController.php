@@ -41,14 +41,12 @@ class UsersCrudController extends BaseCrudController
     use CheckCrudPermissions;
     use FetchOperation;
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->middleware(PermissionMiddleware::class . ':manage users');
-    }
-
     public function setup()
     {
+        if (!backpack_user()->can('manage users')) {
+            $this->crud->denyAccess(['list', 'show', 'create', 'update', 'delete']);
+        }
+
         $this->crud->setRoute(backpack_url('users'));
         $this->crud->setEntityNameStrings(__('backpack::permissionmanager.user'), __('backpack::permissionmanager.users'));
         $this->crud->setModel(User::class);
@@ -367,19 +365,6 @@ class UsersCrudController extends BaseCrudController
         }
 
         return $request;
-    }
-
-    public function changeAccount(AccountChangeRequest $request)
-    {
-        $selected_id = $request->validated()['account_id'];
-        $user = auth()->user();
-        if (
-            ($user->hasPermissionTo('change account') || $user->hasRole('super admin') || in_array($selected_id, session('account_ids'))) &&
-            (-1 == $selected_id || null != Account::query()->find($selected_id))
-        ) {
-            session(['account_id' => $selected_id]);
-        }
-        return redirect('/');
     }
 
     /*

@@ -191,8 +191,7 @@ class Files extends Controller
             $storage_dir = "";
         }
 
-        $storage = Storage::putFile($storage_dir, $uploaded_file);
-        Storage::setVisibility($storage, 'public');
+        $storage = Storage::putFile($storage_dir, $uploaded_file, 'public');
         return $file;
     }
 

@@ -27,14 +27,25 @@ class Files extends Controller
      */
     public function retrieve(string $disk, File $file)
     {
-        $file_path = Storage::disk($disk)->path($file->file_path);
+        $file_path = Storage::path($file->file_path);
 
-        if (app('files')->missing($file_path)) {
+        if (!Storage::exists($file_path)) {
+            abort(404);
+        }
+
+        return Storage::response($file_path);
+    }
+
+    public function retrieveByteStream(string $disk, File $file)
+    {
+        $file_path = Storage::path($file->file_path);
+        
+        if (!Storage::exists($file_path)) {
             abort(404);
         }
 
         // https://stackoverflow.com/a/29997555
-        $size = app('files')->size($file_path);
+        $size = Storage::size($file_path);
         $stream = fopen($file_path, "r");
 
         $start = 0;
@@ -43,7 +54,7 @@ class Files extends Controller
 
         $headers = [
             'Content-Disposition' => 'inline; filename="' . $file->original_name . '"',
-            'Content-Type' => app('files')->mimeType($file_path),
+            'Content-Type' => Storage::mimeType($file_path),
             'Accept-Ranges' => 'bytes'
         ];
 
@@ -84,12 +95,13 @@ class Files extends Controller
      */
     public function retrieveBase64(string $disk, File $file)
     {
-        $file_path = Storage::disk($disk)->path($file->file_path);
-        if (app('files')->missing($file_path)) {
+        $file_path = Storage::path($file->file_path);
+
+        if (!Storage::exists($file_path)) {
             abort(404);
         }
 
-        return Response::make('data:' . app('files')->mimeType($file_path) . ';base64,' . base64_encode(app('files')->get($file_path)), 200);
+        return Response::make('data:' . Storage::mimeType($file_path) . ';base64,' . base64_encode(Storage::get($file_path)), 200);
     }
 
     public function download(File $file)
@@ -166,7 +178,7 @@ class Files extends Controller
         $storage_dir = $storage_dir ?? $partner_id;
 
         $file = File::query()->findOrNew($file_id);
-        Storage::disk($disk)->delete($file->file_path);
+        Storage::delete($file->file_path);
 
         $file->partner_id = $partner_id;
         $file->original_name = $original_name;
@@ -175,8 +187,12 @@ class Files extends Controller
         $file->access_hash = Str::random(40);
         $file->save();
 
-        CoreFile::ensureDirectoryExists(Storage::disk($disk)->path($storage_dir));
-        Storage::disk($disk)->put($storage_dir, $uploaded_file);
+        if ($storage_dir === null) {
+            $storage_dir = "";
+        }
+
+        $storage = Storage::putFile($storage_dir, $uploaded_file);
+        Storage::setVisibility($storage, 'public');
         return $file;
     }
 
@@ -187,9 +203,9 @@ class Files extends Controller
             $storage_dir .= '/';
         }
 
-        if (!Storage::disk($disk)->delete($storage_dir . $file->file_path)) {
+        if (!Storage::delete($storage_dir . $file->file_path)) {
             // a törlés nem sikerült.. 404 jó ilyenkor? FIXME hogy milyen üzenetet dobjon ilyenkor! Kell-e egyáltalán, vagy szedje ki a db-ből és megvagyunk
-//            abort(404);
+            // abort(404);
         }
         $file->delete();
     }

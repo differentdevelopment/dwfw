@@ -12,7 +12,8 @@ class Upgrade extends Command
 
     use PrettyCommandOutput;
 
-    const VERSION = '0.17.0';
+    // ez lesz az új verzió amire frissít majd a rendszer, és a kinti rendszerek ettől a verziótól nézik, hogy miket kell lefuttatni
+    const VERSION = '0.17.2';
     protected string $finish_message;
     /**
      * Array of methods used for upgrading to the given version
@@ -30,8 +31,10 @@ class Upgrade extends Command
         '0.14.3' => 'upgrade_to_0_14_3',
         '0.14.4' => 'upgrade_to_0_14_4',
         '0.14.5' => 'upgrade_to_0_14_5',
-        '0.14.6' => 'upgrade_to_0_14_6',
-        '0.14.7' => 'upgrade_to_0_14_7',
+        // figyelem, hekkelés jön!
+        // azok frissülnek le, amelyek verziója nagyobb, mint a dwfw konfigban tárolt és a VERSION-ra fogja módosítani amikor frissült
+        '0.17.1' => 'upgrade_to_0_17_1',
+        '0.17.2' => 'upgrade_to_0_17_2',
     ];
     protected $progressBar;
     protected $signature = 'dwfw:upgrade
@@ -296,9 +299,9 @@ class Upgrade extends Command
             '--force' => '--force',
         ]);
     }
-    private function upgrade_to_0_14_6()
+    private function upgrade_to_0_17_1()
     {
-        $this->start_progress_bar('0.14.6', 2);
+        $this->start_progress_bar('0.17.1', 2);
         $this->line(' Publishing Permission Dependency field view file');
         $this->executeArtisanProcess('vendor:publish', [
             '--provider' => 'Different\Dwfw\DwfwServiceProvider',
@@ -306,9 +309,9 @@ class Upgrade extends Command
             '--force' => '--force',
         ]);
     }
-    private function upgrade_to_0_14_7()
+    private function upgrade_to_0_17_2()
     {
-        $this->start_progress_bar('0.14.7', 2);
+        $this->start_progress_bar('0.17.2', 2);
         $this->line(' Publishing Select All field view file');
         $this->executeArtisanProcess('vendor:publish', [
             '--provider' => 'Different\Dwfw\DwfwServiceProvider',

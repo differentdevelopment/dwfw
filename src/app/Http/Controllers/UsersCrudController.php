@@ -188,11 +188,17 @@ class UsersCrudController extends BaseCrudController
                 'name' => 'password',
                 'label' => __('backpack::permissionmanager.password'),
                 'type' => 'password',
+                'attributes' => [
+                    'autocomplete' => 'new-password',
+                ],
             ],
             [
                 'name' => 'password_confirmation',
                 'label' => __('backpack::permissionmanager.password_confirmation'),
                 'type' => 'password',
+                'attributes' => [
+                    'autocomplete' => 'new-password',
+                ],
             ],
             [
 //                // two interconnected entities

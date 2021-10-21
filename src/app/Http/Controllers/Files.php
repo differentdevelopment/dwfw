@@ -180,10 +180,14 @@ class Files extends Controller
         $file = File::query()->findOrNew($file_id);
         Storage::delete($file->file_path);
 
+        if ($storage_dir !== null) {
+            $storage_dir .= '/';
+        }
+
         $file->partner_id = $partner_id;
         $file->original_name = $original_name;
         $file->mime_type = $mime_type;
-        $file->file_path = $storage_dir . '/' . $uploaded_file->hashName();
+        $file->file_path = $storage_dir . $uploaded_file->hashName();
         $file->access_hash = Str::random(40);
         $file->save();
 

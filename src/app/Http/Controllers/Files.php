@@ -139,7 +139,8 @@ class Files extends Controller
         $image_type_file = explode("/", $image_type_aux[1]);
         $safe_name = $original_name ?? Str::uuid()->toString() . '.' . $image_type_file[1];
 
-        $tmp_file_path = sys_get_temp_dir() . '/' . ($file_id ? Str::beforeLast(Str::replace($storage_dir . '/', '', File::query()->find($file_id)->file_path), '.') : Str::uuid()->toString());
+        /*$tmp_file_path = sys_get_temp_dir() . '/' . ($file_id ? Str::beforeLast(Str::replace($storage_dir . '/', '', File::query()->find($file_id)->file_path), '.') : Str::uuid()->toString());*/
+        $tmp_file_path = sys_get_temp_dir() . '/' . Str::uuid()->toString();
         $file_data = base64_decode($image_parts[1]);
         file_put_contents($tmp_file_path, $file_data);
         $tmp_file = new \Illuminate\Http\File($tmp_file_path);

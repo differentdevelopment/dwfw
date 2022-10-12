@@ -119,6 +119,11 @@ class Log extends BaseModel
             }
         }
     }
+
+    public function getLogIdAttribute()
+    {
+        return $this->entity_id;
+    }
     /*
     |--------------------------------------------------------------------------
     | MUTATORS

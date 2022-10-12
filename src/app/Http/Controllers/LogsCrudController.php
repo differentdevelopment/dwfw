@@ -107,7 +107,7 @@ class LogsCrudController extends BaseCrudController
                 'type' => 'text',
             ],
             [
-                'name' => 'entity_id',
+                'name' => 'log_id',
                 'label' => __('dwfw::logs.entity_id'),
                 'type' => 'text',
             ],

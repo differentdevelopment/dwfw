@@ -237,7 +237,7 @@ class UsersCrudController extends BaseCrudController
             [
                 'name' => 'separator',
                 'type' => 'custom_html',
-                'value' => '<a target="blank" href="' . backpack_url('permission') . '"><i class="fas fa-info-circle"></i> ' . __('backpack::permissionmanager.permission_descriptions') . '</a>'
+                'value' => '<a target="blank" href="' . backpack_url('permission') . '"><i class="la la-info-circle"></i> ' . __('backpack::permissionmanager.permission_descriptions') . '</a>'
             ],
             [
                 'name' => 'partner_id',

@@ -32,8 +32,6 @@
         "jenssegers/agent": "^2.6",
         "laravel/framework": "^9.0",
         "laravel/ui": "^3.0",
-        "lukeraymonddowning/honey": "*",
-        "spatie/laravel-honeypot": "*",
         "spatie/laravel-permission": "*"
     },
     "require-dev": {

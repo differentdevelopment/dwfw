@@ -208,18 +208,6 @@ class Upgrade extends Command
             '--tag' => 'backpack.login',
             '--force' => '--force',
         ]);
-        $this->line(' Publishing spatie honey response class');
-        $this->executeArtisanProcess('vendor:publish', [
-            '--provider' => 'Different\Dwfw\DwfwServiceProvider',
-            '--tag' => 'spatie-honey.spam-respond',
-            '--force' => '--force',
-        ]);
-        $this->line(' Publishing spatie honey config file');
-        $this->executeArtisanProcess('vendor:publish', [
-            '--provider' => 'Spatie\Honeypot\HoneypotServiceProvider',
-            '--tag' => 'config',
-            '--force' => '--force',
-        ]);
         $this->line(' Publishing ip check config file');
         $this->executeArtisanProcess('vendor:publish', [
             '--provider' => 'Different\Dwfw\DwfwServiceProvider',

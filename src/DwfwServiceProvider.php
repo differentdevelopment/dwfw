@@ -171,9 +171,6 @@ class DwfwServiceProvider extends ServiceProvider
         //Select2 Ajax multiple filter for Backpack
         $this->publishes([__DIR__ . '/resources/views/vendor/backpack/crud/filters/select2_ajax_multiple.blade.php' => resource_path() . '/views/vendor/backpack/crud/filters/select2_ajax_multiple.blade.php'], ['base', 'backpack.filters']);
 
-        //Spatie Honey
-        $this->publishes([__DIR__ . '/app/SpamResponder/SpamRespond.php' => app_path() . '/SpamResponder/SpamRespond.php'], ['base', 'spatie-honey.spam-respond']);
-
         // Fixed custom routes
         $this->publishes([__DIR__ . '/routes/backpack/custom.php' => base_path() . '/routes/custom.php'], ['base', 'backpack.custom']);
 

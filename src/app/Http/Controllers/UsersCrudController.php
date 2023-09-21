@@ -284,8 +284,7 @@ class UsersCrudController extends BaseCrudController
                     'class' => 'form-group col-12 col-sm-6',
                 ],
             ],
-
-            [
+            /*[
                 'name' => 'profile_image',
                 'label' => __('dwfw::users.profile_image'),
                 'type' => 'image',
@@ -293,7 +292,7 @@ class UsersCrudController extends BaseCrudController
                 'wrapper' => [
                     'class' => 'form-group col-12 col-sm-6',
                 ],
-            ],
+            ],*/
             [
                 'name' => 'phone',
                 'label' => __('dwfw::users.phone'),

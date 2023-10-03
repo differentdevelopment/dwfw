@@ -179,7 +179,10 @@ class Files extends Controller
         $storage_dir = $storage_dir ?? $partner_id;
 
         $file = File::query()->findOrNew($file_id);
-        Storage::delete($file->file_path);
+        if ($file->file_path) {
+            // Ha volt már korábban file akkor azt töröljük ki
+            Storage::delete($file->file_path);
+        }
 
         if ($storage_dir !== null) {
             $storage_dir .= '/';

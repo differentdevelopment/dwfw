@@ -43,11 +43,6 @@ trait DwfwUser
         return $this->belongsTo(Partner::class);
     }
 
-    public function profile_image()
-    {
-        return $this->belongsTo(File::class)->whereNull('partner_id');
-    }
-
     public function user_tokens()
     {
         return $this->hasMany(UserToken::class);

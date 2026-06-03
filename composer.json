@@ -23,7 +23,7 @@
     },
     "require": {
         "php": "^8.0",
-        "backpack/crud": "5.6.1",
+        "backpack/crud": "^5.6.1",
         "backpack/pro": "1.6.2",
         "backpack/filemanager": "*",
         "backpack/settings": "*",

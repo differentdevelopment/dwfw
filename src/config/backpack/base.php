@@ -1,8 +1,8 @@
 <?php
 
 use Backpack\CRUD\app\Http\Middleware\UseBackpackAuthGuardInsteadOfDefaultAuthGuard;
+use Composer\InstalledVersions;
 use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
-use PackageVersions\Versions;
 
 return [
 
@@ -161,7 +161,7 @@ return [
     // All JS and CSS assets defined above have this string appended as query string (?v=string).
     // If you want to manually trigger cachebusting for all styles and scripts,
     // append or prepent something to the string below, so that it's different.
-    'cachebusting_string' => Versions::getVersion('backpack/crud'),
+    'cachebusting_string' => InstalledVersions::getVersion('backpack/crud') ?? '6.0.0',
 
     /*
     |--------------------------------------------------------------------------

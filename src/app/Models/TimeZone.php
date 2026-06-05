@@ -34,9 +34,9 @@ class TimeZone extends BaseModel
         'diff',
     ];
     // protected $hidden = [];
-    protected $dates = [
-        'created_at',
-        'updated_at',
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
     public const DEFAULT_TIMEZONE_CODE = 326;
 

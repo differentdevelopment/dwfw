@@ -91,7 +91,7 @@ class DwfwServiceProvider extends ServiceProvider
         $this->publishes([__DIR__ . '/app/Models/User.php' => app_path('Models/User.php')], 'models.user');
 
         // Database seeder
-        $this->publishes([__DIR__ . '/database/seeds/DatabaseSeeder.php' => database_path('seeds/DatabaseSeeder.php')], 'seeds.database');
+        $this->publishes([__DIR__ . '/database/seeds/DatabaseSeeder.php' => database_path('seeders/DatabaseSeeder.php')], ['base', 'seeds.database']);
 
         // Backpack related configs
         $this->publishes([__DIR__ . '/config/backpack/base.php' => config_path('backpack/base.php')], 'config.backpack.base');

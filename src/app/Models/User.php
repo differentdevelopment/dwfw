@@ -64,12 +64,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'remember_token',
     ];
-    protected $dates = [
-        'email_verified_at',
-        'created_at',
-        'updated_at',
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
-    protected $casts = [];
 
     private $default_image;
     private $default_image_icon;

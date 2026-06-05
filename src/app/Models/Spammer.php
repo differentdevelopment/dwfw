@@ -30,9 +30,9 @@ class Spammer extends BaseModel
     // public $timestamps = false;
     protected $guarded = ['id'];
     // protected $hidden = [];
-    protected $dates = [
-        'created_at',
-        'updated_at',
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     /*

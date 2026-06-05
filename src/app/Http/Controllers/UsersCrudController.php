@@ -2,7 +2,7 @@
 
 namespace Different\Dwfw\app\Http\Controllers;
 
-use Alert;
+use Prologue\Alerts\Facades\Alert;
 use App\Models\User;
 use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;

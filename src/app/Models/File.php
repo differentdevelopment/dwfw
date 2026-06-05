@@ -6,7 +6,7 @@ use Different\Dwfw\app\Models\Partner;
 use Carbon\Carbon;
 use Different\Dwfw\app\Http\Controllers\Files;
 use Illuminate\Database\Eloquent\Model;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\Laravel\Facades\Image;
 
 /**
  * Class File
@@ -40,9 +40,9 @@ class File extends BaseModel
         'file_path',
     ];
     // protected $hidden = [];
-    protected $dates = [
-        'created_at',
-        'updated_at',
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     protected $default_attributes = [
@@ -62,8 +62,8 @@ class File extends BaseModel
     {
         $image_path = $this->getImagePath($storage_path);
         ini_set('memory_limit','256M');
-        Image::make($image_path)
-            ->orientate()
+        Image::read($image_path)
+            ->orient()
             ->save($image_path);
     }
 
@@ -77,11 +77,8 @@ class File extends BaseModel
         $attributes = array_merge($this->default_attributes, $attributes);
         $image_path = $this->getImagePath($storage_path);
         ini_set('memory_limit','256M');
-        Image::make($image_path)
-            ->resize($attributes['resize_x'], $attributes['resize_y'], function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            })
+        Image::read($image_path)
+            ->scaleDown($attributes['resize_x'], $attributes['resize_y'])
             ->save($image_path);
     }
 

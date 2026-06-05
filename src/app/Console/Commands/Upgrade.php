@@ -12,7 +12,7 @@ class Upgrade extends Command
 
     use PrettyCommandOutput;
 
-    const VERSION = '0.13.9';
+    const VERSION = '1.0.0';
     protected string $finish_message;
     /**
      * Array of methods used for upgrading to the given version

@@ -40,9 +40,9 @@ class LogsCrudController extends BaseCrudController
             'type' => 'closure',
             'function' => function ($entry) {
                 if($this->isJson($entry->data)){
-                    return '<pre>' . json_encode(json_decode(utf8_decode($entry->data)), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . '</pre>';
+                    return '<pre>' . json_encode(json_decode(mb_convert_encoding($entry->data, 'ISO-8859-1', 'UTF-8')), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . '</pre>';
                 }
-                return '<pre>' . json_encode(utf8_decode($entry->data), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . '</pre>';
+                return '<pre>' . json_encode(mb_convert_encoding($entry->data, 'ISO-8859-1', 'UTF-8'), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . '</pre>';
             }
         ])->afterColumn('created_at');
     }

@@ -14,7 +14,8 @@ class CreateLogsTable extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('user_id')->nullable()->constraint()->onUpdate('set null')->onDelete('set null');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('set null')->onDelete('set null');
             $table->string('route');
             $table->string('entity_type');
             $table->integer('entity_id')->nullable();

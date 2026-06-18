@@ -49,7 +49,8 @@ class UsersCrudController extends UserCrudController
         }
     }
 
-    protected function setupShowOperation(){
+    public function setupShowOperation()
+    {
         $this->crud->set('show.setFromDb', false);
         $this->crud->addColumn([
             'name' => 'profile_image',
@@ -150,7 +151,7 @@ class UsersCrudController extends UserCrudController
                 ],
             ],
         ]);
-        if(config('dwfw.profile_has_image') !== false) {
+        if (config('dwfw.profile_has_image') !== false) {
             $this->crud->addField([
                 'name' => 'profile_image',
                 'label' => __('dwfw::users.profile_image'),

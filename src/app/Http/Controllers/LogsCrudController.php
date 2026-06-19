@@ -59,6 +59,7 @@ class LogsCrudController extends BaseCrudController
                 'name' => 'user_id',
                 'label' => __('dwfw::logs.user_id'),
                 'type' => 'closure',
+                'entity' => false,
                 'function' => function ($entry) {
 
                     try {
@@ -80,6 +81,7 @@ class LogsCrudController extends BaseCrudController
                 'name' => 'user_email',
                 'label' => __('dwfw::logs.user_email'),
                 'type' => 'closure',
+                'entity' => false,
                 'function' => function ($entry) {
                     try {
                         if (!function_exists('getUserModelByRoute') || !($model = getUserModelByRoute($entry->route))) {

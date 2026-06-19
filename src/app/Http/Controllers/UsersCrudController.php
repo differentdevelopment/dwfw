@@ -158,6 +158,7 @@ class UsersCrudController extends UserCrudController
                 'type' => 'upload',
                 'attribute' => 'original_name',
                 'upload' => true,
+                'entity' => false,
                 'wrapper' => [
                     'class' => 'form-group col-12 col-sm-6',
                 ],

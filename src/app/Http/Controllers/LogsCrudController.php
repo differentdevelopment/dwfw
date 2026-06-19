@@ -5,6 +5,7 @@ namespace Different\Dwfw\app\Http\Controllers;
 use App\Models\User;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+use Backpack\CRUD\app\Library\Widget;
 use Different\Dwfw\app\Models\Log;
 use Illuminate\Http\Request;
 
@@ -23,10 +24,11 @@ class LogsCrudController extends BaseCrudController
             $this->crud->orderBy('created_at', 'desc');
         }
 
-        $this->crud->setOperationSetting('responsiveTable', false);
-
         $this->setupColumnsFieldsFromMethod();
         $this->setupFiltersFromMethod();
+
+        // Prevent action buttons from wrapping on this wide table (11 columns)
+        Widget::add()->type('style')->content('#crudTable td:last-child { white-space: nowrap; }');
     }
 
     protected function isJson($string) {

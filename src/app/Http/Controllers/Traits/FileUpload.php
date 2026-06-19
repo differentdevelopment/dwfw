@@ -19,9 +19,11 @@ trait FileUpload
         if ($this->isBase64Image($this->crud->getRequest()->{$input_name})) {
             $file = Files::storeBase64($this->crud->getRequest()->{$input_name}, $partner_id, $storage_dir);
             $this->addColumnIdToRequest($input_name, $file->id);
+            $this->crud->getRequest()->request->remove($input_name);
         } elseif ($this->crud->getRequest()->hasFile($input_name)) {
             $file = Files::store($this->crud->getRequest()->{$input_name}, $partner_id, $storage_dir);
             $this->addColumnIdToRequest($input_name, $file->id);
+            $this->crud->getRequest()->request->remove($input_name);
         } elseif ($this->crud->getRequest()->has($input_name) && $this->crud->getRequest()->$input_name == null) {
             $this->addColumnIdToRequest($input_name, '');
             $this->crud->getRequest()->request->remove($input_name);

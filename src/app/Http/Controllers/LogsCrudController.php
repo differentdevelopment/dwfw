@@ -60,13 +60,15 @@ class LogsCrudController extends BaseCrudController
                 'label' => __('dwfw::logs.user_id'),
                 'type' => 'closure',
                 'entity' => false,
+                'escaped' => false,
                 'function' => function ($entry) {
 
                     try {
                         if (!function_exists('getUserModelByRoute') || !($model = getUserModelByRoute($entry->route))) {
                             $model = new User;
                         }
-                        return $model->findOrFail($entry->user_id)->name;
+                        $name = e($model->findOrFail($entry->user_id)->name);
+                        return "<span>$name</span>";
                     } catch (\Exception $e) {
                         return '';
                     }

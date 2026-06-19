@@ -25,13 +25,12 @@ class LogsCrudController extends BaseCrudController
 
         $this->setupColumnsFieldsFromMethod();
         $this->setupFiltersFromMethod();
-    }
 
-    protected function setupListOperation(): void
-    {
-        // Use compact (icon-only) show button to prevent wrapping on this wide table
-        $this->crud->removeButton('show');
-        $this->crud->addButtonFromView('line', 'show', 'dwfw::crud.buttons.show_compact', 'beginning');
+        // Override default show button with icon-only version (runs in list operation context)
+        $this->crud->operation('list', function () {
+            $this->crud->removeButton('show');
+            $this->crud->addButtonFromView('line', 'show', 'dwfw::crud.buttons.show_compact', 'beginning');
+        });
     }
 
     protected function isJson($string) {

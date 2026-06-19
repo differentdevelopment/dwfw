@@ -126,6 +126,7 @@ class LogsCrudController extends BaseCrudController
                 'type' => 'datetime',
             ],
             [
+                'name' => 'entity_name',
                 'label' => __('dwfw::logs.entity_name'),
                 'type' => 'closure',
                 'function' => function ($entry) {

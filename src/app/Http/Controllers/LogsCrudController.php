@@ -5,7 +5,6 @@ namespace Different\Dwfw\app\Http\Controllers;
 use App\Models\User;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-use Backpack\CRUD\app\Library\Widget;
 use Different\Dwfw\app\Models\Log;
 use Illuminate\Http\Request;
 
@@ -27,8 +26,9 @@ class LogsCrudController extends BaseCrudController
         $this->setupColumnsFieldsFromMethod();
         $this->setupFiltersFromMethod();
 
-        // Prevent action buttons from wrapping on this wide table (11 columns)
-        Widget::add()->type('style')->content('#crudTable td:last-child { white-space: nowrap; }');
+        // Use compact (icon-only) show button to prevent wrapping on this wide table
+        $this->crud->removeButton('show');
+        $this->crud->addButtonFromView('line', 'show', 'dwfw::crud.buttons.show_compact', 'beginning');
     }
 
     protected function isJson($string) {

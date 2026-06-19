@@ -69,7 +69,7 @@ class SpammersCrudController extends BaseCrudController
             [
                 'name' => 'created_at',
                 'label' => __('dwfw::spammers.created_at'),
-                'type' => 'text',
+                'type' => 'datetime',
             ],
         ];
     }

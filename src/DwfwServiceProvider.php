@@ -43,6 +43,15 @@ class DwfwServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Set Hungarian date format globally for Backpack CRUD
+        // Projects can override these in config/dwfw.php with 'date_format' and 'datetime_format' keys
+        $dateFormat = config('dwfw.date_format', 'YYYY. MM. DD.');
+        $datetimeFormat = config('dwfw.datetime_format', 'YYYY. MM. DD. HH:mm');
+        config([
+            'backpack.base.default_date_format' => $dateFormat,
+            'backpack.base.default_datetime_format' => $datetimeFormat,
+        ]);
+
         if(method_exists(Controller::class, 'allowFileView')) {
             Gate::define('viewFile', 'App\Http\Controllers\Controller@allowFileView');
         } else{

@@ -25,11 +25,19 @@ class LogsCrudController extends BaseCrudController
 
         $this->setupColumnsFieldsFromMethod();
         $this->setupFiltersFromMethod();
+    }
 
-        // Override default show button with icon-only version (runs in list operation context)
+    protected function setupShowDefaults(): void
+    {
+        $this->crud->allowAccess('show');
+
+        $this->crud->operation('show', function () {
+            $this->crud->setOperationSetting('setFromDb', true);
+        });
+
+        // Use compact (icon-only) show button instead of the default one with text
         $this->crud->operation('list', function () {
-            $this->crud->removeButton('show');
-            $this->crud->addButtonFromView('line', 'show', 'dwfw::crud.buttons.show_compact', 'beginning');
+            $this->crud->addButton('line', 'show', 'view', 'dwfw::crud.buttons.show_compact', 'beginning');
         });
     }
 

@@ -23,6 +23,8 @@ class LogsCrudController extends BaseCrudController
             $this->crud->orderBy('created_at', 'desc');
         }
 
+        $this->crud->setOperationSetting('responsiveTable', false);
+
         $this->setupColumnsFieldsFromMethod();
         $this->setupFiltersFromMethod();
     }

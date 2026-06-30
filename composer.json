@@ -22,7 +22,7 @@
         "sort-packages": true
     },
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "backpack/crud": "^7.0",
         "backpack/pro": "3.0.5",
         "backpack/filemanager": "^4.0",
@@ -30,14 +30,14 @@
         "backpack/settings": "^3.2",
         "guzzlehttp/guzzle": "^7.5",
         "intervention/image": "^3.0",
-        "laravel/framework": "^12.0",
+        "laravel/framework": "^13.0",
         "spatie/laravel-honeypot": "^4.0",
         "spatie/laravel-permission": "^6.0"
     },
     "require-dev": {
         "backpack/generators": "^4.1",
         "fakerphp/faker": "^1.23",
-        "laravel/tinker": "^2.9",
+        "laravel/tinker": "^3.0",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.1",
         "phpunit/phpunit": "^11.0",

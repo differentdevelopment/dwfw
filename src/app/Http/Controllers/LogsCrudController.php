@@ -32,6 +32,11 @@ class LogsCrudController extends BaseCrudController
         $this->crud->allowAccess('show');
 
         $this->crud->operation('show', function () {
+            // BP7: a leváltott ShowOperation::setupShowDefaults() a show:before_setup hookban
+            // betölti a default operation-beállításokat (pl. component => bp-datagrid). Enélkül
+            // a 'component' null, és a show_table.blade <x-dynamic-component>-je elhasal
+            // (Argument #1 ($component) must be of type BackedEnum|string, null given).
+            $this->crud->loadDefaultOperationSettingsFromConfig();
             $this->crud->setOperationSetting('setFromDb', true);
         });
 
@@ -137,6 +142,7 @@ class LogsCrudController extends BaseCrudController
             [
                 'name' => 'status',
                 'label' => __('dwfw::logs.status'),
+                'type' => 'text',
             ],
             [
                 'name' => 'created_at',

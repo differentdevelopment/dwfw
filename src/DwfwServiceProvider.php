@@ -48,8 +48,12 @@ class DwfwServiceProvider extends ServiceProvider
         $dateFormat = config('dwfw.date_format', 'YYYY. MM. DD.');
         $datetimeFormat = config('dwfw.datetime_format', 'YYYY. MM. DD. HH:mm');
         config([
+            // Backpack 6 config key
             'backpack.base.default_date_format' => $dateFormat,
             'backpack.base.default_datetime_format' => $datetimeFormat,
+            // Backpack 7 moved these to the ui config namespace (read via backpack_theme_config())
+            'backpack.ui.default_date_format' => $dateFormat,
+            'backpack.ui.default_datetime_format' => $datetimeFormat,
         ]);
 
         if(method_exists(Controller::class, 'allowFileView')) {
